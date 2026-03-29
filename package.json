@@ -1,0 +1,21 @@
+{
+  "name": "lagrange",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node ./dist/index.js"
+  },
+  "dependencies": {
+    "@types/ws": "^8.18.1",
+    "typescript": "^6.0.2",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0"
+  }
+}
