@@ -1,11 +1,11 @@
 import {WebSocketServer, WebSocket, type RawData} from "ws";
-import { Config } from "./Config.js";
-import { GatewayEvent, GatewayEventOpCodes, GatewayEventTypes, type GatewayEventPayload } from "./GatewayEvents.js";
-import { GatewayEventReady } from "./gateway/events/send/Ready.js";
-import { GatewayEventHello } from "./gateway/events/send/Hello.js";
-import { LogLevels, SerLogger } from "./Logging.js";
-import { TypedReadWriteBuffer } from "./Buffer.js";
-import { GatewayEventIdentify } from "./gateway/events/receive/Identify.js";
+import { Config } from "../Config.js";
+import { GatewayEvent, GatewayEventOpCodes, GatewayEventTypes, type GatewayEventPayload } from "./events/GatewayEvents.js";
+import { GatewayEventReady } from "./events/send/Ready.js";
+import { GatewayEventHello } from "./events/send/Hello.js";
+import { LogLevels, SerLogger } from "../Logging.js";
+import { TypedReadWriteBuffer } from "../Buffer.js";
+import { GatewayEventIdentify } from "./events/receive/Identify.js";
 import { Readable } from "node:stream";
 
 type SocketMapConnection = Map<Symbol, WebSocket>;

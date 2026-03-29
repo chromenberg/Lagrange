@@ -1,5 +1,5 @@
 import { Config } from "../../../Config.js";
-import { GatewayEvent, GatewayEventTypes } from "../../../GatewayEvents.js";
+import { GatewayEvent, GatewayEventTypes } from "../GatewayEvents.js";
 
 export class GatewayEventReady extends GatewayEvent { // the data in this will need UNAVAILABLE_GUILD_OBJECT, APPLICATION_OBJECT, RESUME_GATEWAY_URL and USER INFO
     constructor() {

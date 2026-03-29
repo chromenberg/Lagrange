@@ -1,5 +1,5 @@
 import { Config } from "./lib/Config.js";
-import { Gateway } from "./lib/Gateway.js";
+import { Gateway } from "./lib/gateway/Gateway.js";
 import { CliLogger, LogLevels } from "./lib/Logging.js";
 
 const gateway = new Gateway();

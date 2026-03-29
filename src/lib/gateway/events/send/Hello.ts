@@ -1,5 +1,5 @@
 import { Config } from "../../../Config.js";
-import { GatewayEvent, GatewayEventOpCodes } from "../../../GatewayEvents.js";
+import { GatewayEvent, GatewayEventOpCodes } from "../GatewayEvents.js";
 
 export class GatewayEventHello extends GatewayEvent {
     constructor() {

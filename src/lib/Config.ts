@@ -1,20 +1,7 @@
+import { Gateway } from "./gateway/GatewayConfig.js";
+import { REST } from "./rest/RESTConfig.js";
+
 export const Config = {
-    Gateway: {
-        Socket: {
-            Port: 80,
-            Address: "127.0.0.1"
-        },
-        Sharding: {
-            MaxSockets: 10,
-            SocketCountWarning: 8,
-            MaxSocketConnects: 3
-        },
-
-        Heartbeating: {
-            ExpectedTimeBetweenBeat: 5_000,
-            BeatTolerance: 500,
-            DisconnectAfterPulseLostTime: 30_000,
-        }
-    },
-
+    Gateway: Gateway,
+    REST: REST
 }
