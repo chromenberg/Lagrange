@@ -1,6 +1,6 @@
 export const Gateway = {
     Socket: {
-        Port: 80,
+        Port: 81,
         Address: "127.0.0.1"
     },
     Sharding: {

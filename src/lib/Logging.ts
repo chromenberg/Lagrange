@@ -8,6 +8,9 @@ export enum LogLevels {
     Error,
     Critical
 }
+
+
+
 class Logger {
     private emitter: EventEmitter = new EventEmitter();
     constructor(private readonly logLevel: number) {

@@ -1,6 +1,7 @@
 import { Config } from "./lib/Config.js";
 import { Gateway } from "./lib/gateway/Gateway.js";
 import { CliLogger, LogLevels } from "./lib/Logging.js";
+import "./lib/rest/REST.js";
 
 const gateway = new Gateway();
 
@@ -20,5 +21,6 @@ setTimeout(()=>{
             }
         }))}
     }
-
+    fetch("http://127.0.0.1/ass");
+    //fetch("/hi");
 },1_000)

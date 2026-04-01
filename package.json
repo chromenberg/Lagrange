@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/ws": "^8.18.1",
+    "glob": "^13.0.6",
     "typescript": "^6.0.2",
     "ws": "^8.20.0"
   },
