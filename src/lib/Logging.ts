@@ -1,4 +1,5 @@
 import EventEmitter from "events";
+import { AnsiCode, AnsiText, AnsiCodeStyle } from "./Ansi.js";
 export enum LogLevels {
     Verbose = -1,
     None,
@@ -9,7 +10,35 @@ export enum LogLevels {
     Critical
 }
 
-
+const Colors = {
+    Critical: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+        color:[236, 0, 0]
+    }),
+    Warning: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+        color:[229, 165, 10]
+    }),
+    Error: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+        color:[230, 97, 0]
+    }),
+    Caution: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+        color:[230, 97, 0]
+    }),
+    Info: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+        color:[28, 113, 216]
+    }),
+    Verbose: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+        color:[154, 153, 150]
+    }),
+    Clear: AnsiCode({
+        style:[AnsiCodeStyle.Normal],
+    }),
+}
 
 class Logger {
     private emitter: EventEmitter = new EventEmitter();
@@ -19,22 +48,22 @@ class Logger {
             if ((eventType < this.logLevel) && this.logLevel !== -1) return;
             switch (eventType) {
                 case LogLevels.Verbose:
-                    this.sendLog("<VERBOSE>", ...args);
+                    this.sendLog(AnsiText("\x1b[0;38;5;245;49m", "<VERBOSE>"), ...args);
                     break;
                 case LogLevels.Info:
-                    this.sendLog("<INFO>", ...args);
+                    this.sendLog(AnsiText("\x1b[0;38;5;39;49m", "<INFO>"), ...args);
                     break;
                 case LogLevels.Warning:
-                    this.sendLog("<WARN>", ...args);
+                    this.sendLog(AnsiText("\x1b[0;38;5;214;49m", "<WARN>"), ...args);
                     break;
                 case LogLevels.Caution:
-                    this.sendLog("<CAUTION>", ...args);
+                    this.sendLog(AnsiText("\x1b[0;38;5;208;49m", "<CAUTION>"), ...args);
                     break;
                 case LogLevels.Error:
-                    this.sendLog("<ERROR>", ...args);
+                    this.sendLog(AnsiText("\x1b[1;38;5;202;49m", "<ERROR>"), ...args);
                     break;
                 case LogLevels.Critical:
-                    this.sendLog("<CRITICAL>", ...args);
+                    this.sendLog(AnsiText("\x1b[1;38;5;196;49m", "<CRITICAL>"), ...args);
                     break;
 
                 default:
