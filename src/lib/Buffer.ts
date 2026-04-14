@@ -61,6 +61,7 @@ export class TypedReadWriteBuffer extends EventEmitter {
         };
         return shiftStore;
     }
+    //? Writing will almost exclusively not be an array, unless i decide to use this in the API, which i would be making this more OOP friendly anyways
     public write<T>(data: T | T[]): Boolean { // todo: clean this up a bit
         if (data instanceof Array) { // check if we are trying to add an array to the buffer
             try {

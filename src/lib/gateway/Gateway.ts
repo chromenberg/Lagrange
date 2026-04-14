@@ -44,7 +44,7 @@ class GatewaySocketMessageHandler {
     private readonly buffer: TypedReadWriteBuffer = new TypedReadWriteBuffer();
     constructor(private readonly parentSocket: GatewaySocket) { // sockets write their received requests into here, and then this will drain the buffer of requests until empty
         const uid = crypto.randomUUID();
-        SerLogger.log(LogLevels.Info, "[GatewaySocketMessageHandler] Initialised a GatewaySocketMessageHandler [",uid,"]");
+        SerLogger.log(LogLevels.Info, "[GatewaySocket] Initialised a GatewaySocketMessageHandler [",uid,"]");
         this.buffer.on("readable", ()=>{this.handle()});
     }
 
@@ -63,6 +63,8 @@ class GatewaySocketMessageHandler {
     }
 }
 
+// registry to manage active connections, contains a map as only one unique connection should be valid at a time, duplicate data will be overriden
+// contains functions for adding, removing, and finding a key by value and finding a value by a key
 class GatewaySocketConnections {
     private _connections: SocketMapConnection = new Map<Symbol, WebSocket>();
 

@@ -21,6 +21,7 @@ setTimeout(()=>{
             }
         }))}
     }
-    fetch("http://127.0.0.1/ass");
+    fetch("http://127.0.0.1/api/v1/message/");
+    fetch("http://127.0.0.1");
     //fetch("/hi");
 },1_000)
