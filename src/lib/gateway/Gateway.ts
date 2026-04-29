@@ -3,7 +3,7 @@ import { Config } from "../Config.js";
 import { GatewayEvent, GatewayEventOpCodes, GatewayEventTypes, type GatewayEventPayload } from "./events/GatewayEvents.js";
 import { GatewayEventReady } from "./events/send/Ready.js";
 import { GatewayEventHello } from "./events/send/Hello.js";
-import { LogLevels, SerLogger } from "../Logging.js";
+import { LogLevel, Logger } from "../../../../Common/Logging/dist/Logger.js";
 import { TypedReadWriteBuffer } from "../Buffer.js";
 import { GatewayEventIdentify } from "./events/receive/Identify.js";
 import { Readable } from "node:stream";
@@ -44,7 +44,7 @@ class GatewaySocketMessageHandler {
     private readonly buffer: TypedReadWriteBuffer = new TypedReadWriteBuffer();
     constructor(private readonly parentSocket: GatewaySocket) { // sockets write their received requests into here, and then this will drain the buffer of requests until empty
         const uid = crypto.randomUUID();
-        SerLogger.log(LogLevels.Info, "[GatewaySocket] Initialised a GatewaySocketMessageHandler [",uid,"]");
+        Logger.sendLog(LogLevel.Info, ["LAGRANGE","GatewaySocket"], "Initialised a GatewaySocketMessageHandler [",uid,"]");
         this.buffer.on("readable", ()=>{this.handle()});
     }
 
@@ -116,10 +116,11 @@ class GatewaySocket extends WebSocketServer {
             port:Config.Gateway.Socket.Port
         });
         this.uid = crypto.randomUUID();
-        SerLogger.log(LogLevels.Info, "[GatewaySocket] Gateway Socket (",this.uid,") Initialised");
+        Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "Gateway Socket (",this.uid,") Initialised");
 
         this.socketMessageBuffer = socketBuffer ? socketBuffer : ((): GatewaySocketMessageHandler => {
-            SerLogger.log(LogLevels.Warning, "[GatewaySocket] A message buffer was not passed into GatewaySocket[",this.uid,"]") ;
+            Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "GatewaySocket"], "A message buffer was not passed into GatewaySocket[",this.uid,"]") ;
+
             return new GatewaySocketMessageHandler(this);
         })();
         this.connectionMap = connectionMap ? connectionMap : new GatewaySocketConnections();// if not passed in then create its own connectionmap
@@ -133,7 +134,7 @@ class GatewaySocket extends WebSocketServer {
     private onConnect(connection: WebSocket) {
         const connectionKey: Symbol = this.connectionMap?.add(connection);
 
-        SerLogger.log(LogLevels.Info, "[GatewaySocket] New connection to gateway as [",connectionKey,"]");
+        Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "New connection to gateway as [",connectionKey,"]");
         this.sendPayload(connection, new GatewayEventHello());
 
         connection.on("message", (data: RawData) => {
@@ -168,8 +169,8 @@ class GatewaySocket extends WebSocketServer {
                 // > > if there is a match, ack, client gets to login
                 // > > if there isnt, then reject and make the client retry the identification 
 
-                SerLogger.log(LogLevels.Info, "[GatewaySocket] Client is requesting to identify...");
-                SerLogger.log(LogLevels.Info, "[GatewaySocket] Client request:\n",event.data);
+                Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "Client is requesting to identify...");
+                Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "Client request:\n",event.data);
 
                 sendResponse.call(this, new GatewayEventReady);
                 break;
@@ -199,7 +200,7 @@ export class Gateway { // gateway will handle every socket, max socket limits ad
     public readonly socket: GatewaySocket;
     constructor() {
         this.socket = new GatewaySocket();
-        SerLogger.log(LogLevels.Info, "[Gateway] Gateway Initialised");
+        Logger.sendLog(LogLevel.Info, ["LAGRANGE", "Gateway"], "Gateway Initialised");
     }
 }
 

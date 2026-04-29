@@ -1,7 +1,9 @@
 import { Config } from "./lib/Config.js";
 import { Gateway } from "./lib/gateway/Gateway.js";
-import { CliLogger, LogLevels } from "./lib/Logging.js";
+import { Logger, LogLevel } from "../../Common/Logging/dist/Logger.js";
 import "./lib/rest/REST.js";
+
+// todo: refactor entire project
 
 const gateway = new Gateway();
 
@@ -10,9 +12,9 @@ setTimeout(()=>{
     const client = new WebSocket(`ws://${Config.Gateway.Socket.Address}:${Config.Gateway.Socket.Port}`);
     client.onmessage = (message) => {
         try {
-            CliLogger.log(LogLevels.Info, JSON.parse(message.data))
+            Logger.sendLog(LogLevel.Info, ["LAGRANGE", "DummyClient"], JSON.parse(message.data))
         } catch (e) {
-            CliLogger.log(LogLevels.Error, e)
+            Logger.sendLog(LogLevel.Error, ["LAGRANGE", "DummyClient"], e)
         }
         if(JSON.parse(message.data).opCode === 10) {client.send(JSON.stringify({
             opCode: 2,
@@ -21,7 +23,7 @@ setTimeout(()=>{
             }
         }))}
     }
-    fetch("http://127.0.0.1/api/v1/message/");
-    fetch("http://127.0.0.1");
-    //fetch("/hi");
+    // fetch("http://127.0.0.1/api/v1/users/1/profile");
+    // fetch("http://127.0.0.1/api/v1/message");
+    // //fetch("/hi");
 },1_000)

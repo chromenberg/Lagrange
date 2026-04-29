@@ -1,5 +1,5 @@
 import type { ClassDeclaration } from "typescript";
-import { LogLevels, SerLogger } from "./Logging.js";
+import { LogLevel, Logger } from "../../../Common/Logging/dist/Logger.js";
 import EventEmitter from "events";
 
 export class TypedReadWriteBuffer extends EventEmitter {
@@ -9,22 +9,22 @@ export class TypedReadWriteBuffer extends EventEmitter {
     constructor() {
         super();
         //this.data as typeof type[]
-        SerLogger.log(LogLevels.Verbose, "[Buffer] A buffer has been initialised")
+        Logger.sendLog(LogLevel.Verbose, ["LAGRANGE", "Buffer"], "A buffer has been initialised")
     }
 
     private emitData(...args: any[]) {
-        SerLogger.log(LogLevels.Verbose, "[Buffer] Buffer has got new data (",...args,")");
+        Logger.sendLog(LogLevel.Verbose, ["LAGRANGE", "Buffer"], "Buffer has got new data (",...args,")");
         this.emit("data", ...args);
     }
 
     
     private emitReadable() {
-        SerLogger.log(LogLevels.Verbose, "[Buffer] Buffer is now readable");
+        Logger.sendLog(LogLevel.Verbose, ["LAGRANGE", "Buffer"], "Buffer is now readable");
 
         this.emit("readable");
     }
     private emitDrained() {
-        SerLogger.log(LogLevels.Verbose, "[Buffer] Buffer is now empty");
+        Logger.sendLog(LogLevel.Verbose, ["LAGRANGE", "Buffer"], "Buffer is now empty");
 
         this.emit("drained");
     }
@@ -75,7 +75,7 @@ export class TypedReadWriteBuffer extends EventEmitter {
 
                 return true;
             } catch (e) {
-                SerLogger.log(LogLevels.Error, "Failed to write data into a buffer | Data: [",data,"]\nError:",e);
+                Logger.sendLog(LogLevel.Error, ["LAGRANGE", "Buffer"], "Failed to write data into a buffer | Data: [",data,"]\nError:",e);
                 return false;
             }
         } else {
@@ -89,7 +89,7 @@ export class TypedReadWriteBuffer extends EventEmitter {
                 };
                 return true;
             } catch (e) {
-                //SerLogger.log(LogLevels.Error, "Failed to write data into a buffer | Data: [",data,"]\nError:",e);
+                //Logger.sendLog(LogLevels.Error, "Failed to write data into a buffer | Data: [",data,"]\nError:",e);
                 return false;
             }
         }
