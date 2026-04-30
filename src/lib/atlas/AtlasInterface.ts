@@ -41,3 +41,22 @@ export function messageAtlas(data: AtlasRequest, callback: (res: any) => any) {
         callback(msg);
     })
 }
+
+type UnixSocketEventMap = "message" | "close" | "connect" | "ready"
+
+class UnixSocket {
+    private readonly socket: Socket;
+    constructor(path: string) {
+        this.socket = connect({path});
+    }
+    
+    public on(eventName: UnixSocketEventMap, callback: (...args: any[]) => void) {
+        if (eventName === "message") {
+            this.socket.on("data", callback);
+            return;
+        }
+
+        this.socket.on(eventName, callback);
+    }
+}
+
