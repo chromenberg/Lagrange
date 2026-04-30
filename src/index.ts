@@ -1,7 +1,7 @@
 import { Config } from "./lib/Config.js";
 import { Gateway } from "./lib/gateway/Gateway.js";
 import { Logger, LogLevel } from "../../Common/Logging/dist/Logger.js";
-import "./lib/rest/REST.js";
+import "./lib/modules/rest/REST.js";
 
 // todo: refactor entire project
 
@@ -27,3 +27,4 @@ setTimeout(()=>{
     // fetch("http://127.0.0.1/api/v1/message");
     // //fetch("/hi");
 },1_000)
+import "./lib/modules/gateway/Gateway.js"

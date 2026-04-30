@@ -1,5 +1,5 @@
 import { Gateway } from "./gateway/GatewayConfig.js";
-import { REST } from "./rest/RESTConfig.js";
+import { REST } from "./modules/rest/RESTConfig.js";
 
 export const Config = {
     Gateway: Gateway,

@@ -1,6 +1,6 @@
 import { IncomingMessage, createServer, ServerResponse, Server } from "http";
-import { Logger, LogLevel } from "../../../../Common/Logging/dist/Logger.js";
-import { AtlasSocket, messageAtlas } from "../atlas/AtlasInterface.js";
+import { Logger, LogLevel } from "../../../../../Common/Logging/dist/Logger.js";
+import { AtlasSocket, messageAtlas } from "../../atlas/AtlasInterface.js";
 
 interface RequestParams {
   [key: string]: any
