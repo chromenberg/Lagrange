@@ -3,7 +3,7 @@ import { Config } from "../Config.js";
 import { GatewayEvent, GatewayEventOpCodes, GatewayEventTypes, type GatewayEventPayload } from "./events/GatewayEvents.js";
 import { GatewayEventReady } from "./events/send/Ready.js";
 import { GatewayEventHello } from "./events/send/Hello.js";
-import { LogLevel, Logger } from "../../../../Common/Logging/dist/Logger.js";
+import { LogLevel, Logger } from "../../../../../Common/Logging/dist/Logger.js";
 import { TypedReadWriteBuffer } from "../Buffer.js";
 import { GatewayEventIdentify } from "./events/receive/Identify.js";
 import { Readable } from "node:stream";

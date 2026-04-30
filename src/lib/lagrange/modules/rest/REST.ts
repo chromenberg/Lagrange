@@ -1,6 +1,6 @@
 import { IncomingMessage, createServer, ServerResponse, Server } from "http";
-import { Logger, LogLevel } from "../../../../../Common/Logging/dist/Logger.js";
-import { AtlasSocket, messageAtlas } from "../../atlas/AtlasInterface.js";
+import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js";
+//import { AtlasSocket, messageAtlas } from "../../atlas/AtlasInterface.js";
 
 interface RequestParams {
   [key: string]: any
@@ -73,10 +73,10 @@ api.get("/api/v1/users/:user_id/profile", async (req, res) => {
 
   await new Promise((resolve) => {
     Logger.sendLog(LogLevel.Info, ["LAGRANGE", "REST", "Routing"], "Requesting data from ATLAS");
-    messageAtlas({
-      type: 0,
-      data: req.params
-    }, (msg) => {d = JSON.parse(msg); resolve(msg)})
+    // messageAtlas({
+    //   type: 0,
+    //   data: req.params
+    // }, (msg) => {d = JSON.parse(msg); resolve(msg)})
   })
 
   Logger.sendLog(LogLevel.Info, ["LAGRANGE", "REST", "Routing"], "Response received from ATLAS");

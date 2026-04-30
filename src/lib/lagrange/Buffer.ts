@@ -1,5 +1,5 @@
 import type { ClassDeclaration } from "typescript";
-import { LogLevel, Logger } from "../../../Common/Logging/dist/Logger.js";
+import { LogLevel, Logger } from "../../../../Common/Logging/dist/Logger.js";
 import EventEmitter from "events";
 
 export class TypedReadWriteBuffer extends EventEmitter {

@@ -1,5 +1,5 @@
 import { createServer, Server, Socket, connect } from "net";
-import { Logger, LogLevel } from "../../../../Common/Logging/dist/Logger.js";
+import { Logger, LogLevel } from "../../../../../Common/Logging/dist/Logger.js";
 import { unlinkSync } from "fs";
 
 // todo: cleanup and make proper service
