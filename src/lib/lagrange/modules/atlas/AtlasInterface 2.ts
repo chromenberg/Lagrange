@@ -17,8 +17,8 @@ class UnixSocket {
         this.socket.on(eventName, callback);
     }
 
-    public write(data: string | Buffer<ArrayBuffer>): foid {
-        this.socket.write(data, callback)
+    public write(data: string | Buffer<ArrayBuffer>): void {
+        this.socket.write(data)
     }
 }
 
