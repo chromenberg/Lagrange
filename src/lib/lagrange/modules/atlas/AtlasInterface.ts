@@ -1,5 +1,5 @@
 import { createServer, Server, Socket, connect } from "net";
-import { Logger, LogLevel } from "../../../../../Common/Logging/dist/Logger.js";
+import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js";
 import { unlinkSync } from "fs";
 
 // todo: cleanup and make proper service
@@ -40,23 +40,5 @@ export function messageAtlas(data: AtlasRequest, callback: (res: any) => any) {
     AtlasSocket.once("data", (msg: string) => {
         callback(msg);
     })
-}
-
-type UnixSocketEventMap = "message" | "close" | "connect" | "ready"
-
-class UnixSocket {
-    private readonly socket: Socket;
-    constructor(path: string) {
-        this.socket = connect({path});
-    }
-    
-    public on(eventName: UnixSocketEventMap, callback: (...args: any[]) => void) {
-        if (eventName === "message") {
-            this.socket.on("data", callback);
-            return;
-        }
-
-        this.socket.on(eventName, callback);
-    }
 }
 

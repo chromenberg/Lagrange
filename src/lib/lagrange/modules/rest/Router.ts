@@ -6,7 +6,7 @@ interface RequestParams {
 }
 // We extend the IncomingMessage class to add a property
 // for storing url parameters
-class Request extends IncomingMessage {
+export class Request extends IncomingMessage {
   private _params: RequestParams = {};
   
   public get params(): RequestParams {
@@ -20,7 +20,8 @@ class Request extends IncomingMessage {
 
 type APICallback = (req: Request,
                     res: ServerResponse<IncomingMessage>) => void;
-type Callback = (...args: any[]) => any;
+type Callback<ReturnType> = (...args: any[]) => ReturnType;
+type VoidCallback = Callback<void>;
 type HTTPMethod = "PUT" | "POST" | "PATCH" | "GET" | "DELETE" | "OPTIONS";
 // giant type for autocomplete, doesnt contain all mime types but contains most that everyone uses
 type MIMEType = "application/x-abiword" | "image/apng"                   | "application/x-freearc"       | "image/avif"         |
@@ -39,9 +40,10 @@ type MIMEType = "application/x-abiword" | "image/apng"                   | "appl
                 "application/zip"       | "application/x-zip-compressed" | "application/x-7z-compressed" ;
 
 
-class Router extends Server {
+export class Router {
+  private readonly server: Server;
   constructor() {
-    super({ // set incoming message to be request instead
+    this.server = new Server({ // set incoming message to be request instead
       IncomingMessage: Request
     });
   }
@@ -62,11 +64,11 @@ class Router extends Server {
     path: string,
     mode: HTTPMethod,
     callback: APICallback,
-    callback2?: APICallback & Callback
+    callback2?: APICallback & VoidCallback
   ): void {
     const regexp = Router.parseParams(path);
 
-    this.on("request", (req: Request, res) => {
+    this.server.on("request", (req: Request, res) => {
       if (req.method !== mode) return;
 
       const params = req.url?.match(regexp);
@@ -154,6 +156,9 @@ class Router extends Server {
     this.selectOverload(path, "PATCH", args);
   }
 
+  public listeners(eventName: string): VoidCallback[] {
+    return this.server.listeners(eventName);
+  }
 }
 
 
