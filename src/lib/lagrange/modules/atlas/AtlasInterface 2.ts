@@ -1,29 +1,23 @@
 import { connect, type Socket } from "net";
+import type { Snowflake, Token } from "../../../atlas/modules/Types.js";
+import { AtlasManager } from "../../../../atlas.index.js";
 type foid = void
 type UnixSocketEventMap = "message" | "close" | "connect" | "ready"
 
-class UnixSocket {
-    private readonly socket: Socket;
-    constructor(path: string) {
-        this.socket = connect({path});
-    }
-    
-    public on(eventName: UnixSocketEventMap, callback: (...args: any[]) => void) {
-        if (eventName === "message") {
-            this.socket.on("data", callback);
-            return;
+export namespace AtlasInterface {
+    export namespace Users {
+        export async function getSelfUserFromToken(token: Token) {
+            
         }
 
-        this.socket.on(eventName, callback);
-    }
+        export async function getUser(id: Snowflake) {
+            const results = (await AtlasManager.client.execute(`SELECT * FROM users WHERE user_id = ${id};`)).rows;
+            
+            if (results.length > 1) {
+                throw new Error("Tried getting a user and got more than 1 result, this is a database fault");
+            }
 
-    public write(data: string | Buffer<ArrayBuffer>): void {
-        this.socket.write(data)
+            return results;
+        }
     }
 }
-
-
-class AtlasSocket extends UnixSocket {
-
-}
-

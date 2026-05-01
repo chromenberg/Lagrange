@@ -1,5 +1,9 @@
 import { IncomingMessage, createServer, ServerResponse, Server, OutgoingMessage } from "http";
 import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js";
+import type { API, Functions } from "../../../../common/Typings.js";
+
+type VoidCallback = Functions.VoidCallback;
+type VoidAPICallback = Functions.VoidAPICallback;
 
 interface RequestParams {
   [key: string]: any
@@ -17,28 +21,6 @@ export class Request extends IncomingMessage {
     this._params = data
   }
 }
-
-type APICallback = (req: Request,
-                    res: ServerResponse<IncomingMessage>) => void;
-type Callback<ReturnType> = (...args: any[]) => ReturnType;
-type VoidCallback = Callback<void>;
-type HTTPMethod = "PUT" | "POST" | "PATCH" | "GET" | "DELETE" | "OPTIONS";
-// giant type for autocomplete, doesnt contain all mime types but contains most that everyone uses
-type MIMEType = "application/x-abiword" | "image/apng"                   | "application/x-freearc"       | "image/avif"         |
-                "video/x-msvideo"       | "application/octet-stream"     | "image/bmp"                   | "application/x-bzip" |
-                "application/x-bzip2"   | "application/x-cdf"            | "application/x-csh"           | "text/css"           |
-                "text/csv"              | "application/gzip"             | "application/x-gzip"          | "image/gif"          |
-                "text/html"             | "text/calendar"                | "application/java-archive"    | "image/jpeg"         |
-                "text/javascript"       | "application/json"             | "application/ld+json"         | "text/markdown"      |
-                "audio/midi"            | "text/javascript"              | "audio/mpeg"                  | "video/mp4"          |
-                "video/mpeg"            | "audio/ogg"                    | "video/ogg"                   | "application/ogg"    |
-                "audio/ogg"             | "font/otf"                     | "image/png"                   | "application/pdf"    |
-                "application/x-sh"      | "image/svg+xml"                | "application/x-tar"           | "image/tiff"         |
-                "video/mp2t"            | "font/ttf"                     | "text/plain"                  | "audio/wav"          |
-                "audio/webm"            | "video/webm"                   | "application/manifest+json"   | "image/webp"         |
-                "font/woff"             | "font/woff2"                   | "application/xhtml+xml"       | "application/xml"    |
-                "application/zip"       | "application/x-zip-compressed" | "application/x-7z-compressed" ;
-
 
 export class Router {
   private readonly server: Server;
@@ -62,9 +44,9 @@ export class Router {
 
   private callbackWrapper(
     path: string,
-    mode: HTTPMethod,
-    callback: APICallback,
-    callback2?: APICallback & VoidCallback
+    mode: API.HTTPMethod,
+    callback: VoidAPICallback,
+    callback2?: VoidAPICallback & VoidCallback
   ): void {
     const regexp = Router.parseParams(path);
 
@@ -88,8 +70,8 @@ export class Router {
   
   private selectOverload(
     path: string,
-    mode: HTTPMethod,
-    args: [APICallback, APICallback?]
+    mode: API.HTTPMethod,
+    args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     if (args.length === 1) { 
       this.callbackWrapper(path, mode, args[0]);
@@ -102,56 +84,56 @@ export class Router {
     }
   }
   
-  public delete(path: string, callback  : APICallback): void;
-  public delete(path: string, middleware: APICallback, callback: APICallback): void;
+  public delete(path: string, callback  : VoidAPICallback): void;
+  public delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public delete(
     path: string,
-    ...args: [APICallback, APICallback?]
+    ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectOverload(path, "DELETE", args);
   }
   
 
-  public get(path: string, callback  : APICallback): void;
-  public get(path: string, middleware: APICallback, callback: APICallback): void;
+  public get(path: string, callback  : VoidAPICallback): void;
+  public get(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public get(
     path: string,
-    ...args: [APICallback, APICallback?]
+    ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectOverload(path, "GET", args);
   }
   
   
-  public post(path: string, callback  : APICallback): void;
-  public post(path: string, middleware: APICallback, callback: APICallback): void;
+  public post(path: string, callback  : VoidAPICallback): void;
+  public post(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public post(
     path: string,
-    ...args: [APICallback, APICallback?]
+    ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectOverload(path, "POST", args);
   }
   
 
-  public put(path: string, callback  : APICallback): void;
-  public put(path: string, middleware: APICallback, callback: APICallback): void;
+  public put(path: string, callback  : VoidAPICallback): void;
+  public put(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
     
   public put(
     path: string,
-    ...args: [APICallback, APICallback?]
+    ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectOverload(path, "PUT", args);
   }
   
   
-  public patch(path: string, callback  : APICallback): void;
-  public patch(path: string, middleware: APICallback, callback: APICallback): void;
+  public patch(path: string, callback  : VoidAPICallback): void;
+  public patch(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
   
   public patch(
     path: string,
-    ...args: [APICallback, APICallback?]
+    ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectOverload(path, "PATCH", args);
   }
