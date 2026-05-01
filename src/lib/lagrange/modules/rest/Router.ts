@@ -83,8 +83,22 @@ class Router extends Server {
       callback(req, res)
     })
   }
-  // overloads
   
+  private selectOverload(
+    path: string,
+    mode: HTTPMethod,
+    args: [APICallback, APICallback?]
+  ): void {
+    if (args.length === 1) { 
+      this.callbackWrapper(path, mode, args[0]);
+
+    } else if (args.length === 2 && args[1]) {
+     this.callbackWrapper(path, mode, args[0], args[1]);
+
+    } else {
+      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router",`${mode}: ${path}`], "More than 2 or less than 1 callbacks provided");
+    }
+  }
   
   public delete(path: string, callback  : APICallback): void;
   public delete(path: string, middleware: APICallback, callback: APICallback): void;
@@ -93,15 +107,7 @@ class Router extends Server {
     path: string,
     ...args: [APICallback, APICallback?]
   ): void {
-    if (args.length === 1) { 
-      this.callbackWrapper(path, "DELETE", args[0]);
-
-    } else if (args.length === 2 && args[1]) {
-     this.callbackWrapper(path, "DELETE", args[0], args[1]);
-
-    } else {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router", "DELETE: "+path], "More than 2 or less than 1 callbacks provided");
-    }
+    this.selectOverload(path, "DELETE", args);
   }
   
 
@@ -112,15 +118,7 @@ class Router extends Server {
     path: string,
     ...args: [APICallback, APICallback?]
   ): void {
-    if (args.length === 1) { 
-      this.callbackWrapper(path, "GET", args[0]);
-
-    } else if (args.length === 2 && args[1]) {
-     this.callbackWrapper(path, "GET", args[0], args[1]);
-
-    } else {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router", "GET: "+path], "More than 2 or less than 1 callbacks provided");
-    }
+    this.selectOverload(path, "GET", args);
   }
   
   
@@ -131,15 +129,7 @@ class Router extends Server {
     path: string,
     ...args: [APICallback, APICallback?]
   ): void {
-    if (args.length === 1) { 
-      this.callbackWrapper(path, "POST", args[0]);
-
-    } else if (args.length === 2 && args[1]) {
-     this.callbackWrapper(path, "POST", args[0], args[1]);
-
-    } else {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router", "POST: "+path], "More than 2 or less than 1 callbacks provided");
-    }
+    this.selectOverload(path, "POST", args);
   }
   
 
@@ -150,15 +140,7 @@ class Router extends Server {
     path: string,
     ...args: [APICallback, APICallback?]
   ): void {
-    if (args.length === 1) { 
-      this.callbackWrapper(path, "PUT", args[0]);
-
-    } else if (args.length === 2 && args[1]) {
-     this.callbackWrapper(path, "PUT", args[0], args[1]);
-
-    } else {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router", "PUT: "+path], "More than 2 or less than 1 callbacks provided");
-    }
+    this.selectOverload(path, "PUT", args);
   }
   
   
@@ -169,15 +151,7 @@ class Router extends Server {
     path: string,
     ...args: [APICallback, APICallback?]
   ): void {
-    if (args.length === 1) { 
-      this.callbackWrapper(path, "PATCH", args[0]);
-
-    } else if (args.length === 2 && args[1]) {
-      this.callbackWrapper(path, "PATCH", args[0], args[1]);
-
-    } else {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router", "PATCH: "+path], "More than 2 or less than 1 callbacks provided");
-    }
+    this.selectOverload(path, "PATCH", args);
   }
 
 }
