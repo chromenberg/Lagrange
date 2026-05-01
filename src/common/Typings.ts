@@ -1,28 +1,13 @@
 import type { IncomingMessage, ServerResponse } from "http";
+import type { Request } from "../lib/lagrange/modules/rest/Router.js";
 
 export namespace API {
-    interface RequestParams {
+    export interface RequestParams {
       [key: string]: any
     }
-
-    type APICallback = (req: Request, res: ServerResponse<IncomingMessage>) => void;
-    
-    // We extend the IncomingMessage class to add a property
-    // for storing url parameters
-    type Request = IncomingMessage {
-      private _params: RequestParams = {};
-      
-      public get params(): RequestParams {
-        return this._params
-      }
-      
-      public set params(data: any) {
-        this._params = data
-      }
-    }
-    
-    type HTTPMethod = "PUT" | "POST" | "PATCH" | "GET" | "DELETE" | "OPTIONS";
-    type MIMEType = "application/x-abiword" | "image/apng"                   | "application/x-freearc"       | "image/avif"         |
+    export type APICallback<Type> = (req: Request, res: ServerResponse<IncomingMessage>) => Type;
+    export type HTTPMethod = "PUT" | "POST" | "PATCH" | "GET" | "DELETE" | "OPTIONS";
+    export type MIMEType = "application/x-abiword" | "image/apng"                   | "application/x-freearc"       | "image/avif"         |
                     "video/x-msvideo"       | "application/octet-stream"     | "image/bmp"                   | "application/x-bzip" |
                     "application/x-bzip2"   | "application/x-cdf"            | "application/x-csh"           | "text/css"           |
                     "text/csv"              | "application/gzip"             | "application/x-gzip"          | "image/gif"          |
@@ -41,10 +26,10 @@ export namespace API {
 export namespace Functions {
     export type Callback<Type> = (...args: any[]) => Type;
     export type VoidCallback = Callback<void>;
-    export type APICallback
-
-
+    export type VoidAPICallback = API.APICallback<void>;
+    
+    
     export type AsyncCallback<Type> = Callback<Promise<Type>>;
     export type AsyncVoidCallback = AsyncCallback<void>;
-    export type AsyncAPICallback =
+
 }
