@@ -26,9 +26,9 @@ export type EmailAddress = `${string}@${string}.${string}`
  * 
  * **Returns:** {@link TokenTimestamp}
  */
-export function tokenCreationTime() {
-    return Buffer.from(Date.now().toString(16)).toBase64();
-}
+// export function tokenCreationTime() {
+//     return Buffer.from(Date.now().toString(16)).toBase64();
+// }
 
 export interface Message {
     author_id : Snowflake
