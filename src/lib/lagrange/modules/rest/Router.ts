@@ -19,7 +19,7 @@ export class Request extends IncomingMessage {
   }
 }
 
-export abstract class Router {
+export class Router {
   private readonly server: Server;
   constructor() {
     this.server = new Server({ // set incoming message to be request instead
@@ -54,7 +54,7 @@ export abstract class Router {
   
       if (!params || (params === null)) return;
       if (!params.groups) return;
-
+      console.log(req)
       req.params = params.groups;
 
       // if theres a 2nd callback function then we will run that first and then call the callback within that
@@ -81,53 +81,76 @@ export abstract class Router {
     }
   }
   
-  public abstract delete(path: string, callback  : VoidAPICallback): void;
-  public abstract delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
-
-  public abstract delete(
+  public delete(path: string, callback  : VoidAPICallback): void;
+  public delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+  public delete(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
-  ): void;
+  ): void {
+    this.selectOverload(path, "DELETE", args);
+  }
   
 
-  public abstract get(path: string, callback  : VoidAPICallback): void;
-  public abstract get(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+  public get(path: string, callback  : VoidAPICallback): void;
+  public get(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
-  public abstract get(
+  public get(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
-  ): void;
+  ): void {
+    this.selectOverload(path, "GET", args);
+  }
   
   
-  public abstract post(path: string, callback  : VoidAPICallback): void;
-  public abstract post(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+  public post(path: string, callback  : VoidAPICallback): void;
+  public post(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
-  public abstract post(
+  public post(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
-  ): void;
+  ): void {
+    this.selectOverload(path, "POST", args);
+  }
   
 
-  public abstract put(path: string, callback  : VoidAPICallback): void;
-  public abstract put(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+  public put(path: string, callback  : VoidAPICallback): void;
+  public put(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
     
-  public abstract put(
+  public put(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
-  ): void;
+  ): void {
+    this.selectOverload(path, "PUT", args);
+  }
   
   
-  public abstract patch(path: string, callback  : VoidAPICallback): void;
-  public abstract patch(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+  public patch(path: string, callback  : VoidAPICallback): void;
+  public patch(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
   
-  public abstract patch(
+  public patch(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
-  ): void;
+  ): void {
+    this.selectOverload(path, "PATCH", args);
+  }
 
   public listeners(eventName: string): VoidCallback[] {
-    return this.server.listeners(eventName);
+    return this.server.listeners(eventName)
   }
+
+  public listen(address: string, port: number): this {
+    this.server.listen(port, address);
+    return this;
+  }
+
+  public getRaw(path: string, callback: VoidAPICallback): void {
+    this.server.on("request", (req: Request, res) => {
+      if (req.url === path) {
+        callback(req, res);
+      }
+    })
+  }
+  
 }
 
 
