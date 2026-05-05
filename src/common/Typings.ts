@@ -23,20 +23,20 @@ export namespace API {
                            "application/zip"       | "application/x-zip-compressed" | "application/x-7z-compressed";
 }
 
-export namespace Functions {
-    export type Callback<Type> = (...args: any[]) => Type;
-    export type VoidCallback = Callback<void>;
-    export type VoidAPICallback = API.APICallback<void>;
-    
-    
-    export type AsyncCallback<Type> = Callback<Promise<Type>>;
-    export type AsyncVoidCallback = AsyncCallback<void>;
 
-}
+export type Callback<Type> = (...args: any[]) => Type;
+export type VoidCallback = Callback<void>;
+export type VoidAPICallback = API.APICallback<void>;
+
+
+export type AsyncCallback<Type> = Callback<Promise<Type>>;
+export type AsyncVoidCallback = AsyncCallback<void>;
+
 
 export namespace Atlas {
     export type Snowflake = string;
     export type EmailAddress = `${string}@${string}.${string}`;
+    export type Token = `${Snowflake}.${string}.${string}`
 
     export interface BaseUser {
         user_id: Snowflake
@@ -52,4 +52,5 @@ export namespace Atlas {
     export interface User extends BaseUser {
         
     }
+
 }

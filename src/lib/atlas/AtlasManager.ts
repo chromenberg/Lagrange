@@ -57,7 +57,7 @@ export class Atlas {
             await this._client.execute(resource, `
                 CREATE TABLE IF NOT EXISTS credentials (
                     user_id text,
-                    authkey text,
+                    authkeys set<text>,
                     pass text,
                     email text,
                     PRIMARY KEY (user_id)
