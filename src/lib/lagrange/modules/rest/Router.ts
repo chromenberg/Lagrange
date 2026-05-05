@@ -1,9 +1,6 @@
 import { IncomingMessage, createServer, ServerResponse, Server, OutgoingMessage } from "http";
 import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js";
-import type { API, Functions } from "../../../../common/Typings.js";
-
-type VoidCallback = Functions.VoidCallback;
-type VoidAPICallback = Functions.VoidAPICallback;
+import type { API } from "../../../../common/Typings.js";
 
 interface RequestParams {
   [key: string]: any

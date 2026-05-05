@@ -29,7 +29,8 @@ export namespace AtlasInterface {
         // export async function getUserCredentials(email: EmailAddress, password: string) 
         // export async function getUserCredentials(token: Token) 
         export async function getUserCredentials(id: Atlas.Snowflake) {
-            wrapExpectSingle("SELECT * FROM credentials WHERE user_id")
+            const credentials = await wrapExpectSingle("SELECT * FROM credentials WHERE user_id =", id);
+            return credentials
         } 
     }
 }
