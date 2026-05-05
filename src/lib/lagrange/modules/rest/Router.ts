@@ -1,6 +1,6 @@
 import { IncomingMessage, createServer, ServerResponse, Server, OutgoingMessage } from "http";
 import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js";
-import type { API } from "../../../../common/Typings.js";
+import type { API, VoidAPICallback, VoidCallback} from "../../../../common/Typings.js";
 
 interface RequestParams {
   [key: string]: any
@@ -19,7 +19,7 @@ export class Request extends IncomingMessage {
   }
 }
 
-export class Router {
+export abstract class Router {
   private readonly server: Server;
   constructor() {
     this.server = new Server({ // set incoming message to be request instead
@@ -39,7 +39,7 @@ export class Router {
       .replace(/\/\\:(\w+)/g, '/(?<$1>[^/]+)');
   }
 
-  private callbackWrapper(
+  protected callbackWrapper(
     path: string,
     mode: API.HTTPMethod,
     callback: VoidAPICallback,
@@ -65,7 +65,7 @@ export class Router {
     })
   }
   
-  private selectOverload(
+  protected selectOverload(
     path: string,
     mode: API.HTTPMethod,
     args: [VoidAPICallback, VoidAPICallback?]
@@ -81,9 +81,68 @@ export class Router {
     }
   }
   
+  public abstract delete(path: string, callback  : VoidAPICallback): void;
+  public abstract delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+
+  public abstract delete(
+    path: string,
+    ...args: [VoidAPICallback, VoidAPICallback?]
+  ): void;
+  
+
+  public abstract get(path: string, callback  : VoidAPICallback): void;
+  public abstract get(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+
+  public abstract get(
+    path: string,
+    ...args: [VoidAPICallback, VoidAPICallback?]
+  ): void;
+  
+  
+  public abstract post(path: string, callback  : VoidAPICallback): void;
+  public abstract post(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+
+  public abstract post(
+    path: string,
+    ...args: [VoidAPICallback, VoidAPICallback?]
+  ): void;
+  
+
+  public abstract put(path: string, callback  : VoidAPICallback): void;
+  public abstract put(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+    
+  public abstract put(
+    path: string,
+    ...args: [VoidAPICallback, VoidAPICallback?]
+  ): void;
+  
+  
+  public abstract patch(path: string, callback  : VoidAPICallback): void;
+  public abstract patch(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
+  
+  public abstract patch(
+    path: string,
+    ...args: [VoidAPICallback, VoidAPICallback?]
+  ): void;
+
+  public listeners(eventName: string): VoidCallback[] {
+    return this.server.listeners(eventName);
+  }
+}
+
+
+/**
+ * router.("/api/v1/users/1/profile", middlewareFunction, callback)
+ * 
+ * router runs middleware and the output of that is used inside the callback
+ */
+export class LagrangeAPI extends Router {
+  constructor() {
+    super();
+  }
+  //protected intercept(req, res, callback)
   public delete(path: string, callback  : VoidAPICallback): void;
   public delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
-
   public delete(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
@@ -134,15 +193,5 @@ export class Router {
   ): void {
     this.selectOverload(path, "PATCH", args);
   }
-
-  public listeners(eventName: string): VoidCallback[] {
-    return this.server.listeners(eventName);
-  }
+  
 }
-
-
-/**
- * router.("/api/v1/users/1/profile", middlewareFunction, callback)
- * 
- * router runs middleware and the output of that is used inside the callback
- */
