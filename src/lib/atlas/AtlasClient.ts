@@ -1,4 +1,4 @@
-import { Client, types } from "cassandra-driver";
+import { Client, errors, types } from "cassandra-driver";
 import { AtlasDB } from "./Configs/Config.js";
 import type { ConcatenatedQuery, CQLObjType, CQLOpType } from "./modules/cql/CQLRequests.js";
 import { Logger, LogLevel } from "../../../../Common/Logging/dist/Logger.js"
@@ -28,7 +28,12 @@ class CQLRequest {
     return args.join(" ")
   }
 }
-
+process.on("uncaughtException", (e,o) =>{
+  if (e instanceof errors.NoHostAvailableError) {
+    return
+  }
+}
+)
 class AtlasConnection {
   public readonly cluster: Client;
   constructor() {

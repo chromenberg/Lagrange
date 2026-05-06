@@ -33,12 +33,12 @@ export class Router {
    * @returns 
    */
   public static parseParams(path: string): string { //? This seems to be the reason paramaterless requests break
-    console.log(path)
     return path
       .replace(/[\s!#$()+,.:<=?[\\\]^{|}]/g, '\\$&')
       .replace(/\/\\:(\w+)\\\?/g, '(?:/(?<$1>(?<=/)[^/]+))?')
       .replace(/\/\\:(\w+)/g, '/(?<$1>[^/]+)');
   }
+
 
   protected callbackWrapper(
     path: string,
@@ -47,21 +47,17 @@ export class Router {
     callback2?: VoidAPICallback & VoidCallback
   ): void {
     const regexp = Router.parseParams(path);
-
+    console.log(regexp)
     this.server.on("request", (req: Request, res) => {
       if (req.method !== mode) return;
-
-      const params = req.url?.match(regexp);
-
-      if (!params || (params === null)) return;
-      //if (!params.groups) return; //! this causes the problems
-
-      req.params = params.groups;
-      console.log(callback, callback2, params.groups, req.url, regexp)
-      // if theres a 2nd callback function then we will run that first and then call the callback within that
-      //! For some reason this is true when groups arent checked
-      if (callback2 !== undefined) {
-        console.log("callback2 present")
+      if (path.includes("/:")) {
+        const params = req.url?.match(regexp);
+        if (!params || (params === null)) return;
+        if (!params.groups) return; //! this causes the problems
+        
+        req.params = params.groups;
+      }
+      if (callback2) {
         callback2(req, res, callback);
         return;
       }
