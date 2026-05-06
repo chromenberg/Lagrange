@@ -39,6 +39,19 @@ export class Router {
       .replace(/\/\\:(\w+)/g, '/(?<$1>[^/]+)');
   }
 
+  protected callbackWrapperFinal(
+    req: Request,
+    res: ServerResponse<IncomingMessage>,
+    callback: VoidAPICallback,
+    callback2?: VoidAPICallback & VoidCallback
+  ): void {
+    if (callback2) {
+      callback2(req, res, callback);
+      return;
+    }
+    callback(req, res);
+    return;
+  }
 
   protected callbackWrapper(
     path: string,
@@ -50,18 +63,19 @@ export class Router {
     console.log(regexp)
     this.server.on("request", (req: Request, res) => {
       if (req.method !== mode) return;
-      if (path.includes("/:")) {
-        const params = req.url?.match(regexp);
-        if (!params || (params === null)) return;
-        if (!params.groups) return; //! this causes the problems
-        
-        req.params = params.groups;
-      }
-      if (callback2) {
-        callback2(req, res, callback);
+
+      if (!path.includes("/:") && path === req.url) {
+        this.callbackWrapperFinal(req, res, callback, callback2);
         return;
       }
-      callback(req, res);
+
+      const params = req.url?.match(regexp);
+      if (!params || (params === null)) return;
+      if (!params.groups) return; //! this causes the problems
+      
+      req.params = params.groups;
+      this.callbackWrapperFinal(req, res, callback, callback2);
+      return;
     })
   }
   

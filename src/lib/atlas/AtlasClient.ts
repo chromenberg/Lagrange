@@ -28,12 +28,7 @@ class CQLRequest {
     return args.join(" ")
   }
 }
-process.on("uncaughtException", (e,o) =>{
-  if (e instanceof errors.NoHostAvailableError) {
-    return
-  }
-}
-)
+
 class AtlasConnection {
   public readonly cluster: Client;
   constructor() {
