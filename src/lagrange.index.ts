@@ -33,7 +33,7 @@ setTimeout(()=>{
 
     //! Router no longer understands requests that dont have parameters
     //! TODO: Fix this as soon as possible
-    api.getRaw("/test", (req, res) => {
+    api.get("/test", (req, res) => {
         console.log("test endpoint")
         res.setHeader("content-type", "application/json")
         res.write(JSON.stringify({
@@ -43,6 +43,7 @@ setTimeout(()=>{
     })
     //! Problem during initialization of requests
     API.get("/", (req,res)=> {
+        console.log("base endpoint")
         res.setHeader("content-type", "application/json");
         res.write(JSON.stringify({
             name: "hi"
@@ -51,6 +52,7 @@ setTimeout(()=>{
     });
 
     API.get("/:param/hi", (req,res)=> {
+        console.log("paramatered endpoint")
         res.setHeader("content-type", "application/json");
         res.write(JSON.stringify({
             name: "hi" + req.params["param"]

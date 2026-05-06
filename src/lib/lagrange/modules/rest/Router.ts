@@ -57,14 +57,15 @@ export class Router {
       //if (!params.groups) return; //! this causes the problems
 
       req.params = params.groups;
-      console.log(callback, callback2, params.groups)
+      console.log(callback, callback2, params.groups, req.url, regexp)
       // if theres a 2nd callback function then we will run that first and then call the callback within that
       //! For some reason this is true when groups arent checked
-      if (callback2) {
+      if (callback2 !== undefined) {
+        console.log("callback2 present")
         callback2(req, res, callback);
         return;
       }
-      callback(req, res)
+      callback(req, res);
     })
   }
   
@@ -144,14 +145,6 @@ export class Router {
   public listen(address: string, port: number): this {
     this.server.listen(port, address);
     return this;
-  }
-
-  public getRaw(path: string, callback: VoidAPICallback): void {
-    this.server.on("request", (req: Request, res) => {
-      if (req.url === path) {
-        callback(req, res);
-      }
-    })
   }
   
 }
