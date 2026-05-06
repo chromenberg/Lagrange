@@ -35,11 +35,27 @@ setTimeout(()=>{
     //! TODO: Fix this as soon as possible
     api.getRaw("/test", (req, res) => {
         console.log("test endpoint")
-        console.log(req)
         res.setHeader("content-type", "application/json")
+        res.write(JSON.stringify({
+            name: "hppi"
+        }))
+        res.end()
+    })
+    //! Problem during initialization of requests
+    API.get("/", (req,res)=> {
+        res.setHeader("content-type", "application/json");
         res.write(JSON.stringify({
             name: "hi"
         }))
         res.end()
-    })
+    });
+
+    API.get("/:param/hi", (req,res)=> {
+        res.setHeader("content-type", "application/json");
+        res.write(JSON.stringify({
+            name: "hi" + req.params["param"]
+        }))
+        res.end()
+    });
+
 },1_000)

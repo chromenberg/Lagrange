@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startlagrange": "tsc && node ./dist/lagrange.index.js",
+    "startlagrange": "tsc && node --inspect ./dist/lagrange.index.js",
     "startatlas": "tsc && node ./dist/atlas.index.js",
     "start": "tsc && node ./dist/atlas.index.js && node ./dist/lagrange.index.js"
 

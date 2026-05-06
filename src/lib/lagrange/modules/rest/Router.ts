@@ -32,7 +32,8 @@ export class Router {
    * @param path 
    * @returns 
    */
-  public static parseParams(path: string): string {
+  public static parseParams(path: string): string { //? This seems to be the reason paramaterless requests break
+    console.log(path)
     return path
       .replace(/[\s!#$()+,.:<=?[\\\]^{|}]/g, '\\$&')
       .replace(/\/\\:(\w+)\\\?/g, '(?:/(?<$1>(?<=/)[^/]+))?')
@@ -51,10 +52,10 @@ export class Router {
       if (req.method !== mode) return;
 
       const params = req.url?.match(regexp);
-  
+
       if (!params || (params === null)) return;
-      if (!params.groups) return;
-      console.log(req)
+      //if (!params.groups) return; //! this causes the problems
+
       req.params = params.groups;
 
       // if theres a 2nd callback function then we will run that first and then call the callback within that
