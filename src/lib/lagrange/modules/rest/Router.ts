@@ -57,10 +57,12 @@ export class Router {
       //if (!params.groups) return; //! this causes the problems
 
       req.params = params.groups;
-
+      console.log(callback, callback2, params.groups)
       // if theres a 2nd callback function then we will run that first and then call the callback within that
+      //! For some reason this is true when groups arent checked
       if (callback2) {
         callback2(req, res, callback);
+        return;
       }
       callback(req, res)
     })
