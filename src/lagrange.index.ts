@@ -5,7 +5,7 @@ import "./lib/lagrange/modules/rest/REST.js";
 import { Atlas } from "./lib/atlas/AtlasManager.js";
 import { API } from "./lib/lagrange/modules/rest/REST.js";
 import { Gateway } from "./lib/lagrange/gateway/Gateway.js";
-export const Atlasmanager = null
+export const Atlasmanager = new Atlas()
 // todo: refactor entire project
 // init()
 const api = API

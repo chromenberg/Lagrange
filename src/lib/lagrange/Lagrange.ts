@@ -3,7 +3,7 @@
 // import { Atlas } from "../atlas/AtlasManager.js";
 
 // export const gateway = new Gateway();
-// //export const atlas = new Atlas();
+// export const atlas = new Atlas();
 // export const api = API;
 
 // export function init():void {}
