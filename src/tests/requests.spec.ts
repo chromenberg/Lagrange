@@ -3,73 +3,46 @@ import { describe, test } from "node:test";
 
 describe("requests", (T) => {
     console.log("RUNNING "+T.fullName);
-    async function signup(data: any): Promise<any> {
-        return fetch("127.0.0.1:80/api/v1/auth/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        }).then(R=>R.json())
-    }
-
-    test("Sign up with valid info", async (ctx, res) => {
-        const response = await signup({
-            username: "raine",
-            password: "unencrypted_password"
-        })
-        if (response) {
-            const json = await response.json();
-            if (Object.keys(json).includes("Authorization")) {
-                res(json)
+    test("fetch me endpoint", (ctx, done) => {
+        fetch("127.0.0.1/test/api/v1/users/@me").then(async res => {
+            const r = (await res.json())
+            if (r.data === 200) {
+                done(r)
             }
-            return;
-        }
-        return
+        })
+    })
+    test("fetch user profile endpoint", (ctx, done) => {
+        fetch("http://127.0.0.1/test/api/v1/users/15935/profile").then(async res => {
+            const r = (await res.json())
+            if (r.data === 200) {
+                done(r)
+            }
+        })
+    })
+    test("fetch user guilds v2 endpoint", (ctx, done) => {
+        fetch("http://127.0.0.1/test/api/v2/users/guilds").then(async res => {
+            const r = (await res.json())
+            if (r.data === 200) {
+                done(r)
+            }
+        })
     })
 
-    test("Sign up with no password", async (ctx, res) => {
-        const response = await signup({
-            username: "raine",
-            password: ""
-        })
-        if (response) {
-            const json = await response.json();
-            if (Object.keys(json).includes("Reason")) {
-                res(json)
+    test("fetch user guilds v2 paramatered endpoint", (ctx, done) => {
+        fetch("http://127.0.0.1/test/api/v2/users/guilds/204").then(async res => {
+            const r = (await res.json())
+            if (r.data === 200) {
+                done(r)
             }
-            return;
-        }
-        return
+        })
     })
-
-    test("Sign up with no username", async (ctx, res) => {
-        const response = await signup({
-            username: "",
-            password: "password"
-        })
-        if (response) {
-            const json = await response.json();
-            if (Object.keys(json).includes("Reason")) {
-                res(json)
+    
+    test("fetch versioned api paramed user endpoint", (ctx, done) => {
+        fetch("http://127.0.0.1/test/api/v6/users/20354").then(async res => {
+            const r = (await res.json())
+            if (r.data === 200) {
+                done(r)
             }
-            return;
-        }
-        return
-    })
-
-    test("Sign up with nothing", async (ctx, res) => {
-        const response = await signup({
-            username: "",
-            password: ""
         })
-        if (response) {
-            const json = await response.json();
-            if (Object.keys(json).includes("Reason")) {
-                res(json)
-            }
-            return;
-        }
-        return
     })
 })

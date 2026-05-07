@@ -28,36 +28,6 @@ setTimeout(()=>{
     }
     // fetch("http://127.0.0.1/api/v1/users/1/profile");
     //fetch("http://127.0.0.1/");
-    // //fetch("/hi");
-    console.log(api.listeners("request"))
-
-    //! Router no longer understands requests that dont have parameters
-    //! TODO: Fix this as soon as possible
-    api.get("/test", (req, res) => {
-        console.log("test endpoint")
-        res.setHeader("content-type", "application/json")
-        res.write(JSON.stringify({
-            name: "hppi"
-        }))
-        res.end()
-    })
-    //! Problem during initialization of requests
-    API.get("/", (req,res)=> {
-        console.log("base endpoint")
-        res.setHeader("content-type", "application/json");
-        res.write(JSON.stringify({
-            name: "hi"
-        }))
-        res.end()
-    });
-
-    API.get("/:param/hi", (req,res)=> {
-        console.log("paramatered endpoint")
-        res.setHeader("content-type", "application/json");
-        res.write(JSON.stringify({
-            name: "hi" + req.params["param"]
-        }))
-        res.end()
-    });
-
+   
+    
 },1_000)

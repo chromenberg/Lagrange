@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import type { Request } from "../lib/lagrange/modules/rest/Router.js";
+import type { Request } from "../lib/lagrange/modules/rest/router/Router.js";
+import type { Route } from "../lib/lagrange/modules/rest/router/Route.js";
 
 export namespace API {
     export interface RequestParams {
@@ -27,7 +28,7 @@ export namespace API {
 export type Callback<Type> = (...args: any[]) => Type;
 export type VoidCallback = Callback<void>;
 export type VoidAPICallback = API.APICallback<void>;
-
+export type VoidRouteCallback = (route: Route) => void;
 
 export type AsyncCallback<Type> = Callback<Promise<Type>>;
 export type AsyncVoidCallback = AsyncCallback<void>;
