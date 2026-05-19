@@ -4,16 +4,24 @@ import { AtlasManager } from "../../../atlas.index.js";
 import type { AsyncCallback, Atlas } from "../../../common/Typings.js";
 
 import type { types } from "cassandra-driver";
+import type { PoolItemPair } from "../../atlas/modules/pooling/Pool.js";
 type UnixSocketEventMap = "message" | "close" | "connect" | "ready"
 
 export namespace AtlasInterface {
-  export async function wrapExpectSingle(...args: any[]): Promise<types.Row[]> {
-    const results = (await AtlasManager.client.execute(args.join(" "))).rows;
 
+  export async function Request(...args: any[]): Promise<types.ResultSet> {
+    return AtlasManager.client.execute(args.join(" ") + ";");
+  }
+
+  export async function FilteringRequest(...args: any[]): Promise<types.ResultSet> {
+    return AtlasManager.client.execute(args.join(" ") + " ALLOW FILTERING;");
+  }
+
+  export async function wrapExpectSingle(...args: any[]): Promise<types.Row[]> {
+    const results = (await Request(args)).rows;
     if (results.length >= 1) {
       throw new Error("Expected ATLAS to send 1 result, got " + results.length);
     }
-
     return results;
   }
 

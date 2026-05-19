@@ -1,5 +1,5 @@
 import type { types } from "cassandra-driver";
-import type { AtlasClient } from "../AtlasClient.js";
+import type { AtlasClient } from "./client/AtlasClient.js";
 
 export class UserTableManager {
     constructor(private readonly parent: AtlasClient) {}

@@ -1,33 +1,13 @@
-import { Client, errors, types } from "cassandra-driver";
-import { AtlasDB } from "./Configs/Config.js";
-import type { ConcatenatedQuery, CQLObjType, CQLOpType } from "./modules/cql/CQLRequests.js";
-import { Logger, LogLevel } from "../../../../Common/Logging/dist/Logger.js"
-import { FixedPool, PoolItem, PoolItemState, type PoolItemPair } from "./modules/pooling/Pool.js";
+import { Client, types } from "cassandra-driver";
+import { AtlasDB } from "../../Configs/Config.js";
+import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js"
+import { FixedPool, PoolItem, PoolItemState, type PoolItemPair } from "../pooling/Pool.js";
 import EventEmitter from "events";
-import { PoolError } from "./modules/pooling/PoolErrors.js";
-import { StateEvents, StateListener } from "./modules/StateListener.js";
-import type { Message } from "./modules/Types.js";
-import { UserTableManager } from "./modules/AtlasModules.js";
+import { PoolError } from "../pooling/PoolErrors.js";
+import { StateEvents, StateListener } from "../StateListener.js";
+import { UserTableManager } from "../AtlasModules.js";
 
-type Nullable<T> = T | null;
 type AtlasClientResponse = types.ResultSet | PoolError;
-class CQLRequest {
-  constructor(
-    protected OpType: CQLOpType,
-    protected ObjType: CQLObjType
-  ) {
-
-  }
-
-  /**
-   * Concatenates an array of CQL request objects into one string, inserts spaces in between items
-   * @param args A list of CQLRequests or `typeof` CQLRequest to concatenate
-   * @returns ConcatenatedQuery
-   */
-  public concat(...args: string[]): ConcatenatedQuery {
-    return args.join(" ")
-  }
-}
 
 class AtlasConnection {
   public readonly cluster: Client;
@@ -109,65 +89,14 @@ export namespace Pooling {
   }
 }
 
-//?! ENSURE THIS GETS UPDATED AS THE DATABASE PROGRESSES IN DEVELOPMENT
-export class RequestHelper {
-  private parentConnections: Pooling.AtlasConnectionPool;
-  constructor(
-    private readonly parent: AtlasClient
-  ) {
-    this.parentConnections = parent.pool;
-  }
-  public toConnection(connection: PoolItemPair): AtlasConnection {
-    return (connection.resource.callback as AtlasConnection);
-  }
-  public getTable(from: string, where?: string): Promise<types.ResultSet> | undefined {
-    const _conn = this.parentConnections.requestForResource();
-    if (!_conn) return;
-    const conn = this.toConnection(_conn);
-
-    const result = conn.cluster.execute("SELECT * FROM "+from+";");
-    this.parentConnections.returnResource(_conn);
-
-    return result;
-  }
-
-  public newRecord(where: string, keys: string[], data: Object): Promise<types.ResultSet> | undefined {
-    const _conn = this.parentConnections.requestForResource();
-    if (!_conn) return;
-    const conn = this.toConnection(_conn);
-
-    const result = conn.cluster.execute(`INSERT INTO ${where} (${keys.join(", ")}) VALUES (${Object.values(data).join(", ")});`);
-    this.parentConnections.returnResource(_conn);
-
-    return result;
-  }
-
-  public _newRecord(where: string, keys: string[], data: Object): Promise<types.ResultSet> | undefined {
-    const _conn = this.parentConnections.requestForResource();
-    if (!_conn) return;
-    const conn = this.toConnection(_conn);
-
-    const result = conn.cluster.execute(`INSERT INTO ${where} (${keys.join(", ")}) VALUES (${data});`);
-    this.parentConnections.returnResource(_conn);
-
-    return result;
-  }
-}
-interface BaseUser {
-  user_id: string
-  username: string // HAS TO BE UNIQUE IF WE ARE MAKING POMELO
-  discriminator?: number // HAS TO BE 4 NUMBERS LONG | 1111 | 1683 | 6021
-  displayName: string
-  avatar?: string // URL
-  createdAt?: number
-}
 export class AtlasClient {
   private connections: Pooling.AtlasConnectionPool = new Pooling.AtlasConnectionPool(10);
-  private requests: RequestHelper = new RequestHelper(this);
   public readonly users: UserTableManager = new UserTableManager(this);
+  
   private states = {
     connections: new StateListener(Pooling.PoolState.INITIALIZING),
   };
+  
   constructor() {
     this.states.connections.setTargetState(Pooling.PoolState.READY);
     Logger.sendLog(LogLevel.Verbose, ["AtlasClient"], "Initializing ATLAS Client");
@@ -183,6 +112,15 @@ export class AtlasClient {
   public toConnection(connection: PoolItemPair): AtlasConnection {
     return (connection.resource.callback as AtlasConnection);
   }
+
+  public requestResource(): PoolItemPair | undefined {
+    return this.pool.requestForResource();
+  }
+  
+  public returnResource(resource: PoolItemPair): void {
+    return this.pool.returnResource(resource);
+  }
+  
   /**
    * Returns the connection pool
    */
@@ -228,25 +166,5 @@ export class AtlasClient {
       Logger.sendLog(LogLevel.Error, ["AtlasClient", "execute()"], "ATLAS was supplied too many arguments and no valid overload was found. ", args);
       throw new Error("ATLAS was passed too many arguments into execute(), please check ensure LogLevel encompasses ERROR for more info.");
     }
-  }
-
-  // --- TEST METHODS !! MUST REMOVE LATER ON
-  public async getUsers() {
-    this.requests.getTable("users")?.then((res) => Logger.sendLog(LogLevel.Info, ["AtlasClient", "getUsers()", "Result"], res))
-  }
-
-  public async addUser(userInfo: BaseUser) {
-    userInfo.createdAt = Date.now();
-    this.requests.newRecord("users", ["user_id", "username", "display_name", "created_at"], userInfo)?.then((res) => {
-      Logger.sendLog(LogLevel.Info, ["AtlasClient", "addUser()", "Result"], res.columns);
-    })
-  }
-
-  public async newMessage(message: Message) {
-    console.log(message);
-
-    this.requests._newRecord("messages", ["channel_id", "author_id", "content"], [message.channel_id, message.author_id, message.content, message.server_id])?.then((res) => {
-      Logger.sendLog(LogLevel.Info, ["AtlasClient", "newMessage()", "Result"], res);
-    })
   }
 }
