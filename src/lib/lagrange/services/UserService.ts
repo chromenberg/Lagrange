@@ -3,6 +3,11 @@ import { Logger, LogLevel } from "../../../../../Common/Logging/dist/Logger.js";
 import { AtlasInterface } from "./AtlasInterface.js";
 import type { types } from "cassandra-driver";
 import { SnowflakeNode } from "../../atlas/modules/snowflake/Snowflake.js";
+import { Atlas } from "../../atlas/AtlasManager.js";
+import { AtlasManager } from "../../../atlas.index.js";
+import type { ATLAS } from "../../../common/Typings.js";
+import type { Route } from "../modules/rest/router/Route.js";
+import type { Request } from "../modules/rest/router/Router.js";
 
 const Snowflake = SnowflakeNode({
   workerBits: 10,
@@ -27,15 +32,14 @@ export namespace Auth {
             });
             return;
           }
-          const userid = Snowflake.GenerateID();
-          const addUserResult = await AtlasInterface.Request(
-            `INSERT INTO users (user_id, display_name, username) VALUES (${userid}, '${username}', '${username}');`
-          );
-          const addUserAuthResult = await AtlasInterface.Request(
-            `INSERT INTO credentials (user_id, pass, email) VALUES (${userid}, '${password}', '${email}')`
-          )
-          console.log(addUserAuthResult.rows, addUserResult.rows);
-          res({authres: addUserAuthResult, addres: addUserResult})
+          
+          const signUpResult = AtlasManager.requests.users.signUp({
+            username: username,
+            email: email as ATLAS.EmailAddress,
+            password: password
+          });
+          
+          res([(await signUpResult[0]), (await signUpResult[1])])
           // sign up code
         })
     })
@@ -62,5 +66,21 @@ export namespace UserData {
         });
       })
     }
+  }
+}
+
+export class UserService {
+  private readonly route: Route;
+  constructor(route: Route) {
+    this.route = route;
+
+    route.get("/@me", this.getCurrentUser);
+  }
+
+  public async getCurrentUser(
+    req: Request,
+    res: ServerResponse<IncomingMessage>
+  ) {
+    
   }
 }

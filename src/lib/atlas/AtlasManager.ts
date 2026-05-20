@@ -1,16 +1,22 @@
 import { Logger, LogLevel } from "../../../../Common/Logging/dist/Logger.js";
 import { AtlasClient } from "./modules/client/AtlasClient.js";
+import { RequestManager } from "./modules/client/Requests.js";
 
 export class Atlas {
   private _client: AtlasClient;
+  private _requests: RequestManager;
   constructor() {
     Logger.sendLog(LogLevel.Info, ["ATLAS"], "INITIALIZING ATLAS");
     this._client = new AtlasClient();
+    this._requests = new RequestManager(this);
     this._client.onPoolReady(() => { this.init() })
   }
 
   public get client(): AtlasClient {
     return this._client;
+  }
+  public get requests(): RequestManager {
+    return this._requests;
   }
 
   private async init(): Promise<void> {

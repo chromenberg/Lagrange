@@ -9,7 +9,7 @@ import { UserTableManager } from "../AtlasModules.js";
 
 type AtlasClientResponse = types.ResultSet | PoolError;
 
-class AtlasConnection {
+export class AtlasConnection {
   public readonly cluster: Client;
   constructor() {
     this.cluster = new Client({

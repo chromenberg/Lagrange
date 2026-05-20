@@ -16,6 +16,10 @@ export interface PoolError {
     code: PoolErrorCodes
 }
 
+export class PoolResourceNotSentError extends Error {
+  constructor(message: string) { super(message); }
+}
+
 export const PoolError = {
     POOL_FAILED_RESOURCE_INIT: {
         message: "$1 failed to initialize $0. State was either incorrect or callback was already set",

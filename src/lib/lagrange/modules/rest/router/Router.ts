@@ -1,6 +1,6 @@
 import { IncomingMessage, createServer, ServerResponse, Server, OutgoingMessage } from "http";
 import { Logger, LogLevel } from "../../../../../../../Common/Logging/dist/Logger.js";
-import type { API, VoidAPICallback, VoidCallback, VoidRouteCallback} from "../../../../../common/Typings.js";
+import type { API, VoidAPICallback, VoidCallback, VoidRouteCallback } from "../../../../../common/Typings.js";
 import { Route, RouteBase } from "./Route.js";
 
 interface RequestParams {
@@ -10,11 +10,11 @@ interface RequestParams {
 // for storing url parameters
 export class Request extends IncomingMessage {
   private _params: RequestParams = {};
-  
+
   public get params(): RequestParams {
     return this._params
   }
-  
+
   public set params(data: any) {
     this._params = data
   }
@@ -37,8 +37,8 @@ export class Router implements RouteBase {
 
   /**
    * Parses the url parameters of a path and returns the regex string of it
-   * @param path 
-   * @returns 
+   * @param path
+   * @returns
    */
   public static parseParams(path: string): string {
     return path
@@ -82,30 +82,30 @@ export class Router implements RouteBase {
       const params = req.url?.match(regexp);
       if (!params || (params === null)) return;
       if (!params.groups) return;
-      
+
       req.params = params.groups;
       this.callbackWrapperFinal(req, res, callback, callback2);
       return;
     })
   }
-  
+
   public selectMethodOverload(
     path: string,
     mode: API.HTTPMethod,
     args: [VoidAPICallback, VoidAPICallback?]
   ): void {
-    if (args.length === 1) { 
+    if (args.length === 1) {
       this.callbackWrapper(path, mode, args[0]);
 
     } else if (args.length === 2 && args[1]) {
-     this.callbackWrapper(path, mode, args[0], args[1]);
+      this.callbackWrapper(path, mode, args[0], args[1]);
 
     } else {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router",`${mode}: ${path}`], "More than 2 or less than 1 callbacks provided");
+      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "REST", "Router", `${mode}: ${path}`], "More than 2 or less than 1 callbacks provided");
     }
   }
-  
-  public delete(path: string, callback  : VoidAPICallback): void;
+
+  public delete(path: string, callback: VoidAPICallback): void;
   public delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
   public delete(
     path: string,
@@ -113,9 +113,9 @@ export class Router implements RouteBase {
   ): void {
     this.selectMethodOverload(path, "DELETE", args);
   }
-  
 
-  public get(path: string, callback  : VoidAPICallback): void;
+
+  public get(path: string, callback: VoidAPICallback): void;
   public get(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public get(
@@ -124,9 +124,9 @@ export class Router implements RouteBase {
   ): void {
     this.selectMethodOverload(path, "GET", args);
   }
-  
-  
-  public post(path: string, callback  : VoidAPICallback): void;
+
+
+  public post(path: string, callback: VoidAPICallback): void;
   public post(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public post(
@@ -135,9 +135,9 @@ export class Router implements RouteBase {
   ): void {
     this.selectMethodOverload(path, "POST", args);
   }
-  
 
-  public put(path: string, callback  : VoidAPICallback): void;
+
+  public put(path: string, callback: VoidAPICallback): void;
   public put(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
   public put(
     path: string,
@@ -145,11 +145,11 @@ export class Router implements RouteBase {
   ): void {
     this.selectMethodOverload(path, "PUT", args);
   }
-  
-  
-  public patch(path: string, callback  : VoidAPICallback): void;
+
+
+  public patch(path: string, callback: VoidAPICallback): void;
   public patch(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
-  
+
   public patch(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
@@ -160,12 +160,12 @@ export class Router implements RouteBase {
   /**
    * This generates an endpoint that is called when the start matches a certain value.
    * For example a route could be `/api/v1/` and therefore all calls that are a part of `/api/v1/` would go through this route.
-   * 
+   *
    * This also shifts the relative path of {@link get}, {@link post}, {@link patch}, {@link put} and {@link delete} to the routes path.
    * This means that calls for `/users/@me` would be, in full `/api/v1/users/@me`
-   * @param route 
+   * @param route
    * @param callback - the callback function to use, requires a route parameter to use the functions
-   * @returns 
+   * @returns
    */
   public route(route: string, callback: VoidRouteCallback): this {
     {
@@ -191,13 +191,13 @@ export class Router implements RouteBase {
     this.server.listen(port, address);
     return this;
   }
-  
+
 }
 
 
 /**
  * router.("/api/v1/users/1/profile", middlewareFunction, callback)
- * 
+ *
  * router runs middleware and the output of that is used inside the callback
  */
 export class LagrangeAPI extends Router {
@@ -205,7 +205,7 @@ export class LagrangeAPI extends Router {
     super();
   }
   //protected intercept(req, res, callback)
-  public delete(path: string, callback  : VoidAPICallback): void;
+  public delete(path: string, callback: VoidAPICallback): void;
   public delete(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
   public delete(
     path: string,
@@ -213,9 +213,9 @@ export class LagrangeAPI extends Router {
   ): void {
     this.selectMethodOverload(path, "DELETE", args);
   }
-  
 
-  public get(path: string, callback  : VoidAPICallback): void;
+
+  public get(path: string, callback: VoidAPICallback): void;
   public get(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public get(
@@ -224,9 +224,9 @@ export class LagrangeAPI extends Router {
   ): void {
     this.selectMethodOverload(path, "GET", args);
   }
-  
-  
-  public post(path: string, callback  : VoidAPICallback): void;
+
+
+  public post(path: string, callback: VoidAPICallback): void;
   public post(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
 
   public post(
@@ -235,27 +235,27 @@ export class LagrangeAPI extends Router {
   ): void {
     this.selectMethodOverload(path, "POST", args);
   }
-  
 
-  public put(path: string, callback  : VoidAPICallback): void;
+
+  public put(path: string, callback: VoidAPICallback): void;
   public put(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
-    
+
   public put(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectMethodOverload(path, "PUT", args);
   }
-  
-  
-  public patch(path: string, callback  : VoidAPICallback): void;
+
+
+  public patch(path: string, callback: VoidAPICallback): void;
   public patch(path: string, middleware: VoidAPICallback, callback: VoidAPICallback): void;
-  
+
   public patch(
     path: string,
     ...args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     this.selectMethodOverload(path, "PATCH", args);
   }
-  
+
 }

@@ -9,13 +9,13 @@ export interface SnowflakeOptions {
     startEpoch: number
 }
 
-interface Snowflake {
+export interface Snowflake {
     toString(): string
     toBase64(): string
     toBinary(): string
 }
 
-interface SnowflakeNode {
+export interface SnowflakeNode {
     GenerateID(): Snowflake
 }
 
@@ -24,7 +24,14 @@ export function SnowflakeNode(args: SnowflakeOptions): SnowflakeNode {
     return SnowflakeGenerator(args.workerID, args.workerBits, args.sequenceBits, args.startEpoch);
 };
 
+export enum WorkerIDs {
+  MAIN_WORKER,
+  USER_SERVICE,
+  GUILD_SERVICE,
+  CHANNEL_SERVICE,
+  MESSAGE_SERVICE // will have multiple reserved for multiple snowflakes
+}
+
 export function test() {
     if (process.argv[2] !== "-test") return
-
 }
