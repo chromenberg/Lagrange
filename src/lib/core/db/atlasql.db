@@ -1,0 +1,41 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    display_name TEXT,
+    -- guilds INTEGER, -- WONT BE NEEDED I DONT THINK
+    -- FOREIGN KEY(guilds) REFERENCES user_guilds(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS credentials (
+    user_id INTEGER PRIMARY KEY REFERENCES users(user_id),
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    active_token TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS guilds (
+    guild_id INTEGER PRIMARY KEY,
+    guild_name TEXT NOT NULL,
+    guild_owner INTEGER NOT NULL,
+    FOREIGN KEY (guild_owner) REFERENCES users(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS user_guilds (
+    user_id INTEGER PRIMARY KEY REFERENCES users(user_id),
+    guild_id INTEGER PRIMARY KEY REFERENCES guilds(guild_id),
+    
+);
+
+CREATE TABLE IF NOT EXISTS channels (
+    channel_id INTEGER PRIMARY KEY,
+    channel_name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS guild_channels (
+    channel_id INTEGER PRIMARY KEY REFERENCES channels(channel_id),
+    guild_id INTEGER PRIMARY KEY REFERENCES guilds(guild_id)
+);
+
+.schema table_name;

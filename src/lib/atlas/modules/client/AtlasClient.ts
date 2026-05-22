@@ -1,6 +1,6 @@
 import { Client, types } from "cassandra-driver";
 import { AtlasDB } from "../../Configs/Config.js";
-import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js"
+import { Logger, LogLevel } from "../../../core/logging/Logger.js"
 import { FixedPool, PoolItem, PoolItemState, type PoolItemPair } from "../pooling/Pool.js";
 import EventEmitter from "events";
 import { PoolError } from "../pooling/PoolErrors.js";
@@ -31,7 +31,6 @@ export class AtlasConnection {
     });
   }
 }
-
 
 export namespace Pooling {
   export const PoolEvents = {
@@ -91,13 +90,12 @@ export namespace Pooling {
 
 export class AtlasClient {
   private connections: Pooling.AtlasConnectionPool = new Pooling.AtlasConnectionPool(10);
-  public readonly users: UserTableManager = new UserTableManager(this);
-  
   private states = {
     connections: new StateListener(Pooling.PoolState.INITIALIZING),
   };
   
   constructor() {
+
     this.states.connections.setTargetState(Pooling.PoolState.READY);
     Logger.sendLog(LogLevel.Verbose, ["AtlasClient"], "Initializing ATLAS Client");
   }

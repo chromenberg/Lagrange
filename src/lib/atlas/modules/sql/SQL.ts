@@ -1,0 +1,86 @@
+import {
+  DatabaseSync,
+  type SQLInputValue,
+  type SQLOutputValue,
+  type SQLTagStore,
+  type StatementResultingChanges
+} from "node:sqlite"
+import type { Atlas } from "../../AtlasManager.js";
+
+export type SQLResponse = Record<string, SQLOutputValue>;
+export type SQLPromise = Promise<SQLResponse | undefined>
+export type SQLPromiseArray = Promise<SQLResponse[] | undefined>
+export type SQLPromiseIterator = Promise<NodeJS.Iterator<SQLResponse>>;
+
+export class SQLDatabase {
+  private readonly _db: DatabaseSync;
+  private readonly parent: Atlas;
+  private readonly tagStore: SQLTagStore;
+  constructor(
+    parent: Atlas,
+    database?: DatabaseSync,
+  ) {
+    this._db = database ? database : new DatabaseSync("/home/raine/Documents/Scripts/WyvernApp/Lagrange/src/lib/core/db/atlasql.db"); // i dont care if this is being pushed and its a full path
+    this.parent = parent;
+    this.tagStore = this._db.createTagStore();
+  }
+
+  /**
+   * Runs a SQL command through the database without returning a result and does not store the query.
+   */
+  public exec(query: string) {
+    this._db.exec(query);
+  }
+
+  /**
+   * Runs a query that is not expected return results (insertion etc)
+   * @param query
+   */
+  public async run(
+    query: TemplateStringsArray,
+    ...args: SQLInputValue[]
+  ): Promise<StatementResultingChanges> {
+    return new Promise((res) => {
+      res(this.tagStore.run(query, ...args));
+    });
+  }
+
+  /**
+   * Runs a query that is expected to return a row of results (a single result)
+   * @param query
+   */
+  public async get(
+    query: TemplateStringsArray,
+    ...args: SQLInputValue[]
+  ): SQLPromise {
+    return new Promise((res) => {
+      res(this.tagStore.get(query, ...args));
+    });
+  }
+
+  /**
+   * Runs a query that returns all values that match the query
+   * @param query
+   */
+  public async all(
+    query: TemplateStringsArray,
+    ...args: SQLInputValue[]
+  ): SQLPromiseArray {
+    return new Promise((res) => {
+      res(this.tagStore.all(query, ...args));
+    });
+  }
+
+  /**
+   * Runs a query that returns an iterator of the results
+   * @param query
+   */
+  public async iterator(
+    query: TemplateStringsArray,
+    ...args: SQLInputValue[]
+  ): SQLPromiseIterator {
+    return new Promise((res) => {
+      res(this.tagStore.iterate(query, ...args));
+    })
+  }
+}

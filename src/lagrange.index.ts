@@ -1,6 +1,6 @@
 import { Config } from "./lib/lagrange/Config.js";
 // import {init} from "./lib/lagrange/Lagrange.js"
-import { Logger, LogLevel } from "../../Common/Logging/dist/Logger.js";
+import { Logger, LogLevel } from "./lib/core/logging/Logger.js";
 import "./lib/lagrange/modules/rest/REST.js";
 import { Atlas } from "./lib/atlas/AtlasManager.js";
 import { API } from "./lib/lagrange/modules/rest/REST.js";
@@ -10,6 +10,7 @@ export const Atlasmanager = new Atlas()
 // init()
 const api = API
 const gateway = new Gateway();
+
 setTimeout(()=>{
 
     const client = new WebSocket(`ws://${Config.Gateway.Socket.Address}:${Config.Gateway.Socket.Port}`);

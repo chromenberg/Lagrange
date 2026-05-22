@@ -8,10 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startlagrange": "tsc && node --inspect ./dist/lagrange.index.js",
-    "startatlas": "tsc && node ./dist/atlas.index.js",
-    "start": "tsc && node ./dist/atlas.index.js && node ./dist/lagrange.index.js"
-
+    "start": "tsc && cp ./src/lib/atlas/modules/snowflake/Snowflake.wasm ./dist/lib/atlas/modules/snowflake/ && node ./dist/atlas.index.js"
   },
   "dependencies": {
     "@types/ws": "^8.18.1",

@@ -1,10 +1,11 @@
-import { Logger, LogLevel } from "../../../../../../Common/Logging/dist/Logger.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import type { ATLAS } from "../../../../common/Typings.js";
 import { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import type { PoolItemPair } from "../pooling/Pool.js";
 import { PoolResourceNotSentError } from "../pooling/PoolErrors.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
+import { SQLDatabase, type SQLPromise } from "../sql/SQL.js";
 
 class AtlasChild {
   protected parent: Atlas;
@@ -13,7 +14,11 @@ class AtlasChild {
   }
 }
 
-
+/**
+ * A Request builder that auto returns and provides abstracted methods for creating requests.
+ * 
+ * This operates on the ATLAS NoSQL Database system
+ */
 export class RequestBuilder extends AtlasChild {
   private connection: PoolItemPair;
   private returned: boolean = false;
@@ -23,6 +28,7 @@ export class RequestBuilder extends AtlasChild {
     if (connection) {
       this.connection = connection;
     } else {
+      // request for a connection from the database
       const resource = this.parent.client.requestResource();
 
       if (!resource) {
@@ -41,6 +47,7 @@ export class RequestBuilder extends AtlasChild {
     return this.parent.client.execute(this.connection, args.join(" ") + ";");
   }
 
+  
   public async filteringRequest(...args: any[]): ATLAS.ResultSet {
     return this.request(args, "ALLOW FILTERING");
   }
@@ -65,7 +72,6 @@ export class RequestBuilder extends AtlasChild {
   }
 }
 
-
 class UserService extends AtlasChild {
   protected snowflake: SnowflakeNode;
   constructor(
@@ -84,47 +90,42 @@ class UserService extends AtlasChild {
     });
   }
 
-  public getUserByID(id: string) {
-    using req = new RequestBuilder(this.parent);
-    const res = req.filteringRequest("SELECT * FROM users WHERE user_id = " + id);
+  public getUserByID(id: string): SQLPromise {
+    return this.parent.sqlClient.get`SELECT * FROM users WHERE user_id = ${id};`;
   }
 
+  public getUserByUsername(username: string): SQLPromise {
+    return this.parent.sqlClient.get`SELECT * FROM users WHERE username = ${username};`;
+  }
+  
   private newUser(
-    conn: RequestBuilder,
     id: ATLAS.Snowflake,
     username: string
-  ): ATLAS.ResultSet {
-    
-    return conn.request(`INSERT INTO users (user_id, username, display_name)
-      VALUES (${id}, '${username}', '${username}')`);
+  ): void {
+    this.parent.sqlClient.run`INSERT INTO users VALUES (${id}, '${username}', '${username}');`;
   }
 
   private newUserCreds(
-    conn: RequestBuilder,
     id: ATLAS.Snowflake,
     email: ATLAS.EmailAddress,
     password: string
-  ): ATLAS.ResultSet {
-    
-    return conn.request(`INSERT INTO credentials (user_id, email, pass)
-      VALUES (${id}, '${email}', '${password}')`);
+  ): void {
+    this.parent.sqlClient.run`INSERT INTO credentials VALUES (${id}, '${email}', '${password}', 'activetokenplaceholder');`;    
   }
 
+  // TODO: Reimplement
   public signUp({
     username,
     email,
     password
   }: { username: string, email: ATLAS.EmailAddress, password: string }
-  ): any[] {
-    using req = new RequestBuilder(this.parent);
+  ): SQLPromise {
     const id = this.snowflake.GenerateID().toString();
     
-    const userResult = this.newUser(req, id, username);
-    const credResult = this.newUserCreds(req, id, email, password);
-    
-    req.return();
+    const userResult = this.newUser(id, username);
+    const credResult = this.newUserCreds(id, email, password);
 
-    return [userResult, credResult];
+    return this.getUserByID(id);
   }
 }
 
@@ -132,18 +133,88 @@ class UserService extends AtlasChild {
 // /users/:id/profile - getProfile
 // /users/
 class MessageService extends AtlasChild {
+  protected snowflake: SnowflakeNode;
+  constructor(
+    parent: Atlas, snowflake?: SnowflakeNode
+  ) {
+    super(parent);
 
+    // If we havent given the user service a snowflake node already then we will generate one
+    // with the defaults for a user service
+    this.snowflake = snowflake ? snowflake : SnowflakeNode({
+      workerBits: 10,
+      workerID: WorkerIDs.MESSAGE_SERVICE,
+      sequenceBits: 13,
+      // user ids should be represented as strings in JS to prevent conversion
+      startEpoch: AtlasDB.Snowflake.StartEpoch
+    });
+  }
+}
+
+class ChannelService extends AtlasChild {
+  protected snowflake: SnowflakeNode;
+  constructor(
+    parent: Atlas, snowflake?: SnowflakeNode
+  ) {
+    super(parent);
+
+    // If we havent given the user service a snowflake node already then we will generate one
+    // with the defaults for a user service
+    this.snowflake = snowflake ? snowflake : SnowflakeNode({
+      workerBits: 10,
+      workerID: WorkerIDs.CHANNEL_SERVICE,
+      sequenceBits: 13,
+      // user ids should be represented as strings in JS to prevent conversion
+      startEpoch: AtlasDB.Snowflake.StartEpoch
+    });
+  }
 }
 
 class GuildService extends AtlasChild {
+  protected snowflake: SnowflakeNode;
+  constructor(
+    parent: Atlas, snowflake?: SnowflakeNode
+  ) {
+    super(parent);
 
+    // If we havent given the user service a snowflake node already then we will generate one
+    // with the defaults for a user service
+    this.snowflake = snowflake ? snowflake : SnowflakeNode({
+      workerBits: 10,
+      workerID: WorkerIDs.GUILD_SERVICE,
+      sequenceBits: 13,
+      // user ids should be represented as strings in JS to prevent conversion
+      startEpoch: AtlasDB.Snowflake.StartEpoch
+    });
+  }
 }
 
+
 export class RequestManager {
-  public readonly users: UserService;
+  private readonly _users: UserService;
+  private readonly _messages: MessageService;
+  private readonly _guilds: GuildService;
+  private readonly _channels: ChannelService;
   constructor(
     private parent: Atlas
   ) {
-    this.users = new UserService(this.parent);
+    
+    this._users = new UserService(this.parent);
+    this._messages = new MessageService(this.parent);
+    this._guilds = new GuildService(this.parent);
+    this._channels = new ChannelService(this.parent);
+  }
+
+  public get users(): UserService {
+    return this._users;
+  }
+  public get guilds(): GuildService {
+    return this._guilds;
+  }
+  public get channels(): ChannelService {
+    return this._channels;
+  }
+  public get messages(): MessageService {
+    return this._messages;
   }
 }

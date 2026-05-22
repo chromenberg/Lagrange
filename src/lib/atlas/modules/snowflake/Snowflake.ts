@@ -1,27 +1,29 @@
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { LoadGoWASM } from "../wasm/GoWASM.js"
 
 await LoadGoWASM("./dist/lib/atlas/modules/snowflake/Snowflake.wasm");
 
 export interface SnowflakeOptions {
-    workerID: number,
-    workerBits: number,
-    sequenceBits: number,
-    startEpoch: number
+  workerID: number,
+  workerBits: number,
+  sequenceBits: number,
+  startEpoch: number
 }
 
 export interface Snowflake {
-    toString(): string
-    toBase64(): string
-    toBinary(): string
+  toString(): string
+  toBase64(): string
+  toBinary(): string
 }
 
 export interface SnowflakeNode {
-    GenerateID(): Snowflake
+  GenerateID(): Snowflake
 }
 
 export function SnowflakeNode(args: SnowflakeOptions): SnowflakeNode {
-    // @ts-ignore - This is a valid function that is pushed into global with glue code
-    return SnowflakeGenerator(args.workerID, args.workerBits, args.sequenceBits, args.startEpoch);
+  Logger.sendLog(LogLevel.Verbose, ["Snowflake"], "Created a new Snowflake Node with params", args);
+  // @ts-ignore - This is a valid function that is pushed into global with glue code
+  return SnowflakeGenerator(args.workerID, args.workerBits, args.sequenceBits, args.startEpoch);
 };
 
 export enum WorkerIDs {
@@ -33,5 +35,5 @@ export enum WorkerIDs {
 }
 
 export function test() {
-    if (process.argv[2] !== "-test") return
+  if (process.argv[2] !== "-test") return
 }

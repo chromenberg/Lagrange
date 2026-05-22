@@ -1,19 +1,33 @@
-import { Logger, LogLevel } from "../../../../Common/Logging/dist/Logger.js";
+import { DatabaseSync } from "node:sqlite";
+import { Logger, LogLevel } from "../core/logging/Logger.js";
 import { AtlasClient } from "./modules/client/AtlasClient.js";
 import { RequestManager } from "./modules/client/Requests.js";
+import { SQLDatabase } from "./modules/sql/SQL.js";
 
 export class Atlas {
   private _client: AtlasClient;
   private _requests: RequestManager;
+  private _sqlClient: SQLDatabase;
   constructor() {
     Logger.sendLog(LogLevel.Info, ["ATLAS"], "INITIALIZING ATLAS");
     this._client = new AtlasClient();
+    this._sqlClient = new SQLDatabase(
+      this,
+      new DatabaseSync("/home/raine/Documents/Scripts/WyvernApp/Lagrange/src/lib/core/db/atlasql.db")
+    );
     this._requests = new RequestManager(this);
+    // once again i dont really care if this is a full path
     this._client.onPoolReady(() => { this.init() })
   }
 
   public get client(): AtlasClient {
     return this._client;
+  }
+  /**
+   * Returns the class containing abstracted methods of the SQLite database connection for later extension and rewriting
+   */
+  public get sqlClient(): SQLDatabase {
+    return this._sqlClient;
   }
   public get requests(): RequestManager {
     return this._requests;

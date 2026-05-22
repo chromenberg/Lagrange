@@ -8,22 +8,25 @@ import type { PoolItemPair } from "../../atlas/modules/pooling/Pool.js";
 type UnixSocketEventMap = "message" | "close" | "connect" | "ready"
 
 export namespace AtlasInterface {
-
-  export async function Request(...args: any[]): Promise<types.ResultSet> {
-    return AtlasManager.client.execute(args.join(" ") + ";");
-  }
-
-  export async function FilteringRequest(...args: any[]): Promise<types.ResultSet> {
-    return AtlasManager.client.execute(args.join(" ") + " ALLOW FILTERING;");
-  }
-
-  export async function wrapExpectSingle(...args: any[]): Promise<types.Row[]> {
-    const results = (await Request(args)).rows;
-    if (results.length >= 1) {
-      throw new Error("Expected ATLAS to send 1 result, got " + results.length);
+  export namespace NoSQL {
+    export async function Request(...args: any[]): Promise<types.ResultSet> {
+      return AtlasManager.client.execute(args.join(" ") + ";");
     }
-    return results;
+  
+    export async function FilteringRequest(...args: any[]): Promise<types.ResultSet> {
+      return AtlasManager.client.execute(args.join(" ") + " ALLOW FILTERING;");
+    }
+  
+    export async function wrapExpectSingle(...args: any[]): Promise<types.Row[]> {
+      const results = (await Request(args)).rows;
+      if (results.length >= 1) {
+        throw new Error("Expected ATLAS to send 1 result, got " + results.length);
+      }
+      return results;
+    }
   }
+
+  
 
   export namespace Users {
     export async function getSelfUserFromToken(token: ATLAS.Token) {
@@ -31,13 +34,13 @@ export namespace AtlasInterface {
     }
 
     export async function getUser(id: ATLAS.Snowflake): Promise<types.Row[]> {
-      return wrapExpectSingle(`SELECT * FROM users WHERE user_id = ${id};`);
+      return NoSQL.wrapExpectSingle(`SELECT * FROM users WHERE user_id = ${id};`);
     }
 
     // export async function getUserCredentials(email: EmailAddress, password: string)
     // export async function getUserCredentials(token: Token)
     export async function getUserCredentials(id: ATLAS.Snowflake) {
-      const credentials = await wrapExpectSingle("SELECT * FROM credentials WHERE user_id =", id);
+      const credentials = await NoSQL.wrapExpectSingle("SELECT * FROM credentials WHERE user_id =", id);
       return credentials;
     }
   }

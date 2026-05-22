@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { Logger, LogLevel } from "../../../../../Common/Logging/dist/Logger.js";
+import { Logger, LogLevel } from "../../core/logging/Logger.js";
 import { AtlasInterface } from "./AtlasInterface.js";
 import type { types } from "cassandra-driver";
 import { SnowflakeNode } from "../../atlas/modules/snowflake/Snowflake.js";
@@ -8,6 +8,7 @@ import { AtlasManager } from "../../../atlas.index.js";
 import type { ATLAS } from "../../../common/Typings.js";
 import type { Route } from "../modules/rest/router/Route.js";
 import type { Request } from "../modules/rest/router/Router.js";
+import type { SQLResponse } from "../../atlas/modules/sql/SQL.js";
 
 const Snowflake = SnowflakeNode({
   workerBits: 10,
@@ -16,6 +17,7 @@ const Snowflake = SnowflakeNode({
   workerID: 1,
 })
 
+// TODO: remove
 export namespace Auth {
   export async function SignUp(
     username: string,
@@ -39,7 +41,7 @@ export namespace Auth {
             password: password
           });
           
-          res([(await signUpResult[0]), (await signUpResult[1])])
+          res(signUpResult)
           // sign up code
         })
     })
@@ -51,17 +53,19 @@ export namespace UserData {
     interface AvailabilityResult {
       isAvailable: boolean
       checkedName: string
+      result?: SQLResponse
     }
 
     export async function CheckAvailability(username: string): Promise<AvailabilityResult> {
       return new Promise((res, err) => {
         Logger.sendLog(LogLevel.Caution, ["LAGRANGE", "UserService", "CheckAvailability"], "Using ALLOW FILTERING, this can damage performance");
 
-        AtlasInterface.FilteringRequest("SELECT * FROM users WHERE username = '" + username + "'").then(result => {
-          Logger.sendLog(LogLevel.Info, ["LAGRANGE", "UserService", "CheckAvailability"], "CheckAvailability Called. Result:", result.rows);
+        AtlasManager.requests.users.getUserByUsername(username).then(result => {
+          Logger.sendLog(LogLevel.Info, ["LAGRANGE", "UserService", "CheckAvailability"], "CheckAvailability Called. Result:", result);
           res({
-            isAvailable: result.rows[0] ? false : true, // if not present then name is available
+            isAvailable: result ? false : true, // if not present then name is available
             checkedName: username,
+            result: result
           });
         });
       })
@@ -82,5 +86,21 @@ export class UserService {
     res: ServerResponse<IncomingMessage>
   ) {
     
+  }
+
+}
+
+// TODO: move out to own file
+export class AuthService {
+  private readonly route: Route;
+  constructor(route: Route) {
+    this.route = route;
+    console.log("aaaa")
+    this.route.post("/register", (req, res) => { this.registerUser(req, res) });
+  }
+
+  public async registerUser(req: Request, res: ServerResponse<IncomingMessage>) {
+    console.log("i")
+    // UserData.Usernames.CheckAvailability(username)
   }
 }

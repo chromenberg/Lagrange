@@ -33,7 +33,7 @@ export class Route implements RouteBase { //? can this be the base that Router e
   protected conditionalMethodOverload(
     path: string,
     method: API.HTTPMethod,
-    ...args: [VoidAPICallback, VoidAPICallback?]
+    args: [VoidAPICallback, VoidAPICallback?]
   ): void {
     if (this.router instanceof Router) {
       this.router.selectMethodOverload(path, method, args);
