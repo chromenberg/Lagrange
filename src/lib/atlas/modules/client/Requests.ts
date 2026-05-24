@@ -120,6 +120,7 @@ class UserService extends AtlasChild {
     password
   }: { username: string, email: ATLAS.EmailAddress, password: string }
   ): SQLPromise {
+    console.log("Registering new user with", username, email, password)
     const id = this.snowflake.GenerateID().toString();
     
     const userResult = this.newUser(id, username);

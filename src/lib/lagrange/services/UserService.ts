@@ -9,6 +9,7 @@ import type { ATLAS } from "../../../common/Typings.js";
 import type { Route } from "../modules/rest/router/Route.js";
 import type { Request } from "../modules/rest/router/Router.js";
 import type { SQLResponse } from "../../atlas/modules/sql/SQL.js";
+import { HTTPReader } from "../modules/rest/router/HTTPReader.js";
 
 const Snowflake = SnowflakeNode({
   workerBits: 10,
@@ -100,7 +101,7 @@ export class AuthService {
   }
 
   public async registerUser(req: Request, res: ServerResponse<IncomingMessage>) {
-    console.log("i")
-    // UserData.Usernames.CheckAvailability(username)
+    const body: any = await HTTPReader.parseBody(req);
+    Auth.SignUp(body.username, body.email, body.password)
   }
 }

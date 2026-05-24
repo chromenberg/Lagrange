@@ -73,7 +73,7 @@ export class _Logger {
 				break;
 			}
 			case LogLevel.Warning: {
-				this._log("WARNING", data.path, "\x1b[0;38;5;46;49m", ...data.content);
+				this._log("WARNING", data.path, "\x1b[0;38;5;130;49m", ...data.content);
 				break;
 			}
 			case LogLevel.Success: {
