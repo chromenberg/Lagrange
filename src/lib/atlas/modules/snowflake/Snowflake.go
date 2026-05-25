@@ -115,7 +115,7 @@ func parseBytes(id []byte) (Snowflake, error) {
 }
 
 func (flake Snowflake) toBase64() string {
-	return base64.StdEncoding.EncodeToString((flake.toBytes()))
+	return base64.StdEncoding.EncodeToString(flake.toBytes())
 }
 
 func parseBase64(id string) (Snowflake, error) {
