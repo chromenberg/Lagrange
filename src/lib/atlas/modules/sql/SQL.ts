@@ -18,9 +18,9 @@ export class SQLDatabase {
   private readonly tagStore: SQLTagStore;
   constructor(
     parent: Atlas,
-    database?: DatabaseSync,
+    database: DatabaseSync,
   ) {
-    this._db = database ? database : new DatabaseSync("/home/raine/Documents/Scripts/WyvernApp/Lagrange/src/lib/core/db/atlasql.db"); // i dont care if this is being pushed and its a full path
+    this._db = database;
     this.parent = parent;
     this.tagStore = this._db.createTagStore();
   }
@@ -82,5 +82,23 @@ export class SQLDatabase {
     return new Promise((res) => {
       res(this.tagStore.iterate(query, ...args));
     })
+  }
+
+  /**
+   * Converts all BigInt values in a result into strings which are safe to use in JavaScript and JSON
+   * @param data
+   * @returns
+   */
+  public static toSafeJS(data: {[key: string]: any}): {[key: string]: any} {
+    const dataEntries = Object.entries(data)
+      .map(([key, value]) => {
+        if (typeof value === "bigint") {
+          return [key, value.toString()]; // convert bigint into string for JSON.Stringify and JS safety
+        } else {
+          return [key, value];
+        }
+      }) as [string, any][];
+
+    return Object.fromEntries(dataEntries);
   }
 }
