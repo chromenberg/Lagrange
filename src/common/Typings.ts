@@ -57,5 +57,4 @@ export namespace ATLAS {
   export interface User extends BaseUser {
 
   }
-
 }

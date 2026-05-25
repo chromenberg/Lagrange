@@ -24,8 +24,7 @@ CREATE TABLE IF NOT EXISTS guilds (
 
 CREATE TABLE IF NOT EXISTS user_guilds (
     user_id INTEGER PRIMARY KEY REFERENCES users(user_id),
-    guild_id INTEGER PRIMARY KEY REFERENCES guilds(guild_id),
-    
+    guild_id INTEGER PRIMARY KEY REFERENCES guilds(guild_id),  
 );
 
 CREATE TABLE IF NOT EXISTS channels (

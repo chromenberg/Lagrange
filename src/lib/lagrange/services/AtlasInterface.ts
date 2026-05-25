@@ -1,11 +1,7 @@
-import { connect, type Socket } from "net";
-
 import { AtlasManager } from "../../../atlas.index.js";
-import type { AsyncCallback, ATLAS } from "../../../common/Typings.js";
-
+import type { ATLAS } from "../../../common/Typings.js";
 import type { types } from "cassandra-driver";
-import type { PoolItemPair } from "../../atlas/modules/pooling/Pool.js";
-type UnixSocketEventMap = "message" | "close" | "connect" | "ready"
+
 
 export namespace AtlasInterface {
   export namespace NoSQL {

@@ -10,7 +10,6 @@ export class DMMessageService {
   constructor() { }
 }
 
-
 export class MessageService {
   private readonly route: Route;
   //private readonly services: ServiceList;
@@ -21,7 +20,7 @@ export class MessageService {
     this.route = route;
     // this.services = services;
     // -----------------------
-    
+
     this.route.post(
       "/channels/:id/messages",
       (req, res) => { this.createMessage(req, res) }
@@ -40,13 +39,13 @@ export class MessageService {
     req: Request,
     res: ServerResponse<IncomingMessage>
   ) {
-    
+
   }
   public async createMessage(
     req: Request,
     res: ServerResponse<IncomingMessage>
   ) {
-    
+
   }
   public async deleteMessage(
     req: Request,

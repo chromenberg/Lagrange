@@ -22,8 +22,8 @@ export type Token = `${TokenID}.${TokenTimestamp}.${TokenSecret}`
 export type EmailAddress = `${string}@${string}.${string}`
 
 /**
- * Creates a {@link TokenTimestamp} value from the time when called 
- * 
+ * Creates a {@link TokenTimestamp} value from the time when called
+ *
  * **Returns:** {@link TokenTimestamp}
  */
 // export function tokenCreationTime() {
@@ -31,16 +31,16 @@ export type EmailAddress = `${string}@${string}.${string}`
 // }
 
 export interface Message {
-    author_id : Snowflake
-    channel_id: Snowflake
-    server_id?: Snowflake
+  author_id : Snowflake
+  channel_id: Snowflake
+  server_id?: Snowflake
 
-    content: string
+  content: string
 }
 
 export interface BaseUser {
-    username: string
-    email: EmailAddress
+  username: string
+  email: EmailAddress
 }
 
 export interface PartialUser {
@@ -48,7 +48,7 @@ export interface PartialUser {
 }
 
 export interface Credentials {
-    user_id  : Snowflake
-    token    : Token  // Must be salted and hashed
-    password : string // Must be salted and hashed
+  user_id  : Snowflake
+  token    : Token  // Must be salted and hashed
+  password : string // Must be salted and hashed
 }

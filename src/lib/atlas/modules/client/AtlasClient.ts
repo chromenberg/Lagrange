@@ -5,7 +5,6 @@ import { FixedPool, PoolItem, PoolItemState, type PoolItemPair } from "../poolin
 import EventEmitter from "events";
 import { PoolError } from "../pooling/PoolErrors.js";
 import { StateEvents, StateListener } from "../StateListener.js";
-import { UserTableManager } from "../AtlasModules.js";
 
 type AtlasClientResponse = types.ResultSet | PoolError;
 
@@ -21,8 +20,6 @@ export class AtlasConnection {
     this.cluster.connect().then(() => {
       this.cluster.emit("ready");
     }); // idk if there are any sideeffects
-
-
   }
 
   public onceStarted(callback: CallableFunction, ...args: any[]): void {

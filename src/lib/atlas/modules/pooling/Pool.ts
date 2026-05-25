@@ -151,11 +151,6 @@ export class Pool {
 	public restartResource(id: string): void;
 
 	// TODO: make this wait until the resource is on standby
-	/**
-	 * WHY DOESNT IT SHOW THE DESCRIPTION OF THIS WHAT THE FUCK JSDOC
-	 * @param search 
-	 * @returns 
-	 */
 	public restartResource(search: PoolItem | string): void {
 		function restart(target: PoolItem | [string, PoolItem]) {
 			if (target instanceof PoolItem) {

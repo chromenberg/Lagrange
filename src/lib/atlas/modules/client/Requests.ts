@@ -1,18 +1,14 @@
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import type { ATLAS } from "../../../../common/Typings.js";
 import { Atlas } from "../../AtlasManager.js";
-import { AtlasDB } from "../../Configs/Config.js";
 import type { PoolItemPair } from "../pooling/Pool.js";
 import { PoolResourceNotSentError } from "../pooling/PoolErrors.js";
-import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import { SQLDatabase, type SQLPromise } from "../sql/SQL.js";
+import { AtlasChild } from "./AtlasChild.js";
+import { UserService } from "./UserService.js";
+import { ChannelService } from "./ChannelService.js";
+import { GuildService } from "./GuildService.js";
+import { MessageService } from "./MessageService.js";
 
-class AtlasChild {
-  protected parent: Atlas;
-  constructor(parent: Atlas) {
-    this.parent = parent;
-  }
-}
 
 /**
  * A Request builder that auto returns and provides abstracted methods for creating requests.
@@ -72,124 +68,13 @@ export class RequestBuilder extends AtlasChild {
   }
 }
 
-class UserService extends AtlasChild {
-  protected snowflake: SnowflakeNode;
-  constructor(
-    parent: Atlas, snowflake?: SnowflakeNode
-  ) {
-    super(parent);
-
-    // If we havent given the user service a snowflake node already then we will generate one
-    // with the defaults for a user service
-    this.snowflake = snowflake ? snowflake : SnowflakeNode({
-      workerBits: 10,
-      workerID: WorkerIDs.USER_SERVICE,
-      sequenceBits: 13,
-      // user ids should be represented as strings in JS to prevent conversion
-      startEpoch: AtlasDB.Snowflake.StartEpoch
-    });
-  }
-
-  public getUserByID(id: string): SQLPromise {
-    return this.parent.sqlClient.get`SELECT * FROM users WHERE user_id = ${id};`;
-  }
-
-  public getUserByUsername(username: string): SQLPromise {
-    return this.parent.sqlClient.get`SELECT * FROM users WHERE username = ${username};`;
-  }
-  
-  private newUser(
-    id: ATLAS.Snowflake,
-    username: string
-  ): void {
-    this.parent.sqlClient.run`INSERT INTO users VALUES (${id}, '${username}', '${username}');`;
-  }
-
-  private newUserCreds(
-    id: ATLAS.Snowflake,
-    email: ATLAS.EmailAddress,
-    password: string
-  ): void {
-    this.parent.sqlClient.run`INSERT INTO credentials VALUES (${id}, '${email}', '${password}', 'activetokenplaceholder');`;    
-  }
-
-  // TODO: Reimplement
-  public signUp({
-    username,
-    email,
-    password
-  }: { username: string, email: ATLAS.EmailAddress, password: string }
-  ): SQLPromise {
-    console.log("Registering new user with", username, email, password)
-    const id = this.snowflake.GenerateID().toString();
-    
-    const userResult = this.newUser(id, username);
-    const credResult = this.newUserCreds(id, email, password);
-
-    return this.getUserByID(id);
-  }
+// TODO: Move this into another file
+export function toAtlasBase(data: string): string {
+  return btoa(data).replaceAll("=", "");
 }
-
-// /users/@me - some service dedicated to the user making it
-// /users/:id/profile - getProfile
-// /users/
-class MessageService extends AtlasChild {
-  protected snowflake: SnowflakeNode;
-  constructor(
-    parent: Atlas, snowflake?: SnowflakeNode
-  ) {
-    super(parent);
-
-    // If we havent given the user service a snowflake node already then we will generate one
-    // with the defaults for a user service
-    this.snowflake = snowflake ? snowflake : SnowflakeNode({
-      workerBits: 10,
-      workerID: WorkerIDs.MESSAGE_SERVICE,
-      sequenceBits: 13,
-      // user ids should be represented as strings in JS to prevent conversion
-      startEpoch: AtlasDB.Snowflake.StartEpoch
-    });
-  }
+export function hexDate(): string {
+  return Date.now().toString(16);
 }
-
-class ChannelService extends AtlasChild {
-  protected snowflake: SnowflakeNode;
-  constructor(
-    parent: Atlas, snowflake?: SnowflakeNode
-  ) {
-    super(parent);
-
-    // If we havent given the user service a snowflake node already then we will generate one
-    // with the defaults for a user service
-    this.snowflake = snowflake ? snowflake : SnowflakeNode({
-      workerBits: 10,
-      workerID: WorkerIDs.CHANNEL_SERVICE,
-      sequenceBits: 13,
-      // user ids should be represented as strings in JS to prevent conversion
-      startEpoch: AtlasDB.Snowflake.StartEpoch
-    });
-  }
-}
-
-class GuildService extends AtlasChild {
-  protected snowflake: SnowflakeNode;
-  constructor(
-    parent: Atlas, snowflake?: SnowflakeNode
-  ) {
-    super(parent);
-
-    // If we havent given the user service a snowflake node already then we will generate one
-    // with the defaults for a user service
-    this.snowflake = snowflake ? snowflake : SnowflakeNode({
-      workerBits: 10,
-      workerID: WorkerIDs.GUILD_SERVICE,
-      sequenceBits: 13,
-      // user ids should be represented as strings in JS to prevent conversion
-      startEpoch: AtlasDB.Snowflake.StartEpoch
-    });
-  }
-}
-
 
 export class RequestManager {
   private readonly _users: UserService;

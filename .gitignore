@@ -2,6 +2,13 @@ node_modules/
 dist/
 dbase/
 
+src/lib/atlas/Configs/Config.ts
+
+sqlite3
+sqldiff
+
+*.wasm
+
 # Logs
 logs
 *.log
