@@ -31,6 +31,7 @@ export enum WorkerIDs {
   USER_SERVICE,
   GUILD_SERVICE,
   CHANNEL_SERVICE,
+  ROLE_SERVICE,
   MESSAGE_SERVICE // will have multiple reserved for multiple snowflakes
 }
 

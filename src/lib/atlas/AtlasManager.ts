@@ -47,6 +47,9 @@ export class Atlas {
           user_id INTEGER PRIMARY KEY,
           username TEXT NOT NULL,
           display_name TEXT
+          email TEXT NOT NULL,
+          password TEXT NOT NULL,
+          token TEXT NOT NULL
         );`
     } catch (e) {
       Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the user table\n", e, "\n");
@@ -60,27 +63,25 @@ export class Atlas {
         CREATE TABLE IF NOT EXISTS guilds (
             guild_id INTEGER PRIMARY KEY,
             guild_name TEXT NOT NULL,
-            guild_owner INTEGER NOT NULL,
-            FOREIGN KEY (guild_owner) REFERENCES users(user_id)
+            owner_id INTEGER NOT NULL,
+            FOREIGN KEY (owner_id) REFERENCES users(user_id)
         );`
     } catch (e) {
       Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the guild table\n", e, "\n");
       failureCount += 1;
     }
     // credentials
-    try {
-      Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up credentials table");
-      await this.sqlClient.run`
-            CREATE TABLE IF NOT EXISTS credentials (
-                user_id INTEGER PRIMARY KEY REFERENCES users(user_id),
-                email TEXT NOT NULL,
-                password TEXT NOT NULL,
-                active_token TEXT NOT NULL
-            );`
-    } catch (e) {
-      Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the credentials table\n", e, "\n");
-      failureCount += 1;
-    }
+    // try {
+    //   Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up credentials table");
+    //   await this.sqlClient.run`
+    //         CREATE TABLE IF NOT EXISTS credentials (
+    //             user_id INTEGER PRIMARY KEY REFERENCES users(user_id),
+                
+    //         );`
+    // } catch (e) {
+    //   Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the credentials table\n", e, "\n");
+    //   failureCount += 1;
+    // }
 
     // channels table
     try {
@@ -88,7 +89,10 @@ export class Atlas {
       await this.sqlClient.run`
         CREATE TABLE IF NOT EXISTS channels (
             channel_id INTEGER PRIMARY KEY,
-            channel_name TEXT NOT NULL
+            guild_id INTEGER NOT NULL,
+            channel_name TEXT NOT NULL,
+            index INTEGER,
+            FOREIGN KEY (guild_id) REFERENCES guilds(guild_id)
         );`
     } catch (e) {
       Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the channel table\n", e, "\n");
@@ -96,6 +100,7 @@ export class Atlas {
     }
 
     try {
+      //? Is PK channel_id needed? message_id is always unique
       Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up messages table");
       await this._client.execute(resource, `
                 CREATE TABLE IF NOT EXISTS messages (
@@ -112,29 +117,36 @@ export class Atlas {
     }
 
     try {
-      Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up guild channels table");
+      Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up roles table");
       await this.sqlClient.run`
-              CREATE TABLE IF NOT EXISTS guild_channels (
-                  channel_id INTEGER REFERENCES channels(channel_id),
-                  guild_id INTEGER REFERENCES guilds(guild_id),
-                  PRIMARY KEY (channel_id, guild_id)
+              CREATE TABLE IF NOT EXISTS guild_roles (
+                  role_id INTEGER PRIMARY KEY,
+                  guild_id INTEGER,
+                  role_name text,
+                  role_color INTEGER,
+                  index INTEGER,
+                  permissions BINARY,
+                  hoist BOOL,
+                  mentionable BOOL,
+                  FOREIGN KEY (guild_id) REFERENCES guilds(guild_id)
               );
         `
     } catch (e) {
-      Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the  guild channels table\n", e, "\n");
+      Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the roles table\n", e, "\n");
       failureCount += 1;
     }
 
     try {
-      Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up user guild table");
+      Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up guild members table");
       await this.sqlClient.run`
-        CREATE TABLE IF NOT EXISTS user_guilds (
+        CREATE TABLE IF NOT EXISTS guild_members (
             user_id INTEGER REFERENCES users(user_id),
-            guild_id INTEGER REFERENCES guilds(guild_id),  
+            guild_id INTEGER REFERENCES guilds(guild_id),
+            nickname text,
             PRIMARY KEY (user_id, guild_id)
         );`
     } catch (e) {
-      Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the user guild table\n", e, "\n");
+      Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the guild members table\n", e, "\n");
       failureCount += 1;
     }
 

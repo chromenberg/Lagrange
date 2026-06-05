@@ -30,18 +30,17 @@ export type Callback<Type> = (...args: any[]) => Type;
 export type VoidCallback = Callback<void>;
 export type VoidAPICallback = API.APICallback<void>;
 export type VoidRouteCallback = (route: Route) => void;
+export type VoidCallbackEventMap<EventMap> = <K extends keyof EventMap>(data: EventMap[K]) => void
 
 export type AsyncCallback<Type> = Callback<Promise<Type>>;
 export type AsyncVoidCallback = AsyncCallback<void>;
-
+export type OneOrArr<T> = T | T[]
 
 export namespace ATLAS {
   export type ResultSet = Promise<types.ResultSet>;
   export type Snowflake = string;
   export type EmailAddress = `${string}@${string}.${string}`;
   export type Token = `${Snowflake}.${string}.${string}`
-
-  
   
   export interface BaseUser {
     user_id: Snowflake
@@ -56,5 +55,18 @@ export namespace ATLAS {
 
   export interface User extends BaseUser {
 
+  }
+}
+
+export namespace Templates {
+  export namespace roles {
+    export const everyone = {
+      "id": 0,
+      "name": "@everyone",
+      "permissions": "2248329584430657",
+      "color": 0,
+      "hoist": false,
+      "mentionable": false
+    }
   }
 }

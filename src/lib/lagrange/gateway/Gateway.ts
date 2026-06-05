@@ -1,29 +1,36 @@
-import {WebSocketServer, WebSocket, type RawData} from "ws";
+import { WebSocketServer, WebSocket, type RawData } from "ws";
 import { Config } from "../Config.js";
-import { GatewayEvent, GatewayEventOpCodes, GatewayEventTypes, type GatewayEventPayload } from "./events/GatewayEvents.js";
+import {
+  GatewayEvent,
+  GatewayEventOpCodes,
+  GatewayEventTypes,
+  type GatewayEventPayload,
+} from "./events/GatewayEvents.js";
 import { GatewayEventReady } from "./events/send/Ready.js";
 import { GatewayEventHello } from "./events/send/Hello.js";
 import { LogLevel, Logger } from "../../core/logging/Logger.js";
 import { TypedReadWriteBuffer } from "../modules/Buffer.js";
 import { GatewayEventIdentify } from "./events/receive/Identify.js";
 import { Readable } from "node:stream";
+import type { PubSub } from "../../core/pubsub/PubSub.js";
+import { pubSub } from "../modules/gateway/PubSubHandler.js";
 
 type SocketMapConnection = Map<Symbol, WebSocket>;
 // function newClassIfUndefined<Class extends Object>(inputToCheck: Class, ): Class {
 //     return inputToCheck ? inputToCheck : new Class()
 // }
-export namespace Lagrange { //Todo: Sort this stuff out
-    export namespace Socket {
-        export namespace Handling {
-        
-        }
-    }   
+export namespace Lagrange {
+  //Todo: Sort this stuff out
+  export namespace Socket {
+    export namespace Handling {}
+  }
 }
 
-class GatewaySocketRequest extends GatewayEvent { // made when the client sends something to the gateway
+class GatewaySocketRequest extends GatewayEvent {
+  // made when the client sends something to the gateway
   constructor(
     private _event: GatewayEventPayload, // data of the event
-    private _socketKey: Symbol
+    private _socketKey: Symbol,
   ) {
     super(_event);
   }
@@ -35,27 +42,35 @@ class GatewaySocketRequest extends GatewayEvent { // made when the client sends 
     return this._event;
   }
   public get all(): [Symbol, GatewayEventPayload] {
-    return [this._socketKey, this._event]
+    return [this._socketKey, this._event];
   }
-  
 }
 
 class GatewaySocketMessageHandler {
-  private readonly buffer: TypedReadWriteBuffer<GatewaySocketRequest> = new TypedReadWriteBuffer();
-  constructor(private readonly parentSocket: GatewaySocket) { // sockets write their received requests into here, and then this will drain the buffer of requests until empty
+  private readonly buffer: TypedReadWriteBuffer<GatewaySocketRequest> =
+    new TypedReadWriteBuffer();
+  constructor(private readonly parentSocket: GatewaySocket) {
+    // sockets write their received requests into here, and then this will drain the buffer of requests until empty
     const uid = crypto.randomUUID();
-    Logger.sendLog(LogLevel.Info, ["LAGRANGE","GatewaySocket"], "Initialised a GatewaySocketMessageHandler [",uid,"]");
-    this.buffer.on("readable", ()=>{this.handle()});
+    Logger.sendLog(
+      LogLevel.Info,
+      ["LAGRANGE", "GatewaySocket"],
+      "Initialised a GatewaySocketMessageHandler [",
+      uid,
+      "]",
+    );
+    this.buffer.on("readable", () => {
+      this.handle();
+    });
   }
 
   writeRequest(dataIn: GatewaySocketRequest) {
     this.buffer.write(dataIn);
   }
   read(): GatewaySocketRequest {
-    return this.buffer.read()
-  };
+    return this.buffer.read();
+  }
   handle() {
-
     let chunk: GatewaySocketRequest;
     while (null !== (chunk = this.buffer.read())) {
       this.parentSocket.handleMessage(chunk); // call through the injected parent to request message handling
@@ -89,7 +104,9 @@ class GatewaySocketConnections {
   }
 
   public hasValue(socket: WebSocket): Boolean {
-    return this._connections.values().find(value => value===socket)? true : false;
+    return this._connections.values().find((value) => value === socket)
+      ? true
+      : false;
   }
 
   public findValue(key: Symbol): WebSocket | undefined {
@@ -98,7 +115,9 @@ class GatewaySocketConnections {
 
   public findKey(value: WebSocket): Symbol | undefined {
     let res: Symbol | undefined = undefined;
-    this._connections.entries().find(([key, val]) => (val===value) ? res=key : undefined); // loop through all key value pairs, if a value is equal to the passed in value, set res to the key belonging to that value. else do nothing
+    this._connections
+      .entries()
+      .find(([key, val]) => (val === value ? (res = key) : undefined)); // loop through all key value pairs, if a value is equal to the passed in value, set res to the key belonging to that value. else do nothing
     return res;
   }
 }
@@ -109,24 +128,40 @@ class GatewaySocket extends WebSocketServer {
 
   constructor(
     connectionMap?: GatewaySocketConnections,
-    socketBuffer?: GatewaySocketMessageHandler
+    socketBuffer?: GatewaySocketMessageHandler,
   ) {
     super({
-      host:Config.Gateway.Socket.Address,
-      port:Config.Gateway.Socket.Port
+      host: Config.Gateway.Socket.Address,
+      port: Config.Gateway.Socket.Port,
     });
     this.uid = crypto.randomUUID();
-    Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "Gateway Socket (",this.uid,") Initialised");
+    Logger.sendLog(
+      LogLevel.Info,
+      ["LAGRANGE", "GatewaySocket"],
+      "Gateway Socket (",
+      this.uid,
+      ") Initialised",
+    );
 
-    this.socketMessageBuffer = socketBuffer ? socketBuffer : ((): GatewaySocketMessageHandler => {
-      Logger.sendLog(LogLevel.Warning, ["LAGRANGE", "GatewaySocket"], "A message buffer was not passed into GatewaySocket[",this.uid,"]") ;
+    this.socketMessageBuffer = socketBuffer
+      ? socketBuffer
+      : ((): GatewaySocketMessageHandler => {
+          Logger.sendLog(
+            LogLevel.Warning,
+            ["LAGRANGE", "GatewaySocket"],
+            "A message buffer was not passed into GatewaySocket[",
+            this.uid,
+            "]",
+          );
 
-      return new GatewaySocketMessageHandler(this);
-    })();
-    this.connectionMap = connectionMap ? connectionMap : new GatewaySocketConnections();// if not passed in then create its own connectionmap
-    this.on("connection", this.onConnect)
+          return new GatewaySocketMessageHandler(this);
+        })();
+    this.connectionMap = connectionMap
+      ? connectionMap
+      : new GatewaySocketConnections(); // if not passed in then create its own connectionmap
+    this.on("connection", this.onConnect);
   }
-  
+
   private sendPayload(connection: WebSocket, payload: GatewayEvent) {
     connection.send(payload.toJSON());
   }
@@ -134,29 +169,53 @@ class GatewaySocket extends WebSocketServer {
   private onConnect(connection: WebSocket) {
     const connectionKey: Symbol = this.connectionMap?.add(connection);
 
-    Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "New connection to gateway as [",connectionKey,"]");
+    Logger.sendLog(
+      LogLevel.Info,
+      ["LAGRANGE", "GatewaySocket"],
+      "New connection to gateway as [",
+      connectionKey,
+      "]",
+    );
     this.sendPayload(connection, new GatewayEventHello());
 
+    Logger.sendLog(
+      LogLevel.Caution,
+      ["LAGRANGE", "Gateway"],
+      "Faking connection subscribe event",
+    );
+    // subscribe to events from channel ID 15
+    pubSub.subscribe("15", (data) => {
+      console.log("Event from 15: ",data)
+      this.connectionMap.connections.forEach((item) => {
+        console.log("Sending data")
+        item.send(data);
+      });
+    }, this);
+    pubSub.subscribe("19", (data) => {
+      this.connectionMap.connections.forEach((item) => {
+        item.send(data);
+      });
+    }, this);
     connection.on("message", (data: RawData) => {
       this.onMessage(connectionKey, data);
     });
   }
-  private onLeave(connection: WebSocket) {
-      
-  }
-  private onMessage(key: Symbol ,data: RawData) {
+  private onLeave(connection: WebSocket) {}
+  private onMessage(key: Symbol, data: RawData) {
     const msg = JSON.parse(data.toString());
-    this.socketMessageBuffer.writeRequest(new GatewaySocketRequest(// temporary thing for the time being
-      msg, // we create a new gateway socket request with data and key and then instantly add it into the buffer
-      key            
-    ))
+    this.socketMessageBuffer.writeRequest(
+      new GatewaySocketRequest( // temporary thing for the time being
+        msg, // we create a new gateway socket request with data and key and then instantly add it into the buffer
+        key,
+      ),
+    );
   }
 
   public handleMessage(req: GatewaySocketRequest) {
     //console.log(req.all)
     const key = req.socketKey;
     const event = req.event;
-    
+
     function sendResponse(this: GatewaySocket, data: GatewayEvent) {
       this.connectionMap.findValue(key)?.send(data.toJSON());
     }
@@ -167,12 +226,21 @@ class GatewaySocket extends WebSocketServer {
         // > check cache for token, then database if cache isnt active
         // > check client intents
         // > > if there is a match, ack, client gets to login
-        // > > if there isnt, then reject and make the client retry the identification 
+        // > > if there isnt, then reject and make the client retry the identification
 
-        Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "Client is requesting to identify...");
-        Logger.sendLog(LogLevel.Info, ["LAGRANGE", "GatewaySocket"], "Client request:\n",event.data);
+        Logger.sendLog(
+          LogLevel.Info,
+          ["LAGRANGE", "GatewaySocket"],
+          "Client is requesting to identify...",
+        );
+        Logger.sendLog(
+          LogLevel.Info,
+          ["LAGRANGE", "GatewaySocket"],
+          "Client request:\n",
+          event.data,
+        );
 
-        sendResponse.call(this, new GatewayEventReady);
+        sendResponse.call(this, new GatewayEventReady());
         break;
       }
     }
@@ -181,42 +249,51 @@ class GatewaySocket extends WebSocketServer {
 
 class GatewayShardingManager {
   private shards: Set<GatewaySocket> = new Set([]);
-  constructor() {
-      
-  }
+  constructor() {}
 
   public newShard(socket: GatewaySocket) {
     this.shards.add(socket);
   }
-
-
 }
 
-export class Gateway { // gateway will handle every socket, max socket limits adn the likes
-              // gateway will also handle filtering, so that messages dont get sent to everyone
-              // gateway also will handle socket to socket communication,
-              // incase there are messages for a user that happens to lie on another shard
+export class Gateway {
+  // gateway will handle every socket, max socket limits adn the likes
+  // gateway will also handle filtering, so that messages dont get sent to everyone
+  // gateway also will handle socket to socket communication,
+  // incase there are messages for a user that happens to lie on another shard
   private readonly maxShards: number = Config.Gateway.Sharding.MaxSockets;
   public readonly socket: GatewaySocket;
+  public readonly pubsub: PubSub<any>;
   constructor() {
+    (() => {
+      Logger.sendLog(
+        LogLevel.Caution,
+        ["LAGRANGE", "Gateway"],
+        "Using Gateway Override. 'PubSub testing' ",
+      );
+      this.pubsub = pubSub;
+    })();
     this.socket = new GatewaySocket();
-    Logger.sendLog(LogLevel.Info, ["LAGRANGE", "Gateway"], "Gateway Initialised");
+    Logger.sendLog(
+      LogLevel.Info,
+      ["LAGRANGE", "Gateway"],
+      "Gateway Initialised",
+    );
   }
 }
 
-
-class GatewayMessage { // defines a shard message
-
+class GatewayMessage {
+  // defines a shard message
 }
-class GatewaySocketMessenger { // shard to shard communication
-
+class GatewaySocketMessenger {
+  // shard to shard communication
 }
-class GatewayFiltering { // filter requests to know what to do with them and who to send them to
-
+class GatewayFiltering {
+  // filter requests to know what to do with them and who to send them to
 }
-class GatewayReceiver { // self explanatory
-
+class GatewayReceiver {
+  // self explanatory
 }
-class GatewayTransmitter { // self explanatory
-
+class GatewayTransmitter {
+  // self explanatory
 }
