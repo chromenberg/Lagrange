@@ -73,7 +73,7 @@ export function toAtlasBase(data: string): string {
   return btoa(data).replaceAll("=", "");
 }
 export function hexDate(): string {
-  return Date.now().toString(16);
+  return toAtlasBase(Buffer.alloc(4).writeInt32BE(Date.now()).toString())
 }
 
 export class RequestManager {

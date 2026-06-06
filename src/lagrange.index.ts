@@ -31,8 +31,18 @@ setTimeout(()=>{
       )
     }
   }
+
+  const msgcontent = `Debug content testing, heres a token too ${Atlasmanager.requests.users.newAuthToken("130402")}`
+  Logger.sendLog(LogLevel.Info, ["LAGRANGE", "DummyClient"], "Sending a message. Content: " + msgcontent)
+  fetch("/api/v1/channels/15/messages", {
+    method: "POST",
+    body: JSON.stringify({
+      content: msgcontent
+    })
+  })
+
   // fetch("http://127.0.0.1/api/v1/users/1/profile");
   //fetch("http://127.0.0.1/");
-  
-    
+
+
 },1_000)

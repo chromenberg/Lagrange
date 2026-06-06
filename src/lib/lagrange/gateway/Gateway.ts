@@ -188,12 +188,12 @@ class GatewaySocket extends WebSocketServer {
       console.log("Event from 15: ",data)
       this.connectionMap.connections.forEach((item) => {
         console.log("Sending data")
-        item.send(data);
+        item.send(JSON.stringify(data));
       });
     }, this);
     pubSub.subscribe("19", (data) => {
       this.connectionMap.connections.forEach((item) => {
-        item.send(data);
+        item.send(JSON.stringify(data));
       });
     }, this);
     connection.on("message", (data: RawData) => {

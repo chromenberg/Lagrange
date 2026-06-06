@@ -23,6 +23,8 @@ export class GuildService {
     );
 
   }
+
+  // should have a guild name as of right now
   public async newGuild(
     req: Request,
     res: ServerResponse<IncomingMessage>

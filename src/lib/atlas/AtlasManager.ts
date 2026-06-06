@@ -62,8 +62,8 @@ export class Atlas {
       await this.sqlClient.run`
         CREATE TABLE IF NOT EXISTS guilds (
             guild_id INTEGER PRIMARY KEY,
-            guild_name TEXT NOT NULL,
             owner_id INTEGER NOT NULL,
+            guild_name TEXT NOT NULL,
             FOREIGN KEY (owner_id) REFERENCES users(user_id)
         );`
     } catch (e) {
@@ -91,7 +91,7 @@ export class Atlas {
             channel_id INTEGER PRIMARY KEY,
             guild_id INTEGER NOT NULL,
             channel_name TEXT NOT NULL,
-            index INTEGER,
+            channel_index INTEGER,
             FOREIGN KEY (guild_id) REFERENCES guilds(guild_id)
         );`
     } catch (e) {
@@ -124,7 +124,7 @@ export class Atlas {
                   guild_id INTEGER,
                   role_name text,
                   role_color INTEGER,
-                  index INTEGER,
+                  role_index INTEGER,
                   permissions BINARY,
                   hoist BOOL,
                   mentionable BOOL,

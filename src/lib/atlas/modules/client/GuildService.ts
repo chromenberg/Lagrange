@@ -28,8 +28,8 @@ export class GuildService extends AtlasChild {
   }
 
   public async newGuild(data: GuildCreateObj): Promise<void> {
-    this.parent.sqlClient
-      .run`INSERT INTO guilds (${this.snowflake.GenerateID().toString()}, 
-                                )`;
+    // this.parent.sqlClient
+    //   .run`INSERT INTO guilds (${this.snowflake.GenerateID().toString()}, 
+    //                           ${data.name})`;
   }
 }
