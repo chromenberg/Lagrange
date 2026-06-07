@@ -4,7 +4,7 @@ import { AtlasDB } from "../../Configs/Config.js";
 import { GenToken } from "../crypt/Crypt.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
 import type { SQLPromise } from "../sql/SQL.js";
-import type { SignupResponse, Token, UserSignupData } from "../Types.js";
+import type { SignupResponse, Snowflake, Token, UserSignupData } from "../Types.js";
 import { toAtlasBase, hexDate } from "./Requests.js";
 import { AtlasChild } from "./AtlasChild.js";
 import { createHmac, scryptSync } from "crypto";
@@ -26,16 +26,16 @@ export class UserService extends AtlasChild {
           startEpoch: AtlasDB.Snowflake.StartEpoch,
         });
   }
-
+  public newUserID(): Snowflake {
+    return this.snowflake.GenerateID().toString()
+  }
   public newAuthToken(id: string): Token {
-    const date = hexDate();
-    console.log(date);
-
+    // TODO: move this to a WASM like go or rust, took 14 fucking seconds to make 500 tokens
     // create hmac with sha256, set password to db pass
     // with no salting and a target length of 32 char
     // update hmac to have the contents of the token
     // convert to b64url
-    return `${toAtlasBase(id)}.${date}.${createHmac(
+    return `${toAtlasBase(id)}.${hexDate()}.${createHmac(
       "sha256",
       scryptSync(AtlasDB.Auth.password, "", 32),
     )
