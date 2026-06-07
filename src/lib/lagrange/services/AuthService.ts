@@ -3,25 +3,49 @@ import type { Route } from "../modules/rest/router/Route.js";
 import type { Request } from "../modules/rest/router/Router.js";
 import { HTTPReader } from "../modules/rest/router/HTTPReader.js";
 import { AtlasManager } from "../../../atlas.index.js";
+import type { UserSignupData } from "../../atlas/modules/Types.js";
 
 export class AuthService {
   private readonly route: Route;
   constructor(route: Route) {
     this.route = route;
-    this.route.post("/register", (req, res) => { this.registerUser(req, res); });
+    this.route.post("/register", (req, res) => {
+      this.registerUser(req, res);
+    });
   }
 
-  public async registerUser(req: Request, res: ServerResponse<IncomingMessage>) {
+  // /auth/register
+  public async registerUser(
+    req: Request,
+    res: ServerResponse<IncomingMessage>,
+  ) {
+    // contains username, email, password
     HTTPReader.parseBody(req).then((body) => {
-      // contains username, email, password
-      const data = JSON.parse(body as string)
-      console.log(data)
-      
-      AtlasManager.requests.users.signUp(data).then((creds) => {
-        res.setHeader("Content-Type", "application/json")
-        res.write(JSON.stringify(creds))
-        res.end()
-      })
-    })
+      // TODO: cleanup
+      AtlasManager.requests.users
+        .checkUsernameAvailability((body as UserSignupData).username)
+        // check if username is valid
+        .then((valid) => {
+          if (!valid) {
+            // if invalid return an error
+            res.setHeader("Content-Type", "application/json");
+            res.write(
+              JSON.stringify({ reason: "this username is already taken" }),
+            );
+            res.end();
+            return;
+          }
+          // else signup the user
+          AtlasManager.requests.users
+            .signUp(body as UserSignupData)
+            .then((creds) => {
+              // TODO: streamline this more, create smt to manage all this
+              console.log(creds);
+              res.setHeader("Content-Type", "application/json");
+              res.write(JSON.stringify(creds));
+              res.end();
+            });
+        });
+    });
   }
 }

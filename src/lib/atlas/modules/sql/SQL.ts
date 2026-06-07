@@ -89,16 +89,19 @@ export class SQLDatabase {
    * @param data
    * @returns
    */
-  public static toSafeJS(data: {[key: string]: any}): {[key: string]: any} {
-    const dataEntries = Object.entries(data)
-      .map(([key, value]) => {
-        if (typeof value === "bigint") {
-          return [key, value.toString()]; // convert bigint into string for JSON.Stringify and JS safety
-        } else {
-          return [key, value];
-        }
-      }) as [string, any][];
-
-    return Object.fromEntries(dataEntries);
+  public static toSafeJS(data: { [key: string]: any }): SQLPromise {
+    return new Promise((res, err) => {
+      const dataEntries = Object.entries(data)
+        .map(([key, value]) => {
+          if (typeof value === "bigint") {
+            return [key, value.toString()]; // convert bigint into string for JSON.Stringify and JS safety
+          } else {
+            return [key, value];
+          }
+        }) as [string, any][];
+      
+      res(Object.fromEntries(dataEntries));
+      
+    })
   }
 }

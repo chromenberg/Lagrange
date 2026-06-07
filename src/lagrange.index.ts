@@ -43,17 +43,17 @@ setTimeout(() => {
       Atlasmanager.requests.users.newUserID(),
     );
 
-  Logger.sendLog(
-    LogLevel.Info,
-    ["LAGRANGE", "DummyClient"],
-    "Sending a message. Content: " + msgcontent,
-  );
-  fetch("/api/v1/channels/15/messages", {
-    method: "POST",
-    body: JSON.stringify({
-      content: msgcontent,
-    }),
-  });
+  // Logger.sendLog(
+  //   LogLevel.Info,
+  //   ["LAGRANGE", "DummyClient"],
+  //   "Sending a message. Content: " + msgcontent,
+  // );
+  // fetch("http://127.0.0.1/api/v1/channels/15/messages", {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     content: msgcontent,
+  //   }),
+  // });
 
   // fetch("http://127.0.0.1/api/v1/users/1/profile");
   //fetch("http://127.0.0.1/");

@@ -45,11 +45,11 @@ export class Atlas {
       await this.sqlClient.run`
         CREATE TABLE IF NOT EXISTS users (
           user_id INTEGER PRIMARY KEY,
-          username TEXT NOT NULL,
-          display_name TEXT
           email TEXT NOT NULL,
           password TEXT NOT NULL,
-          token TEXT NOT NULL
+          token TEXT NOT NULL,
+          username TEXT NOT NULL,
+          display_name TEXT
         );`
     } catch (e) {
       Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the user table\n", e, "\n");

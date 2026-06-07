@@ -3,11 +3,19 @@ import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { GenToken } from "../crypt/Crypt.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import type { SQLPromise } from "../sql/SQL.js";
-import type { SignupResponse, Snowflake, Token, UserSignupData } from "../Types.js";
+import { SQLDatabase, type SQLPromise } from "../sql/SQL.js";
+import type {
+  SignupResponse,
+  Snowflake,
+  Token,
+  UserSignupData,
+} from "../Types.js";
 import { toAtlasBase, hexDate } from "./Requests.js";
 import { AtlasChild } from "./AtlasChild.js";
 import { createHmac, scryptSync } from "crypto";
+import { DBErrors } from "../../../core/errors/DBErrors.js";
+
+// TODO: reduce import counts
 
 export class UserService extends AtlasChild {
   protected snowflake: SnowflakeNode;
@@ -27,7 +35,7 @@ export class UserService extends AtlasChild {
         });
   }
   public newUserID(): Snowflake {
-    return this.snowflake.GenerateID().toString()
+    return this.snowflake.GenerateID().toString();
   }
   public newAuthToken(id: string): Token {
     // TODO: move this to a WASM like go or rust, took 14 fucking seconds to make 500 tokens
@@ -44,27 +52,46 @@ export class UserService extends AtlasChild {
   }
 
   public getUserByID(id: string): SQLPromise {
-    console.log(id);
+    // We convert the id from string -> bigint so the database can read it
+    // this is also because by nature all IDs are generated as a bigint
+    // within the goroutine that is used
     return this.parent.sqlClient
-      .get`SELECT * FROM users, credentials WHERE users.user_id = ${BigInt(id)};`;
+      .get`SELECT * FROM users WHERE user_id = ${BigInt(id)};`;
   }
 
   public getUserByUsername(username: string): SQLPromise {
     return this.parent.sqlClient
       .get`SELECT * FROM users WHERE username = ${username};`;
   }
+  public getUserIDByUsername(username: string): SQLPromise {
+    return this.parent.sqlClient
+      .get`SELECT user_id FROM users WHERE username = ${username};`;
+  }
+  public async checkUsernameAvailability(username: string): Promise<boolean> {
+    return new Promise((res, err) => {
+      this.getUserIDByUsername(username).then((user) => {
+        if (!user) { // if undefined, no user exists, valid name
+          res(true);
+          return;
+        }
 
+        res(false);
+      });
+    });
+  }
   private newUser(args: UserSignupData): SignupResponse {
     // generate new user id
     const id = this.snowflake.GenerateID().toString();
     const token = this.newAuthToken(id);
-    console.log(id, token)
+
+    // inserts a new user into the database, nullable content last
+    // id, email, password, token, username, display_name?
     this.parent.sqlClient.run`INSERT INTO users VALUES (${id},
-      ${args.username /* Username */},
-      ${args.username /* Display Name */},
       ${args.email},
       ${args.password},
-      ${token /* token */});`;
+      ${token /* token */},
+      ${args.username /* Username */},
+      ${args.username /* Display Name */});`;
 
     return {
       user_id: id,
@@ -82,12 +109,22 @@ export class UserService extends AtlasChild {
     email: ATLAS.EmailAddress;
     password: string;
   }): SQLPromise {
-    const userResult = this.newUser({
-      username,
-      email,
-      password,
-    });
+    return new Promise((res, err) => {
+      const userResult = this.newUser({
+        username,
+        email,
+        password,
+      });
 
-    return this.getUserByID(userResult.user_id);
+      // TODO: make toSafeJS used in all requests
+      // instead of manually needing to run it
+      this.getUserByID(userResult.user_id).then((user) => {
+        if (!user) {
+          res({ message: DBErrors.NoDataReturned });
+          return;
+        }
+        res(SQLDatabase.toSafeJS(user));
+      });
+    });
   }
 }
