@@ -1,0 +1,36 @@
+.appContent {
+    grid-template-columns: [left] min-content [guildsEnd] 300px [channelsEnd] 1fr [pageEnd];
+    grid-template-rows: [top] 30px [titleEnd] min-content [noticesEnd] 1fr [pageEnd];
+    grid-template-areas: "title title title"
+        "guilds notice notice"
+        "guilds channels page";
+
+    position: relative;
+    display: grid;
+    container: "app-content-grid" / normal;
+}
+
+#titleBar {
+  grid-area: title;
+  background: var(--theme-gradient-highest);
+}
+#lSidePanel {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  
+  grid-row: titleEnd / bottom;
+  grid-column: left / channelsEnd;
+  position: relative;
+  background-color: blue;
+}
+#guilds {
+  grid-area: guilds;
+  background-color: green;
+  width: 70px;
+  background: var(--theme-gradient-highest);
+}
+#channelSelector {
+  grid-area: channels;
+  background: var(--theme-gradient-higher);
+}

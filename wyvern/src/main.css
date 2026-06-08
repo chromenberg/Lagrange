@@ -1,0 +1,221 @@
+body,
+html,
+#root,
+#root > div.appContent {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  --channels-list-width: 200px;
+  --background-main: rgb(63, 63, 66);
+  --saturation: 1;
+
+  --test-color-var: hsl(235, 100%, 7%);
+
+  --bg-color-1: 247 calc(var(--saturation, 1) * 70%) 60%;
+  --bg-color-2: 233 calc(var(--saturation, 1) * 50%) 30%;
+  /* --bg-gradient-color-3:;
+    --bg-gradient-color-4:;
+    --bg-gradient-color-5:; */
+
+  --bg-gradient-chroma-glow-1: hsl(var(--bg-gradient-chroma-glow-1-hsl) / 1);
+  --bg-gradient-chroma-glow-1-hsl: 183.39 calc(var(--saturation, 1) * 86.341%)
+    40.196%;
+  --bg-gradient-chroma-glow-2: hsl(var(--bg-gradient-chroma-glow-2-hsl) / 1);
+  --bg-gradient-chroma-glow-2-hsl: 258.113 calc(var(--saturation, 1) * 89.831%)
+    46.275%;
+  --bg-gradient-chroma-glow-3: hsl(var(--bg-gradient-chroma-glow-3-hsl) / 1);
+  --bg-gradient-chroma-glow-3-hsl: 298.491 calc(var(--saturation, 1) * 90.857%)
+    34.314%;
+  --bg-gradient-chroma-glow-4: hsl(var(--bg-gradient-chroma-glow-4-hsl) / 1);
+  --bg-gradient-chroma-glow-4-hsl: 264.767 calc(var(--saturation, 1) * 100%)
+    66.275%;
+  --bg-gradient-chroma-glow-5: hsl(var(--bg-gradient-chroma-glow-5-hsl) / 1);
+  --bg-gradient-chroma-glow-5-hsl: 206.702 calc(var(--saturation, 1) * 75.494%)
+    50.392%;
+
+  --neutral-1: 0 calc(var(--saturation, 1) * 0%) 100%;
+  --neutral-16: 228 calc(var(--saturation, 1) * 4.425%) 77.843%;
+  --neutral-9: 220 calc(var(--saturation, 1) * 4.918%) 88.039%;
+  --neutral-64: 232.5 calc(var(--saturation, 1) * 6.557%) 23.922%;
+  --neutral-27: 232.5 calc(var(--saturation, 1) * 4.167%) 62.353%;
+  --neutral-66: 232.5 calc(var(--saturation, 1) * 6.897%) 22.745%;
+  --neutral-73: 230 calc(var(--saturation, 1) * 6.383%) 18.431%;
+  /*
+    --primary-500:
+    --primary-560:
+    --primary-600:
+    --primary-700:  */
+
+  --opacity-8-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-8: hsl(var(--opacity-8-hsl)/0.0784313725490196);
+  --opacity-12-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-12: hsl(var(--opacity-12-hsl)/0.12156862745098039);
+  --opacity-20-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-20: hsl(var(--opacity-20-hsl)/0.2);
+  --opacity-44-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-44: hsl(var(--opacity-44-hsl)/0.4392156862745098);
+
+  --text-default: color-mix(
+    in oklab,
+    var(--neutral-9) 100%,
+    var(--theme-text-color-dark, #000) var(--theme-text-amount, 0%)
+  );
+
+  --border-normal: var(--opacity-20);
+  --border-strong: var(--opacity-44);
+  --border-subtle: var(--opacity-12);
+
+  --interact-active: var(--neutral-1);
+  --interact-hover: var(--neutral-1);
+  --interact-muted: var(--primary-500);
+  --interact-normal: var(--neutral-16);
+  --chat-background-default: color-mix(
+    in oklab,
+    var(--neutral-64) 100%,
+    var(--theme-base-color, #000) var(--theme-base-amount, 0%)
+  );
+
+    --padding-xs: 2px;
+    --padding-sm: 4px;
+    --padding-m: 8px;
+    --padding-l: 12px;
+    --padding-xl: 24px;
+
+}
+:root {
+  --theme-background-gradient-color: 0 0 0;
+
+  --theme-background-opacity-highest: 0.65;
+  --theme-background-opacity-higher: 0.7;
+  --theme-background-opacity-high: 0.75;
+  --theme-background-opacity-low: 0.8;
+  --theme-background-opacity-chat: 0.8;
+  --theme-background-opacity-lower: 0.85;
+  --theme-background-opacity-lowest: 0.9;
+}
+
+:root {
+  --theme-angle: 128.92deg;
+  --gradient-theme-background: linear-gradient(
+    var(--theme-angle),
+    var(--bg-gradient-chroma-glow-1) 3.94%,
+    var(--bg-gradient-chroma-glow-2) 26.1%,
+    var(--bg-gradient-chroma-glow-3) 39.82%,
+    var(--bg-gradient-chroma-glow-4) 56.89%,
+    var(--bg-gradient-chroma-glow-5) 76.45%
+  );
+  --gradient-theme-background-cover:
+    fixed 0 0 / cover, var(--gradient-theme-background) fixed 0 0 / cover;
+
+  --theme-base-color: #1273dc;
+  --theme-accent-color: #13cd70;
+  --theme-base-amount: 50%;
+  --theme-text-amount: 38%;
+
+  --theme-base-color-light-hsl: 225 100% 90%;
+  --theme-base-color-light: rgb(var(--theme-base-color-light-hsl));
+  --theme-text-color-light: rgb(0, 6, 59);
+
+  --theme-base-color-dark-hsl: 235 100% 7%;
+  --theme-base-color-dark: rgb(var(--theme-base-color-dark-hsl));
+  --theme-text-color-dark: rgb(206, 214, 238);
+
+  --theme-gradient-lowest: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-lowest)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-lowest)
+      )
+    )
+    var(--gradient-theme-background-cover);
+  --theme-gradient-lower: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-lower)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-lower)
+      )
+    )
+    var(--gradient-theme-background-cover);
+  --theme-gradient-low: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-low)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-low)
+      )
+    )
+    var(--gradient-theme-background-cover);
+  --theme-gradient-chat: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-chat)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-chat)
+      )
+    )
+    var(--gradient-theme-background-cover);
+  --theme-gradient-high: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-high)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-high)
+      )
+    )
+    var(--gradient-theme-background-cover);
+  --theme-gradient-higher: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-higher)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-higher)
+      )
+    )
+    var(--gradient-theme-background-cover);
+  --theme-gradient-highest: linear-gradient(
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-highest)
+      ),
+      rgb(
+        var(--theme-background-gradient-color) /
+          var(--theme-background-opacity-highest)
+      )
+    )
+    var(--gradient-theme-background-cover);
+}
+
+div,
+span,
+p,
+a,
+ul,
+ol,
+li,
+button,
+input {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 24px;
+  color: white;
+}
+
+.textVertical {
+  writing-mode: vertical-rl;
+}

@@ -11,7 +11,7 @@ export interface Token {
 export function GenToken(byteLength: number): Token {
   // Logger.sendLog(LogLevel.Verbose, ["TokenGen"], "Created a new Token with", byteLength, "bytes");
   // @ts-ignore - This is a valid function that is pushed into global with glue code
-  return NewToken(byteLength);
+return NewToken(byteLength);
 };
 
 
