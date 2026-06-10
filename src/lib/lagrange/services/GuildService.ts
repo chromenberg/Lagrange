@@ -1,8 +1,8 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { Route } from "../modules/rest/router/Route.js";
-import type { Request } from "../modules/rest/router/Router.js";
+import { Route } from "../modules/rest/Route.js";
+import type { Request } from "../modules/rest/Router.js";
 import { emitEvent, pubSub } from "../modules/gateway/PubSubHandler.js";
-import { HTTPReader } from "../modules/rest/router/HTTPReader.js";
+import { HTTPReader } from "../modules/rest/HTTPReader.js";
 import type { GuildCreateObj } from "../interfaces/Guilds.js";
 
 

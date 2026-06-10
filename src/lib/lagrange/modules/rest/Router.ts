@@ -1,7 +1,8 @@
 import { IncomingMessage, createServer, ServerResponse, Server, OutgoingMessage } from "http";
-import { Logger, LogLevel } from "../../../../core/logging/Logger.js";
-import type { API, VoidAPICallback, VoidCallback, VoidRouteCallback } from "../../../../../common/Typings.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
+import type { API, VoidAPICallback, VoidCallback, VoidRouteCallback } from "../../../core/types/Types.js";
 import { Route, RouteBase } from "./Route.js";
+import { Collection } from "../../../core/structs/Collection.js";
 
 interface RequestParams {
   [key: string]: any
@@ -20,8 +21,10 @@ export class Request extends IncomingMessage {
   }
 }
 
+
 export class Router implements RouteBase {
-  private readonly routeMap = new Map<string, Route>()
+  private readonly routeMap = new Collection<string, Route>()
+  private readonly aliases = new Collection<string, string>()
   private readonly server: Server;
   constructor(
     server?: Server
@@ -69,10 +72,32 @@ export class Router implements RouteBase {
     callback2?: VoidAPICallback & VoidCallback
   ): void {
     const regexp = Router.parseParams(path);
+    console.log(path)
 
+    // IMPORTANT TODO: STOP CREATING A LISTENER FOR EVERY
+    // ROUTE, THIS WILL KILL THE ENTIRE SERVER AT SOME POINT SOON
+    
     this.server.on("request", (req: Request, res) => {
+      // console.log(path, req.url)
+      if (req.url && this.aliases.has(req.url)) {
+        // if we have an aliased url then set the
+        // url to be the alias
+        req.url = this.aliases.get(req.url)
+        console.log("Request was aliased")
+      }
       if (req.method !== mode) return;
 
+      // if the path is set to * it is a wildcard path, accept any req
+      // WARNING: This could most likely fetch any file if * is appended to the end
+      // TODO: make this work for any version
+      // FIXME: this resolves to the content path regardless of url
+      // this means /index.html is the same as /api/content/index.html
+      if (path.endsWith("*") && path.replace("*", req.url ??"").startsWith("/api/content/")) {
+        // console.log("Content Path:", path, req.url, path.replace("*", req.url ??""))
+        this.callbackWrapperFinal(req, res, callback, callback2)
+        return;
+      }
+      
       // temporary fix to api parameters causing the normal api to regress
       if (!path.includes("/:") && path === req.url) {
         this.callbackWrapperFinal(req, res, callback, callback2);
@@ -190,5 +215,10 @@ export class Router implements RouteBase {
   public listen(address: string, port: number): this {
     this.server.listen(port, address);
     return this;
+  }
+
+  public alias(alias: string, bindTo: string) {
+    // 1 route can have many aliases
+    this.aliases.set(alias, bindTo)
   }
 }

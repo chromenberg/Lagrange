@@ -1,9 +1,9 @@
 import type { ServerResponse, IncomingMessage } from "node:http";
-import type { Route } from "../modules/rest/router/Route.js";
-import type { Request } from "../modules/rest/router/Router.js";
-import { HTTPReader } from "../modules/rest/router/HTTPReader.js";
-import { AtlasManager } from "../../../atlas.index.js";
-import type { UserSignupData } from "../../atlas/modules/Types.js";
+import type { Route } from "../modules/rest/Route.js";
+import type { Request } from "../modules/rest/Router.js";
+import { HTTPReader } from "../modules/rest/HTTPReader.js";
+import { Atlas } from "../../../Init.js";
+import type { UserSignupData } from "../../core/types/Types.js";
 
 export class AuthService {
   private readonly route: Route;
@@ -22,7 +22,7 @@ export class AuthService {
     // contains username, email, password
     HTTPReader.parseBody(req).then((body) => {
       // TODO: cleanup
-      AtlasManager.requests.users
+      Atlas.requests.users
         .checkUsernameAvailability((body as UserSignupData).username)
         // check if username is valid
         .then((valid) => {
@@ -36,7 +36,7 @@ export class AuthService {
             return;
           }
           // else signup the user
-          AtlasManager.requests.users
+          Atlas.requests.users
             .signUp(body as UserSignupData)
             .then((creds) => {
               // TODO: streamline this more, create smt to manage all this

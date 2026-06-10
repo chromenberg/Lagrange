@@ -1,5 +1,5 @@
 import EventEmitter from "node:events";
-import type { VoidCallback, VoidCallbackEventMap } from "../../../common/Typings.js";
+import type { VoidCallback, VoidCallbackEventMap } from "../types/Types.js";
 import { Collection } from "../structs/Collection.js";
 
 type SubMap = {

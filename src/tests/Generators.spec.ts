@@ -1,5 +1,5 @@
 import test, { describe } from "node:test";
-import { AtlasManager } from "../atlas.index.js";
+import { Atlas } from "../Init.js";
 
 describe("Token Generation", (tctx) => {
   console.log("Running Token Generation tests");
@@ -9,8 +9,8 @@ describe("Token Generation", (tctx) => {
 
     for (let i = 0; i <= 500; i++) {
       // generate a new token with a new id
-      AtlasManager.requests.users.newAuthToken(
-        AtlasManager.requests.users.newUserID(),
+      Atlas.requests.users.newAuthToken(
+        Atlas.requests.users.newUserID(),
       );
     }
 

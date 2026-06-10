@@ -6,6 +6,12 @@ export default defineConfig({
     plugins: [
         react(),
         babel({ presets: [reactCompilerPreset()] })
-    ],
+  ],
+  build: {
+    outDir: "../dist/lib/wyvern/",
+    emptyOutDir: true
+    
+  },
+  root:"./"
 });
 //# sourceMappingURL=vite.config.js.map

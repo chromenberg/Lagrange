@@ -1,0 +1,30 @@
+.flexHoriz,
+.flexVert {
+    display: flex;
+}
+
+.flexHoriz {
+    flex-direction: row;
+}
+
+.flexVert {
+    flex-direction: column;
+}
+
+.flexupdown {
+    flex-direction: column;
+    display: flex;
+}
+
+.flexdownup {
+    flex-direction: column-reverse;
+    display: flex;
+}
+.flexleftright {
+    flex-direction: row;
+    display: flex;
+}
+.flexrightleft {
+    flex-direction: row-reverse;
+    display: flex;
+}

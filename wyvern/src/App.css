@@ -12,7 +12,7 @@
 
 #titleBar {
   grid-area: title;
-  background: var(--theme-gradient-highest);
+  background: var(--theme-highest);
 }
 #lSidePanel {
   display: grid;
@@ -28,9 +28,9 @@
   grid-area: guilds;
   background-color: green;
   width: 70px;
-  background: var(--theme-gradient-highest);
+  background: var(--theme-highest);
 }
 #channelSelector {
   grid-area: channels;
-  background: var(--theme-gradient-higher);
+  background: var(--theme-higher);
 }

@@ -1,4 +1,4 @@
-import type { API, VoidAPICallback, VoidRouteCallback } from "../../../../../common/Typings.js";
+import type { API, VoidAPICallback, VoidRouteCallback } from "../../../core/types/Types.js";
 import { Router } from "./Router.js";
 
 export abstract class RouteBase {
@@ -25,6 +25,10 @@ export class Route implements RouteBase { //? can this be the base that Router e
     private readonly router: Router | Route
   ) {}
 
+  public get path(): string {
+    return this.route;
+  }
+  
   protected sanitisePath(path: string): string {
     if (!path.startsWith("/")) return this.route + path;
     return this.route + path.replace("/", "");

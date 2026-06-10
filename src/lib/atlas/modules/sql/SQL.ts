@@ -7,10 +7,7 @@ import {
 } from "node:sqlite"
 import type { Atlas } from "../../AtlasManager.js";
 
-export type SQLResponse = Record<string, SQLOutputValue>;
-export type SQLPromise = Promise<SQLResponse | undefined>
-export type SQLPromiseArray = Promise<SQLResponse[] | undefined>
-export type SQLPromiseIterator = Promise<NodeJS.Iterator<SQLResponse>>;
+import type { SQLPromise, SQLPromiseArray, SQLPromiseIterator } from "../../../core/types/Types.js";
 
 export class SQLDatabase {
   private readonly _db: DatabaseSync;

@@ -1,18 +1,23 @@
-import type { ATLAS } from "../../../../common/Typings.js";
+import type {
+  EmailAddress,
+  SignupResponse,
+  Snowflake,
+  SQLPromise,
+  Token,
+  UserSignupData,
+} from "../../../core/types/Types.js";
 import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { GenToken } from "../crypt/Crypt.js";
+
+// TODO: Unify some of these imports
+
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import { SQLDatabase, type SQLPromise } from "../sql/SQL.js";
-import type {
-  SignupResponse,
-  Snowflake,
-  Token,
-  UserSignupData,
-} from "../Types.js";
+import { SQLDatabase } from "../sql/SQL.js";
 import { toAtlasBase, hexDate } from "./Requests.js";
 import { AtlasChild } from "./AtlasChild.js";
-import { createHmac, scryptSync } from "crypto";
+
+import { createHmac, scryptSync } from "crypto"; // TODO: this could be something to make in rust
 import { DBErrors } from "../../../core/errors/DBErrors.js";
 
 // TODO: reduce import counts
@@ -70,7 +75,8 @@ export class UserService extends AtlasChild {
   public async checkUsernameAvailability(username: string): Promise<boolean> {
     return new Promise((res, err) => {
       this.getUserIDByUsername(username).then((user) => {
-        if (!user) { // if undefined, no user exists, valid name
+        if (!user) {
+          // if undefined, no user exists, valid name
           res(true);
           return;
         }
@@ -106,7 +112,7 @@ export class UserService extends AtlasChild {
     password,
   }: {
     username: string;
-    email: ATLAS.EmailAddress;
+    email: EmailAddress;
     password: string;
   }): SQLPromise {
     return new Promise((res, err) => {

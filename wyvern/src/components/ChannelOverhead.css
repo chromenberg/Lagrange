@@ -1,7 +1,0 @@
-:root {
-  --channel-header-height: 45px;
-}
-.channelHeader {
-  height: var(--channel-header-height);
-  border-bottom: var(--border-subtle) solid 1px;
-}

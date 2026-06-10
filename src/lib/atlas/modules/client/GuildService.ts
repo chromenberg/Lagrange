@@ -2,7 +2,7 @@ import type { GuildCreateObj } from "../../../lagrange/interfaces/Guilds.js";
 import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import type { SQLPromiseArray } from "../sql/SQL.js";
+import type { SQLPromiseArray } from "../../../core/types/Types.js";
 import { AtlasChild } from "./AtlasChild.js";
 
 export class GuildService extends AtlasChild {

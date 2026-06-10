@@ -1,12 +1,14 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import type { Route } from "../modules/rest/router/Route.js";
-import type { Request } from "../modules/rest/router/Router.js";
+import type { Route } from "../modules/rest/Route.js";
+import type { Request } from "../modules/rest/Router.js";
 
 export class UserService {
   private readonly route: Route;
   constructor(route: Route) {
     this.route = route;
-    route.get("/@me", this.getCurrentUser);
+
+    // FIXME: This conflicts with /channels/@me
+    // route.get("/@me", this.getCurrentUser);
   }
 
   public async getCurrentUser(

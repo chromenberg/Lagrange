@@ -1,12 +1,12 @@
-import type { ATLAS } from "../../../../common/Typings.js";
+import type { Snowflake } from "../../../core/types/Types.js";
 import type { PubSub } from "../../../core/pubsub/PubSub.js";
 import { Collection } from "../../../core/structs/Collection.js";
 import { pubSub } from "./PubSubHandler.js";
 
 export class BaseChannel {
-  protected readonly _id: ATLAS.Snowflake;
+  protected readonly _id: Snowflake;
   protected readonly _broker: PubSub<any>;
-  constructor(id: ATLAS.Snowflake, broker: PubSub<any>) {
+  constructor(id: Snowflake, broker: PubSub<any>) {
     this._id = id;
     this._broker = broker;
   }
@@ -16,7 +16,7 @@ export class BaseChannel {
     return this;
   }
 
-  public get id(): ATLAS.Snowflake {
+  public get id(): Snowflake {
     return this._id;
   }
 }
@@ -26,21 +26,21 @@ export class BaseChannel {
  *
  */
 export class BaseGuild extends BaseChannel {
-  protected _channels: Collection<ATLAS.Snowflake, BaseChannel> =
+  protected _channels: Collection<Snowflake, BaseChannel> =
     new Collection();
-  constructor(id: ATLAS.Snowflake, broker: PubSub<any>) {
+  constructor(id: Snowflake, broker: PubSub<any>) {
     super(id, broker);
   }
-  public getChannel(id: ATLAS.Snowflake): BaseChannel | undefined {
+  public getChannel(id: Snowflake): BaseChannel | undefined {
     return this._channels.get(id);
   }
-  public channelIDs(): ATLAS.Snowflake[] {
+  public channelIDs(): Snowflake[] {
     return this._channels.keysArr();
   }
-  public channelsArr(): [ATLAS.Snowflake, BaseChannel][] {
+  public channelsArr(): [Snowflake, BaseChannel][] {
     return this._channels.toArray();
   }
-  public get channels(): Collection<ATLAS.Snowflake, BaseChannel> {
+  public get channels(): Collection<Snowflake, BaseChannel> {
     return this._channels;
   }
 }

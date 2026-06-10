@@ -1,0 +1,10 @@
+.mainPanelWrapper {
+    grid-area: page;
+    background: var(--theme-chat);
+    > div {
+        height: 100%;
+    }
+}
+.mainContent {
+    flex: 1
+}

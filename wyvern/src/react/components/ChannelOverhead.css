@@ -1,0 +1,8 @@
+:root {
+    --channel-header-height: 50px;
+}
+.panelHeader {
+    width: 100%;
+    height: var(--channel-header-height);
+    border-bottom: var(--border-subtle) solid 1px;
+}

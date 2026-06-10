@@ -1,5 +1,5 @@
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
-import type { ATLAS } from "../../../../common/Typings.js";
+import type { ResultSet } from "../../../core/types/Types.js";
 import { Atlas } from "../../AtlasManager.js";
 import type { PoolItemPair } from "../pooling/Pool.js";
 import { PoolResourceNotSentError } from "../pooling/PoolErrors.js";
@@ -40,12 +40,12 @@ export class RequestBuilder extends AtlasChild {
     }
   }
 
-  public async request(...args: any[]): ATLAS.ResultSet {
+  public async request(...args: any[]): ResultSet {
     // send the connection to atlas so no extra connection is used
     return this.parent.client.execute(this.connection, args.join(" ") + ";");
   }
 
-  public async filteringRequest(...args: any[]): ATLAS.ResultSet {
+  public async filteringRequest(...args: any[]): ResultSet {
     return this.request(args, "ALLOW FILTERING");
   }
 
@@ -81,6 +81,10 @@ export function toAtlasBase(data: string): string {
 export function getSeconds(): number {
   return Math.trunc(Date.now() / 1000);
 }
+/**
+ * Creates a date suitable for using within a token
+ * @returns token suitable data
+ */
 export function hexDate(): string {
   const time = Buffer.alloc(4); // alloc 4 bytes to a buffer
   time.writeInt32BE(getSeconds()); // then write time in int32be
@@ -88,6 +92,9 @@ export function hexDate(): string {
   return time.toString("base64url");
 }
 
+/**
+ * Provides a single point where all the database services can be accessed
+ */
 export class RequestManager {
   private readonly _users: UserService;
   private readonly _messages: MessageService;

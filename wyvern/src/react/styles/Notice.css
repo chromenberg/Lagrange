@@ -1,0 +1,13 @@
+.noticeContainer {
+    grid-area: notice;
+    background: red;
+    position: relative;
+    height: 50px;
+}
+.noticeContainer > .flexHoriz {
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    gap: 10px;
+    height: 100%;
+}

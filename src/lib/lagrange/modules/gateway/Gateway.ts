@@ -5,12 +5,12 @@ import type {
   OneOrArr,
   VoidCallback,
   VoidCallbackEventMap,
-} from "../../../../common/Typings.js";
+} from "../../../core/types/Types.js";
 import { PubSub } from "../../../core/pubsub/PubSub.js";
 import { Collection } from "../../../core/structs/Collection.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import type WebSocket from "ws";
-import { AtlasManager } from "../../../../atlas.index.js";
+import { Atlas } from "../../../../Init.js";
 
 //!TODO: Allocate a fuck load of time to this
 // because making the gateway stack is actually going to be a lot fucking
@@ -32,6 +32,12 @@ import { AtlasManager } from "../../../../atlas.index.js";
 
 // Subscribe   |        | Listen to events that occur in a channel?
 // *ALT*       |        | Server subscribes using guilds internally instead
+
+import { Cache, type CacheCategories } from "../../../core/cache/Cache.js"
+console.log(new Cache<CacheCategories>().push("guilds", "sdfsd", {
+  lastAccessed: "sdf",
+  members: ["234"],
+}).guilds.toArray())
 export class Gateway {
   private readonly pubsub: PubSub<any>;
   constructor(pubsub?: PubSub<any>) {
@@ -40,7 +46,7 @@ export class Gateway {
     // temporary thing, ideally we should not store every guild ever but who cares
     // anything to make it work
 
-    AtlasManager.requests.guilds.getAllGuilds().then((guilds) => {
+    Atlas.requests.guilds.getAllGuilds().then((guilds) => {
       guilds?.forEach((guild) => {
         console.log(guild)
       })
@@ -67,11 +73,27 @@ export class Gateway {
     );
     return this.pubsub.unsubscribe(channelID, listenerID);
   }
+
+  
 }
 
-export class GuildGateway {}
+export class GuildGateway {
+  // events involving guilds go from the api to here via the api
+}
 
-export class ChannelGateway {}
+export class ChannelGateway {
+  // events that have channel related stuff
+
+  // make a message to the gateway to handle this "gateways" event
+  // we need to loop over all members who can access this channel
+  // and send the event to them
+
+  // we can either get every member in the guild with a database call
+  // or we can get every member in the channel
+  // (guild would be easier to sort)
+
+  
+}
 
 export class ClientConnection {
   private _subs: Collection<symbol, Function> = new Collection();
