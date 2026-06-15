@@ -10,7 +10,10 @@ import { PubSub } from "../../../core/pubsub/PubSub.js";
 import { Collection } from "../../../core/structs/Collection.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import type WebSocket from "ws";
-import { Atlas } from "../../../../Init.js";
+import { Atlas } from "../../../../_Init.js";
+import { Cache, type CacheCategories } from "../../../core/cache/Cache.js"
+import { GatewayEventOpCodes, type GatewayEvent, type GatewayEventTypes } from "../events/GatewayEvents.js";
+import { GatewayEventIdentify } from "../../gateway/events/receive/Identify.js";
 
 //!TODO: Allocate a fuck load of time to this
 // because making the gateway stack is actually going to be a lot fucking
@@ -33,24 +36,38 @@ import { Atlas } from "../../../../Init.js";
 // Subscribe   |        | Listen to events that occur in a channel?
 // *ALT*       |        | Server subscribes using guilds internally instead
 
-import { Cache, type CacheCategories } from "../../../core/cache/Cache.js"
-console.log(new Cache<CacheCategories>().push("guilds", "sdfsd", {
-  lastAccessed: "sdf",
-  members: ["234"],
-}).guilds.toArray())
+
 export class Gateway {
   private readonly pubsub: PubSub<any>;
+  private readonly socket: WebSocketServer;
   constructor(pubsub?: PubSub<any>) {
     this.pubsub = pubsub ? pubsub : new PubSub();
     
     // temporary thing, ideally we should not store every guild ever but who cares
     // anything to make it work
 
-    Atlas.requests.guilds.getAllGuilds().then((guilds) => {
-      guilds?.forEach((guild) => {
-        console.log(guild)
+    // Atlas.requests.guilds.getAllGuilds().then((guilds) => {
+    //   guilds?.forEach((guild) => {
+    //     console.log(guild)
+    //   })
+    // })
+    // ---- Message handling
+    this.socket = new WebSocketServer()
+
+    this.socket.on("connection", (conn) => {
+      // Create a client connection that will listen to the events needed
+      new ClientConnection(conn).on("message", (msg) => {
+        const data = JSON.parse(msg)
+
+        if (data.opCode === GatewayEventOpCodes.IDENTIFY) {
+          // TODO: Not hardcode them into the messages
+          const identEvent = new GatewayEventIdentify()
+          identEvent.setData({hi: "sssssss"})
+          conn.send(identEvent.toJSON())
+        }
       })
     })
+    
   }
 
   public subscribe(
@@ -73,8 +90,6 @@ export class Gateway {
     );
     return this.pubsub.unsubscribe(channelID, listenerID);
   }
-
-  
 }
 
 export class GuildGateway {
@@ -82,6 +97,21 @@ export class GuildGateway {
 }
 
 export class ChannelGateway {
+  constructor() {
+    // Message Sent
+    // Service Resolves
+    // Service Creates Event
+    // Service Emits to gateway
+    // Gateway Publishes event
+    // 
+    // --------------------------------------
+    // 
+    // API Gets Message Create request
+    // MessageService Resolves, determines its a MessageCreate
+    // Creates a MessageCreate Event and calls the gateway to emit the event
+    // Gateway publishes event with the channel ID
+    // all connections subscribed get that event and relay it to the client
+  }
   // events that have channel related stuff
 
   // make a message to the gateway to handle this "gateways" event
@@ -92,7 +122,9 @@ export class ChannelGateway {
   // or we can get every member in the channel
   // (guild would be easier to sort)
 
-  
+  public emitEvent(code: GatewayEventTypes, data: GatewayEvent) {
+    
+  }
 }
 
 export class ClientConnection {
@@ -105,6 +137,7 @@ export class ClientConnection {
   public get subs(): Collection<symbol, Function> {
     return this._subs;
   }
+  // Sends a message back to the client
   public send(data: Buffer): void {
     this._sock.send(data);
   }

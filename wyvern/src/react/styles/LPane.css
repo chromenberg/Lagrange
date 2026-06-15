@@ -1,0 +1,7 @@
+.lPane {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+.lPaneContent {
+    gap: var(--padding-m);
+}

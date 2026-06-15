@@ -133,4 +133,20 @@ export class UserService extends AtlasChild {
       });
     });
   }
+
+  public getUserByToken(token: string): SQLPromise {
+    // Is this truly a safe method?
+    return new Promise((res) => {
+      this.parent.sqlClient // get user info, quite basic but thats fine for now
+        .get`SELECT user_id, username, display_name FROM users WHERE token = ${token};`.then(
+        (user) => { // filter user and convert bigints
+          if (!user) {
+            res({ message: DBErrors.NoDataReturned });
+            return;
+          }
+          res(SQLDatabase.toSafeJS(user));
+        },
+      );
+    });
+  }
 }

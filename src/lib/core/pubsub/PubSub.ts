@@ -59,6 +59,8 @@ export class PubSub<
     listener: any,
     ctx?: any
   ): symbol {
+    // TODO: too many subscriptions can slow down process with this method
+    // unify event emitters to activate on the same emitter if already present
     this.on(eventName, (...args: any[]) => { listener.call(ctx, ...args) });
     return this._subMap.setReturn(Symbol(eventName), {
       listener,

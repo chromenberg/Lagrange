@@ -1,4 +1,4 @@
-import { Atlas } from "../../../Init.js";
+import { Atlas } from "../../../_Init.js";
 import type { Token, Snowflake } from "../../core/types/Types.js";
 import type { types } from "cassandra-driver";
 

@@ -5,7 +5,8 @@ export function AnsiText(color: string, text: string): string {
 }
 
 export enum LogLevel {
-	None = -1,
+  None = -1,
+	Debug,
 	Verbose,
 	Info,
 	Success,
@@ -25,12 +26,12 @@ export interface LogMessage {
 export class _Logger {
 	private readonly eventEmitter = new EventEmitter();
 	constructor(
-		private readonly LogLevelFilter: LogLevel | number[]
+		private LogLevelFilter: LogLevel | number[]
 	) {
 		this.eventEmitter.on("message", (data: LogMessage) => {
 			// filter out messages depending on what type the filter is
-			if ((typeof LogLevelFilter === "number") && (data.level < LogLevelFilter)) return;
-			if ((typeof LogLevelFilter === "object") && (!LogLevelFilter.includes(data.level))) return;
+			if ((typeof this.LogLevelFilter === "number") && (data.level < this.LogLevelFilter)) return;
+			if ((typeof this.LogLevelFilter === "object") && (!this.LogLevelFilter.includes(data.level))) return;
 			this.log(data);
 		})
 	}
@@ -87,6 +88,10 @@ export class _Logger {
 			case LogLevel.Verbose: {
 				this._log("VERBOSE", data.path, "\x1b[0;38;5;245;49m", ...data.content);
 				break;
+      }
+      case LogLevel.Debug: {
+				this._log("Process", data.path, "\x1b[0;38;5;245;49m", ...data.content);
+				break;
 			}
 		}
 	}
@@ -96,6 +101,9 @@ export class _Logger {
 			path,
 			content
 		});
+  }
+  public setLogLevel(newLevel: LogLevel): void {
+    this.LogLevelFilter = newLevel;
 	}
 }
 

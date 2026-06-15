@@ -1,5 +1,5 @@
 import test, { describe } from "node:test";
-import { Atlas } from "../Init.js";
+import { Atlas } from "../_Init.js";
 
 describe("Token Generation", (tctx) => {
   console.log("Running Token Generation tests");

@@ -1,0 +1,7 @@
+.hoverCardBg {
+    background-color: red;
+}
+
+.hoverCardBg:hover {
+    background: hsl(var(--interact-hover) * 10);
+}

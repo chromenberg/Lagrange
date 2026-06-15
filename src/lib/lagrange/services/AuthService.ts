@@ -2,7 +2,7 @@ import type { ServerResponse, IncomingMessage } from "node:http";
 import type { Route } from "../modules/rest/Route.js";
 import type { Request } from "../modules/rest/Router.js";
 import { HTTPReader } from "../modules/rest/HTTPReader.js";
-import { Atlas } from "../../../Init.js";
+import { Atlas } from "../../../_Init.js";
 import type { UserSignupData } from "../../core/types/Types.js";
 
 export class AuthService {

@@ -5,7 +5,7 @@ import {
   GatewayEventOpCodes,
   GatewayEventTypes,
   type GatewayEventPayload,
-} from "./events/GatewayEvents.js";
+} from "../modules/events/GatewayEvents.js";
 import { GatewayEventReady } from "./events/send/Ready.js";
 import { GatewayEventHello } from "./events/send/Hello.js";
 import { LogLevel, Logger } from "../../core/logging/Logger.js";

@@ -1,3 +1,4 @@
+import "./MessageCreate.js"
 export interface GatewayEventPayload {
   opCode?: number
   data?: object | number,

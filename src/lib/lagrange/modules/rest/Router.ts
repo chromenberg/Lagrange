@@ -29,6 +29,7 @@ export class Router implements RouteBase {
   constructor(
     server?: Server
   ) {
+    console.log("new api made")
     if (!server) {
       this.server = new Server({ // set incoming message to be request instead
         IncomingMessage: Request
@@ -72,7 +73,7 @@ export class Router implements RouteBase {
     callback2?: VoidAPICallback & VoidCallback
   ): void {
     const regexp = Router.parseParams(path);
-    console.log(path)
+    // console.log(path)
 
     // IMPORTANT TODO: STOP CREATING A LISTENER FOR EVERY
     // ROUTE, THIS WILL KILL THE ENTIRE SERVER AT SOME POINT SOON

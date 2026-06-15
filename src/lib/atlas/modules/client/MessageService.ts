@@ -1,6 +1,6 @@
 import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
-import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
+import { SnowflakeNode, WorkerIDs, type Snowflake } from "../snowflake/Snowflake.js";
 import { AtlasChild } from "./AtlasChild.js";
 
 // /users/@me - some service dedicated to the user making it
@@ -22,5 +22,9 @@ export class MessageService extends AtlasChild {
       // user ids should be represented as strings in JS to prevent conversion
       startEpoch: AtlasDB.Snowflake.StartEpoch
     });
+  }
+
+  public requestMessageID(): Snowflake {
+    return this.snowflake.GenerateID()
   }
 }
