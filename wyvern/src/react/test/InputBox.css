@@ -19,7 +19,6 @@
     cursor: text;
     flex: 1;
     font-size: var(--font-m);
-    outline: none;
 }
 
 .separator {
@@ -27,4 +26,9 @@
     width: 1px;
     border-radius: var(--padding-sm);
     background: var(--border-subtle);
+}
+.inputBoxEditor {
+  outline: none;
+  position: relative;
+  
 }

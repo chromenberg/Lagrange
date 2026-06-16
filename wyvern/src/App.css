@@ -1,13 +1,13 @@
 .appContent {
-    grid-template-columns: [left] min-content [guildsEnd] 300px [channelsEnd] 1fr [pageEnd];
-    grid-template-rows: [top] 30px [titleEnd] min-content [noticesEnd] 1fr [pageEnd];
-    grid-template-areas: "title title title"
-        "guilds notice notice"
-        "guilds channels page";
+  grid-template-columns: [left] min-content [guildsEnd] 300px [channelsEnd] 1fr [pageEnd];
+  grid-template-rows: [top] 30px [titleEnd] min-content [noticesEnd] 1fr [pageEnd];
+  grid-template-areas: "title title title"
+                      "guilds notice notice"
+                      "guilds channels page";
 
-    position: relative;
-    display: grid;
-    container: "app-content-grid" / normal;
+  position: relative;
+  display: grid;
+  container: "app-content-grid" / normal;
 }
 
 #titleBar {
@@ -36,6 +36,6 @@
 }
 
 .fillAll {
-    width: 100%;
-    height: 100%
+  width: 100%;
+  height: 100%
 }

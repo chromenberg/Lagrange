@@ -4,12 +4,12 @@ import FlexBox from "./react/components/Flex";
 import LSidePane from "./react/ui-sections/LSidePane";
 import MainPanel from "./react/ui-sections/MainPanel";
 import ChannelSelect from "./react/wyvern-comps/ChannelSelector";
-// import { userData } from "./scripts/client/Client";
+import { userData } from "./scripts/client/Client";
 export function App() {
   return (
     <div className="appContent">
       <div id="titleBar">
-      {/*Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}*/}
+      Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}
       </div>
       <div id="lSidePanel">
         <nav id="guilds"></nav>

@@ -9,52 +9,46 @@ import PlaceholderText from "./Placeholder/PlaceholderText";
 //   }
 //   inp(true);
 // }
-function InputBoxHook({
-  children,
-  hook,
-}: {
-  children: React.ReactNode;
-  hook: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  return (
-    <div>
-      {children}
-    </div>
-  );
-}
+const ignoreKeys = ["Shift", "Control", "Alt", "Meta", "ContextMenu"]
+const __tempContent: string[] = []
 
-function InputContent() {
-  return (
-    <div
-      contentEditable
-      onKeyDown={(e) => {
-        e.preventDefault();
-        hook(true)
-      }}
-      onBeforeInputCapture={(e)=>{console.log("Before input capture", e)}}
-      onChange={(e)=>{console.log("On Change", e)}}
-      onEmptied={(e)=>{console.log("Empty", e)}}
-    ></div>
-  );
+function setContentStore(key: string) {
+  if (ignoreKeys.includes(key)) return;
+  if (key === "Backspace") {
+    __tempContent.pop()
+  }
+  else {
+    if (key.length > 1) return;
+    __tempContent.push(key)
+  }
+}
+function isContent() {
+  return (__tempContent.length>0)
 }
 
 // this is the BASE input box that everything should go off of
 // but for now just making it a full thing is fine
 export default function InputBox() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [inputState, setInputState] = useState(false);
   return (
     <div className="inputBoxWrapper">
       <div className="inputInnerContainer">
         <div className="inputBoxAccessories">#</div>
         <div className="separator" />
-        <div>
-          <PlaceholderText isActive={inputState}>s</PlaceholderText>
-          <InputBoxHook hook={setInputState}>
-            <InputContent />
-          </InputBoxHook>
+        <div className="inputBoxContent">
+          <PlaceholderText isActive={inputState}>Send a message</PlaceholderText>
+          <div className="inputBoxEditor" onKeyDown={(e) => {
+            setContentStore(e.key);
+            setInputState(isContent());
+            console.log(e)
+          }} contentEditable />
         </div>
         <div className="inputBoxAccessories"></div>
       </div>
     </div>
   );
 }
+// function MessageBarContentNode({ slateNode, children }: {slateNode: string, children?: React.ReactNode }) {
+//   return <div data-slate-node={slateNode}>{children}</div>
+// }
