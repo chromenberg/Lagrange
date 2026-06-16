@@ -262,7 +262,9 @@ nav {
         )
         var(--gradient-theme-background-cover);
 }*/
-
+:root {
+    --scrollbar-width: 10px;
+}
 :root {
     --base-hue: 240;
     --default-lowest: hsl(var(--base-hue), 10%, 6%);

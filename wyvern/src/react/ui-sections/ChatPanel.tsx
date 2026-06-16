@@ -3,30 +3,52 @@
 import "../styles/ChatPanel.css";
 // import Button from "../test/Button";
 // import { Stack } from "../test/Stack";
-import InputBox from "../test/InputBox";
-
+import InputBox from "../components/InputBox/InputBox";
+import InputBoxAccessories from "../components/InputBox/InputBoxAccessories";
+const rightCharms = (
+  <InputBoxAccessories>
+    <div>#</div>
+    <div>#</div>
+    <div>#</div>
+    <div>#</div>
+  </InputBoxAccessories>
+);
+const leftCharms = (
+  <InputBoxAccessories>
+    <div>+</div>
+  </InputBoxAccessories>
+);
 export default function ChatPanel() {
   // const [state, setState] = useState(1)
   return (
     <main className="chatPanel">
-      {/*<Stack gap="med">*/}
-        {/*<FlexBox direction="leftright">*/}
-          {/*<Button name="primary button" type="primary" />*/}
-          {/*<Button name="secondary button" type="secondary" />*/}
-          {/*<Button name="tertiary button" type="tertiary" />*/}
-        {/*</FlexBox>*/}
-        {/*<FlexBox direction="leftright" center="both">*/}
-          {/*<div>count: </div><div>{state}</div>*/}
-        {/*</FlexBox>*/}
-      {/*</Stack>*/}
-      <div id="test">
-        <br></br>
-        <h2>Input Testing</h2>
-        <div id="debugoutput"></div>
-  
-        {/* Should be the BASE input box */}
-        <InputBox></InputBox>
-        
+      <div className="flexHoriz fillAll">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: "1 1 auto",
+          }}
+        >
+          <div
+            style={{ flex: "1 1 auto", background: "var(--theme-highest)" }}
+          ></div>
+          <section
+            style={{
+              marginBlock: "7px",
+              paddingBottom: "0px",
+            }}
+          >
+            <form>
+              <InputBox
+                placeholder="Message #{name}"
+                charmLeft={leftCharms}
+                charmRight={rightCharms}
+              ></InputBox>
+            </form>
+          </section>
+        </div>
+        <div style={{ width: "100px" }}></div>
       </div>
     </main>
   );

@@ -1,5 +1,6 @@
 import PanelHeader from "../components/ChannelOverhead";
 import FlexBox from "../components/Flex";
+import InputBox from "../components/InputBox/InputBox";
 import "../styles/MainPanel.css"
 import ChatPanel from "./ChatPanel";
 
@@ -9,7 +10,22 @@ export default function MainPanel() {
     // sets this panel to exist in the page content
     <div className="mainPanelWrapper">
       <FlexBox direction="updown">
-        <PanelHeader></PanelHeader>
+        <PanelHeader>
+          <div className="fillAll panelHeaderInner">
+            <div className="flexHoriz centerVert fillAll">
+              <div style={{
+                marginRight: "auto"
+              }}>
+                <b>[#ChannelName]</b> - <small>description</small>
+              </div>
+              <div style={{
+                width:"100px"
+              }}>
+                <InputBox height="10px" placeholder="Search"></InputBox>
+              </div>
+            </div>
+          </div>
+        </PanelHeader>
         <FlexBox direction="leftright" className="mainContent">
           <ChatPanel />
         </FlexBox>
