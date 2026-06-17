@@ -1,6 +1,6 @@
 import type { ColoredButtonType, Props } from "../../Core";
 import { NoticeButton } from "../wyvern-comps/Buttons";
-import "../styles/Notice.css"
+import("../styles/Notice.css")
 import FlexBox from "../components/Flex";
 
 export type PropsWithButtons = {

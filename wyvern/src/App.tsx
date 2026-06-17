@@ -1,8 +1,8 @@
-import "./App.css";
-import PanelHeader from "./react/components/ChannelOverhead";
-import FlexBox from "./react/components/Flex";
-import LSidePane from "./react/ui-sections/LSidePane";
-import MainPanel from "./react/ui-sections/MainPanel";
+import("./App.css");
+const PanelHeader = (await import("./react/components/ChannelOverhead")).default;
+const FlexBox = (await import("./react/components/Flex")).default;
+const LSidePane = (await import("./react/ui-sections/LSidePane")).default;
+const MainPanel = (await import("./react/ui-sections/MainPanel")).default;
 // import ChannelSelect from "./react/wyvern-comps/ChannelSelector";
 import { userData } from "./scripts/client/Client";
 export function App() {

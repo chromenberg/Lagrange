@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "../../styles/InputBox.css"
-import PlaceholderText from "../PlaceholderText/PlaceholderText";
-import InputBoxEditor from "./InputBoxEditor";
 import type { InputBoxProps } from "./InputBox.types";
+const PlaceholderText = (await import("../PlaceholderText/PlaceholderText")).default;
+const InputBoxEditor = (await import("./InputBoxEditor")).default;
 
+import("../../styles/InputBox.css")
 
 
 // this is the BASE input box that everything should go off of

@@ -1,10 +1,10 @@
 // import { useState } from "react";
 // import FlexBox from "../components/Flex";
-import "../styles/ChatPanel.css";
+import("../styles/ChatPanel.css");
 // import Button from "../test/Button";
 // import { Stack } from "../test/Stack";
-import InputBox from "../components/InputBox/InputBox";
-import InputBoxAccessories from "../components/InputBox/InputBoxAccessories";
+const InputBox = (await import("../components/InputBox/InputBox")).default;
+const InputBoxAccessories = (await import("../components/InputBox/InputBoxAccessories")).default;
 import type { InputKeybind } from "../components/InputBox/InputBox.types";
 const rightCharms = (
   <InputBoxAccessories>

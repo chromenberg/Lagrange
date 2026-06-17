@@ -1,5 +1,5 @@
 import type { Props } from "../../Core";
-import "./Flex.css";
+import("./Flex.css");
 type FlexDirections = "updown" | "downup" | "leftright" | "rightleft";
 type CenterDirections = "horizontal" | "vertical" | "both";
 export default function FlexBox({

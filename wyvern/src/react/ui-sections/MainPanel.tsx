@@ -1,8 +1,8 @@
-import PanelHeader from "../components/ChannelOverhead";
-import FlexBox from "../components/Flex";
-import InputBox from "../components/InputBox/InputBox";
-import "../styles/MainPanel.css"
-import ChatPanel from "./ChatPanel";
+const PanelHeader = (await import("../components/ChannelOverhead")).default;
+const FlexBox = (await import("../components/Flex")).default;
+const InputBox = (await import("../components/InputBox/InputBox")).default;
+const ChatPanel = (await import("./ChatPanel")).default;
+import("../styles/MainPanel.css")
 
 
 export default function MainPanel() {

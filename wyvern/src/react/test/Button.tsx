@@ -1,8 +1,8 @@
 type ButtonType = "primary" | "secondary" | "tertiary";
 import "./Button.css";
 import "../../main.css";
-import FlexBox from "../components/Flex";
-import CursorInteractWrapper from "./CursorInteractZone";
+const FlexBox = (await import("../components/Flex")).default;
+const CursorInteractWrapper = (await import("./CursorInteractZone")).default;
 import type { MouseEventHandler } from "react";
 export default function Button({
   type,

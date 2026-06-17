@@ -1,4 +1,4 @@
-import "../../styles/PlaceholderText.css";
+import("../../styles/PlaceholderText.css");
 
 export default function PlaceholderText({ children, isActive}: { children: React.ReactNode, isActive: boolean }) {
   if (!isActive) {
