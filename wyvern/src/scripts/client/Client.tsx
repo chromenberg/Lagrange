@@ -1,9 +1,11 @@
+const IdentifyProtoBuilder = (await import("./Identify.proto")).IdentifyProtoBuilder;
+
 export const socket = new WebSocket("http://127.0.0.1:82");
 socket.onopen = () => {
   console.log("[Client] Connection opened to Gateway");
 };
 socket.onmessage = async (msg) => {
-  const content = JSON.parse(msg.data);
+  handleMessage(msg)
   /*
     Structure of message content
 
@@ -13,9 +15,9 @@ socket.onmessage = async (msg) => {
     eventName: string | undefined
   */
   // socket.send(JSON.stringify({opCode: 2}))
-  console.log("[Client] ", content);
+
 };
-export const userData = (await (
+const _userData = (
   await fetch("/api/v1/auth/register", {
     method: "POST",
     body: JSON.stringify({
@@ -24,6 +26,28 @@ export const userData = (await (
       password: "password",
     }),
   })
-).json());
+).json();
 
-console.log(userData);
+export const userData = await _userData
+
+async function handleMessage(message: MessageEvent) {
+  const msg = JSON.parse(message.data)
+  if (msg.opCode === 10) {
+    _userData.then((data) => {
+      if (data.reason) {return}
+      socket.send(IdentifyProtoBuilder(data))
+    })
+    setInterval(() => {
+      socket.send(JSON.stringify({
+        opCode: 1,
+        data: null
+      }))
+    }, msg.data.heartbeat_interval)
+  }
+
+  if (msg.eventType === "READY") {
+    
+  }
+  
+  console.log("[Client] ", msg);
+}

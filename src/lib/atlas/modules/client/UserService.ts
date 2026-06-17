@@ -134,12 +134,66 @@ export class UserService extends AtlasChild {
     });
   }
 
+  /**
+   * Gets the full user info from their token (guilds, friends, flags)
+   * @param token
+   * @returns
+   */
+  public getFullUserByToken(token: string): Promise<object> {
+    return new Promise(async (res) => {
+      const user = await this.getUserByToken(token);
+      const guilds = await this.getUserGuilds(token);
+
+      // turns guild ids into unavailable guild objects | either null because weird type bugs
+      let guildsMapped;
+      
+      if (!guilds?.length || !guilds || guilds === null) {
+        guildsMapped = null;
+      } else {
+        console.log(guilds);
+        // @ts-ignore
+        guildsMapped = guilds.map((guild) => {
+          return {
+            id: guild.guild_id as string,
+            unavailable: true,
+          };
+        });
+      }
+
+      res({
+        user: {
+          username: user?.username,
+          display_name: user?.display_name ?? null,
+          id: user?.user_id,
+          email: user?.email,
+        },
+        guilds: guildsMapped,
+      });
+    });
+  }
+
+  public getUserGuilds(token: string): SQLPromise {
+    return new Promise((res) => {
+      this.parent.sqlClient
+        .all`SELECT guild_id FROM guild_members WHERE user_id = ${atob(token.split(".")[0])};`.then(
+        (guilds) => {
+          // filter guilds and convert bigints
+          if (!guilds) {
+            res({ message: DBErrors.NoDataReturned });
+            return;
+          }
+          res(SQLDatabase.toSafeJS(guilds));
+        },
+      );
+    });
+  }
   public getUserByToken(token: string): SQLPromise {
     // Is this truly a safe method?
     return new Promise((res) => {
       this.parent.sqlClient // get user info, quite basic but thats fine for now
-        .get`SELECT user_id, username, display_name FROM users WHERE token = ${token};`.then(
-        (user) => { // filter user and convert bigints
+        .get`SELECT * FROM users WHERE token = ${token};`.then(
+        (user) => {
+          // filter user and convert bigints
           if (!user) {
             res({ message: DBErrors.NoDataReturned });
             return;

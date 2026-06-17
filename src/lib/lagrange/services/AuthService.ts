@@ -13,7 +13,7 @@ export class AuthService {
       this.registerUser(req, res);
     });
   }
-
+  
   // /auth/register
   public async registerUser(
     req: Request,

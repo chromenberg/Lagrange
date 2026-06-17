@@ -18,7 +18,7 @@ export class SiteService {
     cache?: SiteCache
   ) {
     this._cache = cache ? cache : new Collection();
-    this.route.get("*", (req, res) => { this.handleRequest(req, res); console.log(req.url) })
+    this.route.get("*", (req, res) => { this.handleRequest(req, res) })
   }
   
   public get path(): string {

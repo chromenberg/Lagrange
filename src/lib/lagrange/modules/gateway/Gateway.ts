@@ -41,15 +41,16 @@ import { eventPublisher } from "../../services/EventService.js";
 // Subscribe   |        | Listen to events that occur in a channel?
 // *ALT*       |        | Server subscribes using guilds internally instead
 
-function getEvent(data: any) {
+function getEvent(data: any, conn: any) {
   if (data.opCode) {
     Logger.sendLog(
       LogLevel.Verbose,
       ["Gateway (1)", "EventFiltering"],
       "New event received with opcode",
       data.opCode,
-    );
-    eventPublisher.publish("OPCODE_" + data.opCode, data);
+      data
+    )
+    eventPublisher.publish("OPCODE_" + data.opCode, { cli: conn, data: data });
   }
 
   if (data.eventType) {
@@ -58,13 +59,17 @@ function getEvent(data: any) {
       ["Gateway (1)", "EventFiltering"],
       "New event received with name",
       data.eventType,
+      data
     );
-    eventPublisher.publish(data.eventType, data);    
+    eventPublisher.publish(data.eventType, { cli: conn, data: data });    
   }
 }
 
 import "../events/Heartbeat.js"
 import "../events/MessageCreate.js"
+import "../events/Identify.js"
+import "../events/Ready.js"
+import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
 
 export class Gateway {
   private readonly pubsub: PubSub<any>;
@@ -87,10 +92,11 @@ export class Gateway {
     });
     this.socket.on("connection", (conn) => {
       // Create a client connection that will listen to the events needed
+      conn.send(new GatewayEventHello().toJSON())
       new ClientConnection(conn).on("message", (msg) => {
         const data = JSON.parse(msg);
 
-        getEvent(data)
+        getEvent(data,conn)
       });
     });
   }

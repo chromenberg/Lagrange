@@ -40,7 +40,7 @@ export default function ChatPanel() {
           }}
         >
           <div
-            style={{ flex: "1 1 auto", background: "var(--theme-highest)" }}
+            style={{ flex: "1 1 auto" }}
           ></div>
           <section
             style={{

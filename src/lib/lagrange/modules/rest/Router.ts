@@ -29,7 +29,7 @@ export class Router implements RouteBase {
   constructor(
     server?: Server
   ) {
-    console.log("new api made")
+    // console.log("new api made")
     if (!server) {
       this.server = new Server({ // set incoming message to be request instead
         IncomingMessage: Request
