@@ -1,4 +1,4 @@
-export const socket = new WebSocket("http://127.0.0.1:81");
+export const socket = new WebSocket("http://127.0.0.1:82");
 socket.onopen = () => {
   console.log("[Client] Connection opened to Gateway");
 };

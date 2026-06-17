@@ -24,6 +24,7 @@ export function initGateway() {
   return new Gateway();
 }
 
+
 // FIXME: All routes get checked, not good, should add filtering for duplicate routes
 __api.alias("/channels/@me", "/api/content/index.html");
 __api.route(
