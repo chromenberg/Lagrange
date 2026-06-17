@@ -2,22 +2,17 @@ import { useState } from "react";
 import "../../styles/InputBox.css"
 import PlaceholderText from "../PlaceholderText/PlaceholderText";
 import InputBoxEditor from "./InputBoxEditor";
+import type { InputBoxProps } from "./InputBox.types";
 
-type InputBoxProps = {
-  placeholder: string,
-  charmLeft?: React.ReactNode
-  charmRight?: React.ReactNode
-  height?: string
-}
+
 
 // this is the BASE input box that everything should go off of
 // but for now just making it a full thing is fine
-export default function InputBox({placeholder, charmLeft, charmRight, height, ...rest}: InputBoxProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function InputBox({ placeholder, charmLeft, charmRight, keybinds, ...rest }: InputBoxProps) {
   const [inputState, setInputState] = useState(false);
   
   return (
-    <div className="inputBoxWrapper">
+    <div className="inputBoxWrapper" {...rest}>
       <div className="inputInnerContainer">
         {charmLeft}
         
@@ -25,7 +20,8 @@ export default function InputBox({placeholder, charmLeft, charmRight, height, ..
           <PlaceholderText isActive={inputState}>
             {placeholder}
           </PlaceholderText>
-          <InputBoxEditor hook={setInputState} />
+          {/* Prop Drilling, should be using a state, but its not that bad */}
+          <InputBoxEditor hook={setInputState} bindings={keybinds} />
         </div>
 
         {charmRight}

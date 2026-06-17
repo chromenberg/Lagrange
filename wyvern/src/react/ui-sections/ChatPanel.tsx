@@ -5,6 +5,7 @@ import "../styles/ChatPanel.css";
 // import { Stack } from "../test/Stack";
 import InputBox from "../components/InputBox/InputBox";
 import InputBoxAccessories from "../components/InputBox/InputBoxAccessories";
+import type { InputKeybind } from "../components/InputBox/InputBox.types";
 const rightCharms = (
   <InputBoxAccessories>
     <div>#</div>
@@ -18,6 +19,14 @@ const leftCharms = (
     <div>+</div>
   </InputBoxAccessories>
 );
+const sendMessage: InputKeybind = {
+  shift: true,
+  control: false,
+  keyName: "Enter",
+  callback: (ref) => {
+    console.log(ref)
+  }
+}
 export default function ChatPanel() {
   // const [state, setState] = useState(1)
   return (
@@ -44,6 +53,7 @@ export default function ChatPanel() {
                 placeholder="Message #{name}"
                 charmLeft={leftCharms}
                 charmRight={rightCharms}
+                keybinds={[sendMessage]}
               ></InputBox>
             </form>
           </section>

@@ -9,7 +9,7 @@
     max-height: 200px;
     overflow-y: scroll;
     padding-right: var(--scrollbar-width);
-    width: 100%;
+    max-width: 100%;
     position: relative;
 }
 
