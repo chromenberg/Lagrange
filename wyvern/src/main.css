@@ -52,11 +52,15 @@ nav {
     --button-primary-hsl: 230 calc(var(--saturation, 1) * 80%) 60%;
     --button-primary: hsl(var(--button-primary-hsl)/0.8);
 
-    --button-secondary-hsl: 120 calc(var(--saturation, 1) * 60%) 40%;
-    --button-secondary: hsl(var(--button-secondary-hsl)/0.9);
+    --button-secondary: color-mix(in oklab, hsl(var(--neutral-66)/1) 100%, var(--default-high) 10%);
 
-    --button-tertiary-hsl: 230 calc(var(--saturation, 1) * 20%) 30%;
-    --button-tertiary: hsl(var(--button-tertiary-hsl)/0.9);
+    --button-tertiary: color-mix(in oklab, hsl(var(--neutral-66)/1) 50%, var(--default-high) 50%);
+
+    --button-success-hsl: 120 calc(var(--saturation, 1) * 60%) 40%;
+    --button-success: hsl(var(--button-success-hsl)/0.8);
+
+    --button-danger-hsl: 0 calc(var(--saturation, 1) * 60%) 50%;
+    --button-danger: hsl(var(--button-danger-hsl)/0.9);
 
     --button-primary-hover: color-mix(
         in oklab,
