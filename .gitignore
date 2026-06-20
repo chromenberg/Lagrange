@@ -26,3 +26,4 @@ pids
 *.seed
 *.pid.lock
 
+*server.sqlite
