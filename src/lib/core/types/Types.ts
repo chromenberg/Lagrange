@@ -79,6 +79,8 @@ export namespace API {
   export type Response = ServerResponse<IncomingMessage>;
 }
 
+export type ObjKeys = string | number | symbol;
+
 export type Callback<Type> = (...args: any[]) => Type;
 export type VoidCallback = Callback<void>;
 export type VoidAPICallback = API.APICallback<void>;
@@ -119,7 +121,6 @@ export interface OwnUser extends BaseUser {
 
 export interface User extends BaseUser {}
 
-
 export interface UserSignupData {
   username: string;
   email: EmailAddress;
@@ -130,7 +131,6 @@ export interface SignupResponse {
   user_id: Snowflake;
   token: Token;
 }
-
 
 export namespace Templates {
   export namespace roles {
