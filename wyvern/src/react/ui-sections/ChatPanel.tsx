@@ -58,7 +58,6 @@ export default function ChatPanel() {
             </form>
           </section>
         </div>
-        <div style={{ width: "100px" }}></div>
       </div>
     </main>
   );

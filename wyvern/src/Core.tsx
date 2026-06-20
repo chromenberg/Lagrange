@@ -1,4 +1,8 @@
-export type Props = { children: React.ReactNode; className?: string | ""};
+export type Props = {
+  children: React.ReactNode;
+  className?: string | "";
+  [rest: string]: unknown;
+};
 export type VoidCallback = (...args: unknown[]) => void;
 // move to new file?
 export type ButtonType = {
