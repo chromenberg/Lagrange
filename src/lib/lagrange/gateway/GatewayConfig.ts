@@ -9,7 +9,7 @@ export const Gateway = {
     MaxSocketConnects: 3
   },
   Heartbeating: {
-    ExpectedTimeBetweenBeat: 5_000,
+    ExpectedTimeBetweenBeat: 45_000,
     BeatTolerance: 500,
     DisconnectAfterPulseLostTime: 30_000,
   }

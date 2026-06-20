@@ -20,11 +20,22 @@ export class Request extends IncomingMessage {
     this._params = data
   }
 }
+type RouterCallback = {
+  func: VoidAPICallback,
+  ctx?: any
+}
 
+type RouterCallbackFull = {
+  path: string,
+  mode: API.HTTPMethod
+  mainFunc: RouterCallback
+  middleware?: Partial<RouterCallback>
+}
 
 export class Router implements RouteBase {
   private readonly routeMap = new Collection<string, Route>()
   private readonly aliases = new Collection<string, string>()
+  // private readonly cache = new Collection<string, RouterCallbackFull>() // Do we need this many collections?
   private readonly server: Server;
   constructor(
     server?: Server
@@ -77,8 +88,9 @@ export class Router implements RouteBase {
 
     // IMPORTANT TODO: STOP CREATING A LISTENER FOR EVERY
     // ROUTE, THIS WILL KILL THE ENTIRE SERVER AT SOME POINT SOON
-    
+
     this.server.on("request", (req: Request, res) => {
+    
       // console.log(path, req.url)
       if (req.url && this.aliases.has(req.url)) {
         // if we have an aliased url then set the
@@ -87,7 +99,7 @@ export class Router implements RouteBase {
         console.log("Request was aliased")
       }
       if (req.method !== mode) return;
-
+    
       // if the path is set to * it is a wildcard path, accept any req
       // WARNING: This could most likely fetch any file if * is appended to the end
       // TODO: make this work for any version
@@ -104,15 +116,22 @@ export class Router implements RouteBase {
         this.callbackWrapperFinal(req, res, callback, callback2);
         return;
       }
-
+    
       const params = req.url?.match(regexp);
       if (!params || (params === null)) return;
       if (!params.groups) return;
-
+    
       req.params = params.groups;
       this.callbackWrapperFinal(req, res, callback, callback2);
       return;
     })
+
+    
+    // this.cache.set(path, {
+    //   mainFunc: {func: callback},
+    //   middleware: {func: callback2}
+    // })
+
   }
 
   public selectMethodOverload(
