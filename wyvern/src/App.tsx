@@ -3,13 +3,14 @@ const PanelHeader = (await import("./react/components/ChannelOverhead")).default
 const FlexBox = (await import("./react/components/Flex")).default;
 const LSidePane = (await import("./react/ui-sections/LSidePane")).default;
 const MainPanel = (await import("./react/ui-sections/MainPanel")).default;
+// const CreateGuildModal = (await import("./react/modals/GuildCreate")).default;
 // import ChannelSelect from "./react/wyvern-comps/ChannelSelector";
-import { userData } from "./scripts/client/Client";
+// import { userData } from "./scripts/client/Client";
 export function App() {
   return (
     <div className="appContent">
       <div id="titleBar">
-      Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}
+      {/*Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}*/}
       </div>
       <div id="lSidePanel">
         <nav id="guilds"></nav>
@@ -38,6 +39,7 @@ export function App() {
         </div>
       </div>
       <MainPanel></MainPanel>
+      {/*<CreateGuildModal />*/}
     </div>
   );
 }
