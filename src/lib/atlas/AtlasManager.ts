@@ -3,17 +3,18 @@ import { Logger, LogLevel } from "../core/logging/Logger.js";
 import { AtlasClient } from "./modules/client/AtlasClient.js";
 import { RequestManager } from "./modules/client/Requests.js";
 import { SQLDatabase } from "./modules/sql/SQL.js";
+import { exec } from "child_process";
 
 export class Atlas {
   private _client: AtlasClient;
   private _requests: RequestManager;
   private _sqlClient: SQLDatabase;
   constructor() {
-    Logger.sendLog(LogLevel.Info, ["ATLAS"], "INITIALIZING ATLAS");
+    Logger.sendLog(LogLevel.Info, ["ATLAS"], "Initializing databases");
     this._client = new AtlasClient();
     this._sqlClient = new SQLDatabase(
       this,
-      new DatabaseSync(":memory:", {readBigInts: true})
+      new DatabaseSync("./db/dev/server.sqlite", {readBigInts: true})
     );
     this._requests = new RequestManager(this);
     // once again i dont really care if this is a full path
@@ -158,3 +159,10 @@ export class Atlas {
     this._client.pool.returnResource(pair);
   }
 }
+
+process.on("exit", (e) => {
+  Logger.sendLog(LogLevel.Info, ["ATLAS"], "Syncing REPL database with PROD")
+  exec("cp ./db/prod/server.sqlite ./db/repl/server.sqlite").disconnect()
+  // exec("cp ./db/prod/server.sqlite ./db/dev/server.sqlite").disconnect()
+  process.exit(e)
+})
