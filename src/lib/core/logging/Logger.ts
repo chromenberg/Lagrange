@@ -67,7 +67,10 @@ export class _Logger {
         `${logTime.padEnd(9)} | `,
         formatted,
         " - ",
-        ...content,
+        ...content.map(item => {
+          if (typeof item === "object") return JSON.stringify(item, null, "  ")
+          return item
+        }),
       ].join(" ") + "\n",
     );
   }
