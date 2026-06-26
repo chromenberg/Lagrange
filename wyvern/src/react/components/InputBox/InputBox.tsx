@@ -12,7 +12,7 @@ export default function InputBox({ placeholder, charmLeft, charmRight, keybinds,
   const [inputState, setInputState] = useState(false);
   
   return (
-    <div className="inputBoxWrapper" {...rest}>
+    <div className="inputBoxWrapper" mana-type="input-box-proto" {...rest}>
       <div className="inputInnerContainer">
         {charmLeft}
         

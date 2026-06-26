@@ -4,6 +4,8 @@ import type { Route } from "../../lagrange/modules/rest/Route.js";
 import type { types } from "cassandra-driver";
 import { type SQLOutputValue } from "node:sqlite";
 
+export type Correct<T> = unknown & T
+
 export namespace API {
   export interface RequestParams {
     [key: string]: any;
@@ -109,7 +111,7 @@ export type EmailAddress = `${string}@${string}.${string}`;
 export type Token = `${Snowflake}.${string}.${string}`;
 
 export interface BaseUser {
-  user_id: Snowflake;
+  id: Snowflake;
   username: string;
   display_name: string;
 }
@@ -131,11 +133,14 @@ export interface SignupResponse {
   user_id: Snowflake;
   token: Token;
 }
-
+export type IDIndexedItem = {
+  id: Snowflake;
+  name: string;
+};
 export namespace Templates {
   export namespace roles {
     export const everyone = {
-      id: 0,
+      id: "0",
       name: "@everyone",
       permissions: "2248329584430657",
       color: 0,

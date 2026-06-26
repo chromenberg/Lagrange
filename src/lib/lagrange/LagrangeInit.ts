@@ -13,6 +13,7 @@ import { Router } from "./modules/rest/Router.js";
 import { Atlas } from "../atlas/AtlasManager.js";
 import { SiteService } from "./services/SiteService.js";
 import { MessageService } from "./services/MessageService.js";
+import { GuildService } from "./services/GuildService.js";
 import { AuthService } from "./services/AuthService.js";
 import { UserService } from "./services/UserService.js";
 
@@ -38,4 +39,5 @@ __api.route(
 );
 __api.route("/api/v1/users/", (route) => new UserService(route));
 __api.route("/api/v1/auth/", (route) => new AuthService(route));
+__api.route("/api/v1/guilds/", (route) => new GuildService(route));
 

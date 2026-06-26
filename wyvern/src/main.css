@@ -49,8 +49,8 @@ nav {
     --font-l: 1.6px;
     --font-xl: 2px;
 
-    --button-primary-hsl: 230 calc(var(--saturation, 1) * 80%) 60%;
-    --button-primary: hsl(var(--button-primary-hsl)/0.8);
+    --button-primary-hsl: 230 calc(var(--saturation, 1) * 100%) 70%;
+    --button-primary: hsl(var(--button-primary-hsl)/0.9);
 
     --button-secondary: color-mix(in oklab, hsl(var(--neutral-66)/1) 100%, var(--default-high) 10%);
 

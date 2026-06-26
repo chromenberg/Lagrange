@@ -37,7 +37,7 @@
 }
 
 .manaButtonGroup {
-    margin-top: auto;
+    /*margin-top: auto;*/
     width: 100%;
     gap: var(--padding-sm);
     display: flex;

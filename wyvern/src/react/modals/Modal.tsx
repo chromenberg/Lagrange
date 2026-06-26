@@ -10,9 +10,11 @@ export default function Modal({
   children,
   width,
   height,
+  ...rest
 }: Props & {
   width?: string;
-  height?: string;
+    height?: string;
+  [rest:string]:unknown
 }) {
   return (
     <div
@@ -21,6 +23,7 @@ export default function Modal({
         width: width ?? "fit-content",
         height: height ?? "fit-content",
       }}
+      {...rest}
     >
       {children}
     </div>

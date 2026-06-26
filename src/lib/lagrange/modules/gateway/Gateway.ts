@@ -1,32 +1,14 @@
 import { WebSocketServer } from "ws";
-import { Config } from "../../Config.js";
-import EventEmitter from "node:events";
-import type {
-  OneOrArr,
-  VoidCallback,
-  VoidCallbackEventMap,
-} from "../../../core/types/Types.js";
-import { PubSub } from "../../../core/pubsub/PubSub.js";
+import type { VoidCallback } from "../../../core/types/Types.js";
 import { Collection } from "../../../core/structs/Collection.js";
-import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import type WebSocket from "ws";
-import { Atlas } from "../../../../_Init.js";
-import { Cache, type CacheCategories } from "../../../core/cache/Cache.js";
 import {
-  GatewayEventOpCodes,
   type GatewayEvent,
-  type GatewayEventTypes,
+  GatewayEventTypes,
 } from "../events/GatewayEvents.js";
-import { GatewayEventIdentify } from "../../gateway/events/receive/Identify.js";
 import { eventPublisher } from "../../services/EventService.js";
-
-//!TODO: Allocate a fuck load of time to this
-// because making the gateway stack is actually going to be a lot fucking
-// bigger than i thought fuuuuuckkkkkkkkkkk
-// i need to manage connections and their permissions
-// and send messages based on them and subscribe to events using an entirely
-// different database manager fuuuuckkkkkkkkkk
-// and i also need to make an entire event scheme and gateway router fuckkkk
+import { ClientConnections } from "./Connections.js";
+import "../subscriptions/PubSubService.js"
 
 // Timeline
 // Client      | Server | Description
@@ -43,83 +25,52 @@ import { eventPublisher } from "../../services/EventService.js";
 
 function getEvent(data: any, conn: any) {
   if (data.opCode) {
-    Logger.sendLog(
-      LogLevel.Verbose,
-      ["Gateway (1)", "EventFiltering"],
-      "New event received with opcode",
-      data.opCode,
-      data
-    )
     eventPublisher.publish("OPCODE_" + data.opCode, { cli: conn, data: data });
   }
 
   if (data.eventType) {
-    Logger.sendLog(
-      LogLevel.Verbose,
-      ["Gateway (1)", "EventFiltering"],
-      "New event received with name",
-      data.eventType,
-      data
-    );
-    eventPublisher.publish(data.eventType, { cli: conn, data: data });    
+    eventPublisher.publish(data.eventType, { cli: conn, data: data });
   }
 }
 
-import "../events/Heartbeat.js"
-import "../events/MessageCreate.js"
-import "../events/Identify.js"
-import "../events/Ready.js"
+// TODO: Move this
+import "../events/Heartbeat.js";
+import "../events/MessageCreate.js";
+import "../events/Identify.js";
+import "../events/Ready.js";
 import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
+import { pubSub } from "./PubSubHandler.js";
+import { Logger } from "../../../core/logging/Logger.js";
+import { ClientConnection } from "./Connection.js";
 
 export class Gateway {
-  private readonly pubsub: PubSub<any>;
+  // private readonly pubsub: PubSub<any>;
   private readonly socket: WebSocketServer;
-  constructor(pubsub?: PubSub<any>) {
-    this.pubsub = pubsub ? pubsub : new PubSub();
-
-    // temporary thing, ideally we should not store every guild ever but who cares
-    // anything to make it work
-
-    // Atlas.requests.guilds.getAllGuilds().then((guilds) => {
-    //   guilds?.forEach((guild) => {
-    //     console.log(guild)
-    //   })
-    // })
-    // ---- Message handling
+  constructor(/* pubsub?: PubSub<any> */) {
+    // this.pubsub = pubsub ? pubsub : new PubSub();
     this.socket = new WebSocketServer({
       port: 82,
-      host: "127.0.0.1"
+      host: "127.0.0.1",
     });
+
+    
+    
     this.socket.on("connection", (conn) => {
       // Create a client connection that will listen to the events needed
-      conn.send(new GatewayEventHello().toJSON())
-      new ClientConnection(conn).on("message", (msg) => {
-        const data = JSON.parse(msg);
+      const socketClient = new ClientConnection(conn);
 
-        getEvent(data,conn)
+      ClientConnections.add(socketClient, () => {
+        socketClient.close();
       });
-    });
-  }
 
-  public subscribe(
-    channelID: string,
-    listener: VoidCallback,
-    ctx?: any,
-  ): symbol {
-    Logger.sendLog(
-      LogLevel.Verbose,
-      ["LAGRANGE", "Gateway"],
-      "obtained a request to subscribe",
-    );
-    return this.pubsub.subscribe(channelID, listener, ctx);
-  }
-  public unsubscribe(channelID: string, listenerID: symbol): boolean {
-    Logger.sendLog(
-      LogLevel.Verbose,
-      ["LAGRANGE", "Gateway"],
-      "obtained a request to unsubscribe",
-    );
-    return this.pubsub.unsubscribe(channelID, listenerID);
+      socketClient.send(new GatewayEventHello().toJSON());
+      
+      socketClient.on("message", (msg) => {
+        const data = JSON.parse(msg);
+        getEvent(data, socketClient);
+      });
+      
+    });
   }
 }
 
@@ -154,23 +105,4 @@ export class ChannelGateway {
   // (guild would be easier to sort)
 
   public emitEvent(code: GatewayEventTypes, data: GatewayEvent) {}
-}
-
-export class ClientConnection {
-  private _subs: Collection<symbol, Function> = new Collection();
-  private _sock: WebSocket;
-  constructor(socket: WebSocket) {
-    this._sock = socket;
-  }
-
-  public get subs(): Collection<symbol, Function> {
-    return this._subs;
-  }
-  // Sends a message back to the client
-  public send(data: Buffer): void {
-    this._sock.send(data);
-  }
-  public on(eventName: string, listener: (...args: any[]) => void): void {
-    this._sock.on(eventName, listener);
-  }
 }

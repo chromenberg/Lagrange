@@ -64,8 +64,7 @@ export class Atlas {
         CREATE TABLE IF NOT EXISTS guilds (
             guild_id INTEGER PRIMARY KEY,
             owner_id INTEGER NOT NULL,
-            guild_name TEXT NOT NULL,
-            FOREIGN KEY (owner_id) REFERENCES users(user_id)
+            guild_name TEXT NOT NULL
         );`
     } catch (e) {
       Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the guild table\n", e, "\n");
@@ -93,7 +92,7 @@ export class Atlas {
             guild_id INTEGER NOT NULL,
             channel_name TEXT NOT NULL,
             channel_index INTEGER,
-            FOREIGN KEY (guild_id) REFERENCES guilds(guild_id)
+            FOREIGN KEY (guild_id) REFERENCES guilds(guild_id) ON DELETE CASCADE
         );`
     } catch (e) {
       Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the channel table\n", e, "\n");
@@ -143,7 +142,6 @@ export class Atlas {
         CREATE TABLE IF NOT EXISTS guild_members (
             user_id INTEGER REFERENCES users(user_id),
             guild_id INTEGER REFERENCES guilds(guild_id),
-            nickname text,
             PRIMARY KEY (user_id, guild_id)
         );`
     } catch (e) {

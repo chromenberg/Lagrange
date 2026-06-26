@@ -19,6 +19,7 @@ import { AtlasChild } from "./AtlasChild.js";
 
 import { createHmac, scryptSync } from "crypto"; // TODO: this could be something to make in rust
 import { DBErrors } from "../../../core/errors/DBErrors.js";
+import { GatewayErrorCodes, GatewayErrors } from "../../../core/errors/ServerErrors.js";
 
 // TODO: reduce import counts
 
@@ -142,21 +143,22 @@ export class UserService extends AtlasChild {
   public getFullUserByToken(token: string): Promise<object> {
     return new Promise(async (res) => {
       const user = await this.getUserByToken(token);
+
+      if (!user) {
+        res(GatewayErrors["4000"])
+        return
+      }
+
       const guilds = await this.getUserGuilds(token);
 
-      // turns guild ids into unavailable guild objects | either null because weird type bugs
-      let guildsMapped;
-      
-      if (!guilds?.length || !guilds || guilds === null) {
-        guildsMapped = null;
-      } else {
-        console.log(guilds);
-        // @ts-ignore
-        guildsMapped = guilds.map((guild) => {
-          return {
-            id: guild.guild_id as string,
-            unavailable: true,
-          };
+      if (!guilds) {
+        res({})
+        return;
+      }
+
+      const mapGuilds = () => {
+        return Object.values(guilds).map((guild: unknown) => {
+          return this.services.guilds.toUnavailableGuild((guild as {guild_id: bigint}).guild_id)
         });
       }
 
@@ -167,7 +169,7 @@ export class UserService extends AtlasChild {
           id: user?.user_id,
           email: user?.email,
         },
-        guilds: guildsMapped,
+        guilds: mapGuilds(),
       });
     });
   }
@@ -202,5 +204,17 @@ export class UserService extends AtlasChild {
         },
       );
     });
+  }
+
+  public async getGuildChannelsForID(id: Snowflake) {
+    return this.parent.sqlClient.all`
+      SELECT guild_members.guild_id,
+      guild_members.user_id,
+      guilds.guild_id,
+      channels.channel_id,
+      channels.guild_id
+      FROM guilds, guild_members 
+      LEFT JOIN channels ON guilds.guild_id = channels.guild_id
+      WHERE guild_members.user_id = ${BigInt(id)} AND guild_members.guild_id = guilds.guild_id;`
   }
 }

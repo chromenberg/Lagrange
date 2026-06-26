@@ -27,3 +27,4 @@ pids
 *.pid.lock
 
 *server.sqlite
+logs/

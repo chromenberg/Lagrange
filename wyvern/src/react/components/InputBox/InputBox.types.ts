@@ -19,4 +19,5 @@ export type InputBoxProps = {
   charmRight?: React.ReactNode
   height?: string
   keybinds?: InputKeybind[]
+  [rest: string]: unknown
 }

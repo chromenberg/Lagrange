@@ -1,9 +1,12 @@
 import type { GuildCreateObj } from "../../../lagrange/interfaces/Guilds.js";
 import type { Atlas } from "../../AtlasManager.js";
+import type { GuildData } from "../../../core/types/FeatureTypes.js";
+import type { UnavailableID } from "../../../core/types/GuildTypes.js";
+import type { Snowflake, SQLPromiseArray } from "../../../core/types/Types.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import type { SQLPromiseArray } from "../../../core/types/Types.js";
 import { AtlasChild } from "./AtlasChild.js";
+import { GuildTemplate } from "../templates/GuildTemplate.js";
 
 export class GuildService extends AtlasChild {
   protected snowflake: SnowflakeNode;
@@ -23,13 +26,56 @@ export class GuildService extends AtlasChild {
         });
   }
 
-  public async getAllGuilds(): SQLPromiseArray {
-    return this.parent.sqlClient.all`SELECT * FROM guilds`;
+  public async addGuildMember(
+    guildID: Snowflake,
+    userID: Snowflake,
+  ): Promise<void> {
+    this.parent.sqlClient
+      .run`INSERT INTO guild_members VALUES (${BigInt(userID)}, ${BigInt(guildID)});`;
   }
 
-  public async newGuild(data: GuildCreateObj): Promise<void> {
-    // this.parent.sqlClient
-    //   .run`INSERT INTO guilds (${this.snowflake.GenerateID().toString()}, 
-    //                           ${data.name})`;
+  public async getAllGuilds(): SQLPromiseArray {
+    return this.parent.sqlClient.all`SELECT * FROM guilds;`;
+  }
+
+  public async newGuild(data: GuildData): Promise<void> {
+    // Populate the id of the guild
+    data.id = this.snowflake.GenerateID().toString();
+    console.log(data);
+    await this.parent.sqlClient
+      .run`INSERT INTO guilds VALUES (${BigInt(data.id)}, ${BigInt(data.owner_id)}, ${data.name});`;
+    // Create a new channel in the database
+    const channel = this.parent.requests.channels.newChannel(
+      {
+        channel_index: 0,
+        name: "general",
+        id: "",
+      },
+      data.id, // this is the guild id being passed into the channel
+    );
+    const channel2 = this.parent.requests.channels.newChannel(
+      {
+        channel_index: 1,
+        name: "off-topic",
+        id: "",
+      },
+      data.id, // this is the guild id being passed into the channel
+    );
+
+    new GuildTemplate(data.id, data.owner_id, [await channel, await channel2], data.name);
+
+    // Add the owner of the server into guild members
+    this.addGuildMember(data.id, data.owner_id);
+  }
+
+  public toUnavailableGuild(id: bigint | Snowflake): UnavailableID {
+    return {
+      id: id.toString(),
+      unavailable: true,
+    };
+  }
+
+  public async getAllGuildChannels() {
+    return this.parent.sqlClient.all`SELECT guilds.guild_id, channels.channel_id, channels.guild_id FROM guilds LEFT JOIN channels ON guilds.guild_id = channels.guild_id;`
   }
 }

@@ -1,12 +1,13 @@
 import EventEmitter from "node:events";
 import type { VoidCallback, VoidCallbackEventMap } from "../types/Types.js";
 import { Collection } from "../structs/Collection.js";
+import { CallArray } from "../structs/CallArray.js";
 
 type SubMap = {
   eventName: string;
   listener: VoidCallback;
   eventSubgroups?: string[];
-  ctx: any
+  ctx: any;
 };
 
 type EventKey = string;
@@ -50,6 +51,8 @@ export abstract class AbstractPubSub<
 export class PubSub<
   EventMap extends Record<EventKey, any>,
 > extends AbstractPubSub<EventMap> {
+  private _registeredEvents: Collection<string, CallArray> = new Collection();
+
   constructor() {
     super();
   }
@@ -57,15 +60,34 @@ export class PubSub<
   protected _subscribe<E extends keyof EventMap & EventKey>(
     eventName: E,
     listener: any,
-    ctx?: any
+    ctx?: any,
   ): symbol {
+    console.log("New subscription for ",eventName)
+    // if event is not already registered then
+    if (!this._registeredEvents.has(eventName)) {
+      // create a new event in the registry with a CallArray
+      // then add the listener into the call array
+      console.log("making new listener")
+      this._registeredEvents.set(eventName, new CallArray())
+      this._registeredEvents.get(eventName)?.push(listener);
+      
+      this.on(eventName, (...args: any[]) => {
+        this._registeredEvents.get(eventName)?.callAll(...args);
+      });
+    } else {
+      // if event already exists then just add the listener into the call array
+      this._registeredEvents.get(eventName)?.push(listener);
+    }
+    
     // TODO: too many subscriptions can slow down process with this method
     // unify event emitters to activate on the same emitter if already present
-    this.on(eventName, (...args: any[]) => { listener.call(ctx, ...args) });
+    // this.on(eventName, (...args: any[]) => {
+    //   listener.call(ctx, ...args);
+    // });
     return this._subMap.setReturn(Symbol(eventName), {
       listener,
       eventName,
-      ctx
+      ctx,
     })[0];
   }
 
@@ -89,7 +111,7 @@ export class PubSub<
   public subscribe<E extends keyof EventMap & EventKey>(
     eventName: E,
     listener: VoidCallbackEventMap<EventMap>,
-    ctx?: any
+    ctx?: any,
   ): symbol {
     return this._subscribe(eventName, listener, ctx);
   }
@@ -99,11 +121,13 @@ export class PubSub<
   ): boolean {
     return this._unsubscribe(eventName, listenerID);
   }
-  public publish<E extends keyof EventMap & EventKey>(eventName: E, data: EventMap[E]) {
-    this._publish(eventName, data)
-  };
+  public publish<E extends keyof EventMap & EventKey>(
+    eventName: E,
+    data: EventMap[E],
+  ) {
+    this._publish(eventName, data);
+  }
 }
-
 
 // class GuardedPubSub<E> extends PubSub<E> {
 //   constructor() {

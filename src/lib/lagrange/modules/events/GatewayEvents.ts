@@ -43,11 +43,12 @@ export enum GatewayEventOpCodes {
   RECONNECT,
   INVALID_SESSION = 9,
   HELLO = 10,
+  HEARTBEAT_ACK,
   REQUEST_GUILD_MEMBERS = 8,
   REQUEST_SOUNDBOARD_SOUNDS = 31
 }
 
-export enum GatewayEventTypes {
+export const enum GatewayEventTypes {
   READY = "READY",
   RESUMED = "RESUMED",
   RATE_LIMITED = "RATE_LIMITED",
@@ -88,6 +89,7 @@ export enum GatewayEventTypes {
   TYPING_START = "TYPING_START",
   USER_UPDATE = "USER_UPDATE"
 }
+
 
 export enum GatewayEventErrorCodes {
 

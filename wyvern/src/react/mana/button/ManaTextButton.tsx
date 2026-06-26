@@ -1,5 +1,6 @@
 import type { Props } from "../../../Core";
-import Button from "./Button";
+const Button = (await import("./Button")).default;
+
 
 type ButtonStyle = "Primary" | "Secondary" | "Tertiary" | "Success" | "Danger";
 

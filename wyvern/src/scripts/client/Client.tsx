@@ -1,12 +1,16 @@
-const IdentifyProtoBuilder = (await import("./Identify.proto"))
-  .IdentifyProtoBuilder;
+// import { useState } from "react";
+// import { useGuildData } from "./GuildData";
+import { HandleMessage } from "./HandleMessage";
+
+// const IdentifyProtoBuilder = (await import("./Identify.proto"))
+//   .IdentifyProtoBuilder;
 
 export const socket = new WebSocket("http://127.0.0.1:82");
 socket.onopen = () => {
   console.log("[Client] Connection opened to Gateway");
 };
 socket.onmessage = async (msg) => {
-  handleMessage(msg);
+  HandleMessage(msg);
   /*
     Structure of message content
 
@@ -29,28 +33,3 @@ socket.onmessage = async (msg) => {
 // ).json();
 
 // export const userData = await _userData;
-
-async function handleMessage(message: MessageEvent) {
-  const msg = JSON.parse(message.data);
-  if (msg.opCode === 10) {
-    socket.send(
-      IdentifyProtoBuilder({
-        intents: "1",
-        token:
-          "MTIyODIwNTUyNTk0MzAwOTI4.ajUhxg.8pwpnekSQXUqFAT4Fp6GKC_GVd80n0McfxNYvZz_J5M",
-      }),
-    );
-
-    setInterval(() => {
-      socket.send(
-        JSON.stringify({
-          opCode: 1,
-          data: null,
-        }),
-      );
-    }, msg.data.heartbeat_interval);
-  }
-
-
-  console.log("[Client] ", msg);
-}

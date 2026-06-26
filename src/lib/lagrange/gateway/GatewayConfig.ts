@@ -1,6 +1,6 @@
 export const Gateway = {
   Socket: {
-    Port: 81,
+    Port: 83,
     Address: "127.0.0.1"
   },
   Sharding: {
@@ -9,8 +9,8 @@ export const Gateway = {
     MaxSocketConnects: 3
   },
   Heartbeating: {
-    ExpectedTimeBetweenBeat: 45_000,
+    ExpectedTimeBetweenBeat: 10_000,
     BeatTolerance: 500,
-    DisconnectAfterPulseLostTime: 30_000,
+    DisconnectAfterPulseLostTime: 15_000,
   }
 }

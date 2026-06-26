@@ -1,0 +1,12 @@
+.manaActionRow {
+    width: 100%;
+    padding-block: var(--padding-m);
+    /*
+    Make all mana items
+    fill available space in action row
+     */
+    > div[mana-type] {
+        width: 100%;
+        height:100%
+    }
+}
