@@ -1,3 +1,4 @@
+import { Logger } from "../logging/Logger.js";
 import type { VoidCallback } from "../types/Types.js";
 
 export class CallArray<V extends VoidCallback = VoidCallback> {
@@ -8,7 +9,7 @@ export class CallArray<V extends VoidCallback = VoidCallback> {
   }
   public push(item: V): V {
     this._items.push(item);
-    console.log("Call array length is now", this.length)
+    Logger.sendLog(1, ["CallArray"], "Call array length is now", this.length)
     return item;
   }
 

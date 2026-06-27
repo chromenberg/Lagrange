@@ -2,7 +2,7 @@ import type { WebSocket } from "ws";
 import { Collection } from "../../../core/structs/Collection.js";
 import type { VoidCallback } from "../../../core/types/Types.js";
 import { pubSub } from "./PubSubHandler.js";
-import { GatewayEmitter } from "../subscriptions/PubSubService.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 
 export class ClientConnection {
   private _subs: Collection<symbol, Function> = new Collection();
@@ -16,6 +16,7 @@ export class ClientConnection {
   }
 
   public close(code?: number, data?: string | Buffer<ArrayBufferLike>) {
+    // Logger.sendLog(LogLevel.Error, ["Connections"], "Closed Connection")
     this._sock.close(code, data);
   }
 

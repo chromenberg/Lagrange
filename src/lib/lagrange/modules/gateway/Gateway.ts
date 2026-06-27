@@ -36,12 +36,14 @@ function getEvent(data: any, conn: any) {
 // TODO: Move this
 import "../events/Heartbeat.js";
 import "../events/MessageCreate.js";
-import "../events/Identify.js";
 import "../events/Ready.js";
+// import "../events/MessageCreate.js"
+import "../events/Identify.js";
 import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
 import { pubSub } from "./PubSubHandler.js";
 import { Logger } from "../../../core/logging/Logger.js";
 import { ClientConnection } from "./Connection.js";
+import { GatewayPublisher } from "../subscriptions/PubSubService.js";
 
 export class Gateway {
   // private readonly pubsub: PubSub<any>;
@@ -71,9 +73,10 @@ export class Gateway {
       });
       
     });
+    process.emit("lagrangeInit")
   }
 }
-
+export const GatewayEmitter = new GatewayPublisher()
 export class GuildGateway {
   // events involving guilds go from the api to here via the api
 }

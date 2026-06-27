@@ -7,8 +7,8 @@ class PubSub extends EventTarget {
 
 export const pubsub = new PubSub()
 
-pubsub.addEventListener("test", () => {
-  console.log("sdsdfsfd")
+pubsub.addEventListener("MESSAGE_CREATE", (data) => {
+  console.log(data)
 })
 
 

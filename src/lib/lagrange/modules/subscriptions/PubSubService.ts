@@ -1,7 +1,9 @@
 import { Atlas } from "../../../../_Init.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { PubSub } from "../../../core/pubsub/PubSub.js";
 import { Collection } from "../../../core/structs/Collection.js";
 import type { Snowflake, VoidCallback } from "../../../core/types/Types.js";
+import { Registry } from "../../registries/LagrangeRegistry.js";
 import { GatewayEventTypes } from "../events/GatewayEvents.js";
 
 type GatewayPubSub = PubSub<typeof GatewayEventTypes>;
@@ -49,31 +51,41 @@ class GuildPublisher {
     };
   }
 }
-
 export class GatewayPublisher {
   private _guilds: Collection<string, PubType>;
   constructor() {
     this._guilds = new Collection();
     const accumulator: Record<string, any> = {};
 
-    Atlas.requests.guilds.getAllGuildChannels().then((res) => {
-      res?.forEach((pair) => {
-        // convert the guild id into a string as we cant serialize bigints
-        const idString = pair.guild_id?.toString();
-        if (!idString) return; // check if string is undefined
+    process.on("atlasInit", () => {
+      Atlas.requests.guilds.getAllGuildChannels().then((res) => {
+        res?.forEach((pair) => {
+          // convert the guild id into a string as we cant serialize bigints
+          const idString = pair.guild_id?.toString();
+          const channelID = pair.channel_id?.toString();
+          if (!idString || !channelID) return; // check if string is undefined
 
-        if (Object.hasOwn(accumulator, idString)) {
-          // if the guild ID exists then add the channel in
-          accumulator[idString].push(pair.channel_id?.toString());
-        } else {
-          accumulator[idString] = [pair.channel_id?.toString()];
-        }
+          Registry.fetch("inverseChannelMap")?.set(channelID, idString);
+
+          if (Object.hasOwn(accumulator, idString)) {
+            // if the guild ID exists then add the channel in
+            accumulator[idString].push(channelID);
+          } else {
+            accumulator[idString] = [channelID];
+          }
+        });
+        Object.entries(accumulator).forEach(([key, value]) => {
+          this.addGuildPublisher(new GuildPublisher(key, value));
+        });
+
+        // console.log(this._guilds.entries());
+        Logger.sendLog(
+          LogLevel.Verbose,
+          ["LAGRANGE", "Registry"],
+          "Data in inverseChannelMap",
+          Registry.fetch("inverseChannelMap"),
+        );
       });
-      Object.entries(accumulator).forEach(([key, value]) => {
-        this.addGuildPublisher(new GuildPublisher(key, value));
-      })
-
-      console.log(this._guilds.entries())
     });
   }
 
@@ -98,13 +110,16 @@ export class GatewayPublisher {
     return this._guilds.get(guildID)?.channels.get(channelID);
   }
 
-  public subscribeArr(ids: Snowflake[], listeners: VoidCallback[]) { }
+  public subscribeArr(ids: Snowflake[], listeners: VoidCallback[]) {}
   public guildSubscribe(id: Snowflake, listener: VoidCallback) {
-    this.getGuild(id)?.subscribe("CHANNEL_CREATE", listener)
+    this.getGuild(id)?.subscribe("CHANNEL_CREATE", listener);
   }
-  public channelSubscribe(guildID: Snowflake, channelID: Snowflake, listener: VoidCallback) {
-    this.getChannel(guildID, channelID)?.subscribe("MESSAGE_CREATE", listener)
+  public channelSubscribe(
+    guildID: Snowflake,
+    channelID: Snowflake,
+    listener: VoidCallback,
+  ) {
+    this.getChannel(guildID, channelID)?.subscribe("MESSAGE_CREATE", listener);
   }
 }
 // console.log(await Atlas.requests.guilds.getAllGuildChannels());
-export const GatewayEmitter = new GatewayPublisher();

@@ -155,6 +155,7 @@ export class Atlas {
     }
     Logger.sendLog(LogLevel.Success, ["ATLAS", "init()"], "ATLAS tables successfully initialized");
     this._client.pool.returnResource(pair);
+    process.emit("atlasInit")
   }
 }
 

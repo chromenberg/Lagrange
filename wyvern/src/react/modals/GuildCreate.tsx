@@ -1,6 +1,6 @@
 import { useRef } from "react";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
-const ActionRow =(await import("../mana/action-row/ActionRow")).default;
+const ActionRow = (await import("../mana/action-row/ActionRow")).default;
 
 const ButtonGroup = (await import("../mana/button-group/ButtonGroup")).default;
 // import Button from "../mana/button/Button";
@@ -19,7 +19,7 @@ function requestGuildCreate(guildName: string) {
     },
     body: JSON.stringify({
       name: guildName,
-      id: ""
+      id: "",
     }),
   });
 }
@@ -52,7 +52,13 @@ export default function CreateGuildModal() {
             </div>
 
             <ButtonGroup>
-              <ManaButton style="Tertiary" mana-type="text-button">
+              <ManaButton
+                style="Tertiary"
+                mana-type="text-button"
+                onClick={() => {
+                  (modalRef.current as unknown as HTMLDivElement).remove();
+                }}
+              >
                 Cancel
               </ManaButton>
               <ManaButton

@@ -16,15 +16,22 @@ import { MessageService } from "./services/MessageService.js";
 import { GuildService } from "./services/GuildService.js";
 import { AuthService } from "./services/AuthService.js";
 import { UserService } from "./services/UserService.js";
-
+import { GatewayPublisher } from "./modules/subscriptions/PubSubService.js";
 
 export const __atlas = new Atlas();
+
 export const __pubsub = new PubSub();
 export const __api = new Router();
+export let __gatewayEmitter: GatewayPublisher;
+// TODO: This is a weird way of doing it
+process.on("atlasInit", () => {
+  console.log("ggdfgd")
+  __gatewayEmitter = new GatewayPublisher();
+  console.log()
+});
 export function initGateway() {
   return new Gateway();
 }
-
 
 // FIXME: All routes get checked, not good, should add filtering for duplicate routes
 __api.alias("/channels/@me", "/api/content/index.html");
@@ -40,4 +47,3 @@ __api.route(
 __api.route("/api/v1/users/", (route) => new UserService(route));
 __api.route("/api/v1/auth/", (route) => new AuthService(route));
 __api.route("/api/v1/guilds/", (route) => new GuildService(route));
-

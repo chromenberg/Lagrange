@@ -2,6 +2,7 @@ import EventEmitter from "node:events";
 import type { VoidCallback, VoidCallbackEventMap } from "../types/Types.js";
 import { Collection } from "../structs/Collection.js";
 import { CallArray } from "../structs/CallArray.js";
+import { Logger, LogLevel } from "../logging/Logger.js";
 
 type SubMap = {
   eventName: string;
@@ -62,12 +63,11 @@ export class PubSub<
     listener: any,
     ctx?: any,
   ): symbol {
-    console.log("New subscription for ",eventName)
     // if event is not already registered then
     if (!this._registeredEvents.has(eventName)) {
       // create a new event in the registry with a CallArray
       // then add the listener into the call array
-      console.log("making new listener")
+      Logger.sendLog(LogLevel.Verbose, ["PubSub"], "New subscription for the event ["+eventName+"]. First time event was made")
       this._registeredEvents.set(eventName, new CallArray())
       this._registeredEvents.get(eventName)?.push(listener);
       
@@ -76,7 +76,9 @@ export class PubSub<
       });
     } else {
       // if event already exists then just add the listener into the call array
+      Logger.sendLog(LogLevel.Verbose, ["PubSub"], "New subscription for the event ["+eventName+"]")
       this._registeredEvents.get(eventName)?.push(listener);
+      
     }
     
     // TODO: too many subscriptions can slow down process with this method
@@ -123,7 +125,8 @@ export class PubSub<
   }
   public publish<E extends keyof EventMap & EventKey>(
     eventName: E,
-    data: EventMap[E],
+    // TODO: Fix this again
+    data: any
   ) {
     this._publish(eventName, data);
   }

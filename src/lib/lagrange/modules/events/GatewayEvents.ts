@@ -1,4 +1,4 @@
-import "./MessageCreate.js"
+
 export interface GatewayEventPayload {
   opCode?: number
   data?: object | number,
@@ -33,7 +33,7 @@ export class GatewayEvent {
   }
 }
 
-export enum GatewayEventOpCodes {
+export const enum GatewayEventOpCodes {
   DISPATCH,
   HEARTBEAT,
   IDENTIFY,
@@ -89,7 +89,18 @@ export const enum GatewayEventTypes {
   TYPING_START = "TYPING_START",
   USER_UPDATE = "USER_UPDATE"
 }
-
+export type GatewayEMap = {
+  ["MESSAGE_CREATE"]: {
+    author: {
+      author_id: string,
+      username: string,
+      display_name: string,
+    },
+    channel_id: string, // we need to check if the user can access this
+    message_id: string,
+    content: string,
+  }
+}
 
 export enum GatewayEventErrorCodes {
 

@@ -1,4 +1,17 @@
 import { createContext } from "react";
 
-const UserContext = createContext({});
-export default UserContext
+type UserContext = {
+  currentChannel: string;
+  currentGuild: string;
+  username: string;
+  display_name: string;
+  id: string;
+  token: string;
+  guilds: {
+    id: string;
+    unavailable: boolean;
+  }[];
+};
+
+const UserContext = createContext<Partial<UserContext>>({});
+export default UserContext;
