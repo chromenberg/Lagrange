@@ -7,7 +7,6 @@
 // export const api = API;
 
 // export function init():void {}
-import { Gateway } from "./gateway/Gateway.js";
 import { PubSub } from "../core/pubsub/PubSub.js";
 import { Router } from "./modules/rest/Router.js";
 import { Atlas } from "../atlas/AtlasManager.js";
@@ -17,6 +16,7 @@ import { GuildService } from "./services/GuildService.js";
 import { AuthService } from "./services/AuthService.js";
 import { UserService } from "./services/UserService.js";
 import { GatewayPublisher } from "./modules/gateway/GatewayPublisher.js";
+import { Gateway } from "./modules/gateway/Gateway.js";
 
 export const __atlas = new Atlas();
 

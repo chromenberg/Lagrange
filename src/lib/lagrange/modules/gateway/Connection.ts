@@ -8,6 +8,7 @@ export class ClientConnection {
   private _subs: Collection<symbol, Function> = new Collection();
   private _sock: WebSocket;
   private _sequence: number;
+  private _id: symbol | undefined;
   // private _sub = new PubSub()
   constructor(socket: WebSocket) {
     this._sock = socket;
@@ -37,6 +38,20 @@ export class ClientConnection {
   public decrSeq(): number {
     return this._sequence--
   }
+
+  public get id(): symbol | undefined {
+    if (!this._id) {
+      Logger.sendLog(LogLevel.Error, ["LAGRANGE", "Gateway"], )
+      throw new ReferenceError()
+    }
+    return this._id;
+  }
+
+  public setID(id: symbol): void {
+    this._id = id;
+  }
+
+  // -- So
   
   public close(code?: number, data?: string | Buffer<ArrayBufferLike>) {
     // Logger.sendLog(LogLevel.Error, ["Connections"], "Closed Connection")

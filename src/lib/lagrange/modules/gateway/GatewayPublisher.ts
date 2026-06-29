@@ -57,8 +57,18 @@ export class GatewayPublisher {
   constructor() {
     this._guilds = new Collection();
     const accumulator: Record<string, any> = {};
+    Logger.sendLog(
+      LogLevel.Info,
+      ["LAGRANGE", "Gateway", "EventManager"],
+      "Waiting for init signal from ATLAS",
+    );
 
     process.on("atlasInit", () => {
+      Logger.sendLog(
+        LogLevel.Info,
+        ["LAGRANGE", "Gateway", "EventManager"],
+        "ATLAS init signal found, populating Gateway Publisher",
+      );
       Atlas.requests.guilds.getAllGuildChannels().then((res) => {
         res?.forEach((pair) => {
           // convert the guild id into a string as we cant serialize bigints
@@ -82,8 +92,7 @@ export class GatewayPublisher {
         // console.log(this._guilds.entries());
         Logger.sendLog(
           LogLevel.Verbose,
-          ["LAGRANGE", "Registry"],
-          "Data in inverseChannelMap",
+          ["LAGRANGE", "Registry", "inverseChannelMap"],
           Registry.fetch("inverseChannelMap"),
         );
       });
@@ -111,10 +120,43 @@ export class GatewayPublisher {
     return this._guilds.get(guildID)?.channels.get(channelID);
   }
 
-  public subscribeArr(ids: Snowflake[], listeners: VoidCallback[]) {}
-  public guildSubscribe(id: Snowflake, listener: VoidCallback) {
-    this.getGuild(id)?.subscribe("CHANNEL_CREATE", listener);
+  public subscribeArr(ids: Snowflake[], listeners: VoidCallback[]) { }
+
+  /**
+   * Subscribes to all events of the specified name from a guild
+   * @param eventName 
+   * @param id 
+   * @param listener 
+   */
+  public guildSubscribe(
+    eventName: KeyOfEvents,
+    id: Snowflake,
+    listener: VoidCallback,
+  ) {
+    this.getGuild(id)?.subscribe(eventName, listener);
   }
+
+  /**
+   * Subscribes to every event from a guild
+   * @param id 
+   * @param listener 
+   * @returns 
+   */
+  public wildcardGuildSubscribe(
+    id: Snowflake,
+    listener: VoidCallback,
+  ): symbol[] | undefined {
+    return this.getGuild(id)?.wildcardSubscribe(listener);
+  }
+
+  /**
+   * Subscribes to all events of a name from a specified channel
+   * @param eventName 
+   * @param guildID 
+   * @param channelID 
+   * @param listener 
+   * @returns 
+   */
   public channelSubscribe(
     eventName: KeyOfEvents,
     guildID: Snowflake,
@@ -123,7 +165,7 @@ export class GatewayPublisher {
   ): symbol | undefined {
     return this.getChannel(guildID, channelID)?.subscribe(eventName, listener);
   }
-  
+
   public wildcardChannelSubscribe(
     guildID: Snowflake,
     channelID: Snowflake,
@@ -131,6 +173,5 @@ export class GatewayPublisher {
   ): symbol[] | undefined {
     return this.getChannel(guildID, channelID)?.wildcardSubscribe(listener);
   }
-  
 }
 // console.log(await Atlas.requests.guilds.getAllGuildChannels());

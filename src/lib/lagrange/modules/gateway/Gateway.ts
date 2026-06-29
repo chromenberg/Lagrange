@@ -42,18 +42,19 @@ import "../events/Ready.js";
 import "../events/Identify.js";
 import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
 import { pubSub } from "./PubSubHandler.js";
-import { Logger } from "../../../core/logging/Logger.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { ClientConnection } from "./Connection.js";
 import { GatewayPublisher } from "./GatewayPublisher.js";
 import { PubSub } from "../../../core/pubsub/PubSub.js";
 import type { EventOrOpcode } from "../../../core/types/GatewayTypes.js";
+import { nextTick } from "node:process";
 
 export class Gateway {
   // private readonly pubsub: PubSub<any>;
   private readonly socket: WebSocketServer;
   private readonly _events: PubSub<EventOrOpcode>;
   constructor(/* pubsub?: PubSub<any> */) {
-    this._events = new PubSub()
+    this._events = new PubSub();
     // this.pubsub = pubsub ? pubsub : new PubSub();
     this.socket = new WebSocketServer({
       port: 82,
@@ -64,18 +65,25 @@ export class Gateway {
       // Create a client connection that will listen to the events needed
       const socketClient = new ClientConnection(conn);
 
-      ClientConnections.add(socketClient, () => {
-        socketClient.close();
-      });
-
-      socketClient.send(new GatewayEventHello().toJSON());
-
       socketClient.on("message", (msg) => {
         const data = JSON.parse(msg);
         getEvent(data, socketClient);
       });
+
+      // Connection ID for the socket
+      const socketID = ClientConnections.add(socketClient, () => {
+        socketClient.close();
+      });
+      socketClient.setID(socketID[0]);
+
+      // Ensure the hello event is sent only when everything is done
+      // to prevent the heartbeat refreshing the connection when no ID was set
+      nextTick(() => {
+        socketClient.send(new GatewayEventHello().toJSON());
+      });
     });
     process.emit("lagrangeInit");
+    Logger.sendLog(LogLevel.Success, ["LAGRANGE", "Gateway"], "Successfully Initialized")
   }
 
   /*
