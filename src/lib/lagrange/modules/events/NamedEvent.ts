@@ -1,6 +1,10 @@
-import type { KeyOfEvents } from "../../../core/types/GatewayTypes.js";
+import {
+  EventMode,
+  type KeyOfEvents,
+} from "../../../core/types/GatewayTypes.js";
 import type { VoidCallback } from "../../../core/types/Types.js";
 import type { ClientConnection } from "../gateway/Connection.js";
+
 import {
   GatewayEventOpCodes,
   type GatewayEventPayload,
@@ -10,7 +14,11 @@ export class NamedEvent {
   private _eventName: KeyOfEvents;
   private _sequence: number | undefined;
   private _data: any;
-  constructor(eventName: KeyOfEvents, data: any, sequence?: number) {
+  constructor(
+    eventName: KeyOfEvents,
+    data: any,
+    sequence?: number,
+  ) {
     this._sequence = sequence;
     this._data = data;
     this._eventName = eventName;

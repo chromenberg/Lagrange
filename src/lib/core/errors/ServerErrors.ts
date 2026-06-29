@@ -38,3 +38,25 @@ export function GatewayError<K extends keyof typeof GatewayErrors>(
 ): (typeof GatewayErrors)[K] {
   return GatewayErrors[code];
 }
+
+function errorMessage(message: string): { message: string } {
+  return {message}
+}
+
+export enum IErrorEnum {
+  BigIntParseFail,
+  NoClientIDProvided,
+  NoRouterResponse,
+  NoDBResponse,
+  MalformedAPIData,
+  MalformedDBData,
+  MalformedEventData,
+  NoExpectedImmediateClientResponse,
+  TableSetupFailed,
+  PoolConnectionNotReturned
+}
+
+export const InternalErrors = {
+  [IErrorEnum.BigIntParseFail]: errorMessage("Failed to parse a bigint into a string"),
+  [IErrorEnum.MalformedAPIData]: errorMessage("Malformed data was received by the API")
+}

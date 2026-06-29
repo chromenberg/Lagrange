@@ -13,13 +13,10 @@ type ReadyUserObj = {
   user: User & { email: string };
 };
 eventPublisher.subscribe(GatewayEventTypes.READY, (data) => {
-  console.log(data.user);
-  // FIXME!!!!!: This is complete and utter dogshit
   Atlas.requests.users
-    .getGuildChannelsForID((data.user as ReadyUserObj).user.id)
+    .getGuildChannelsForID((data.user as ReadyUserObj).user.id) // Get all guilds and channels the user is in
     .then((res) => {
-      initEvents(data.cli, res as GuildChannel[] | undefined);
-      // send ready data
-      data.cli.send(new GatewayEventReady().setData(data.user).toJSON());
+      initEvents(data.cli, res as GuildChannel[] | undefined, data.user); // subscribe to events for all channels and guilds
+      data.cli.send(new GatewayEventReady().setData(data.user).toJSON()); // send ready data
     });
 });
