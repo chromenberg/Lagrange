@@ -67,7 +67,7 @@ export class PubSub<
     if (!this._registeredEvents.has(eventName)) {
       // create a new event in the registry with a CallArray
       // then add the listener into the call array
-      Logger.sendLog(LogLevel.Verbose, ["PubSub"], "New subscription for the event ["+eventName+"]. First time event was made")
+      // Logger.sendLog(LogLevel.Verbose, ["PubSub"], "New subscription for the event ["+eventName+"]. First time event was made")
       this._registeredEvents.set(eventName, new CallArray())
       this._registeredEvents.get(eventName)?.push(listener);
       
@@ -76,7 +76,7 @@ export class PubSub<
       });
     } else {
       // if event already exists then just add the listener into the call array
-      Logger.sendLog(LogLevel.Verbose, ["PubSub"], "New subscription for the event ["+eventName+"]")
+      // Logger.sendLog(LogLevel.Verbose, ["PubSub"], "New subscription for the event ["+eventName+"]")
       this._registeredEvents.get(eventName)?.push(listener);
       
     }

@@ -62,7 +62,7 @@ export function initEvents(
 
   Object.entries(guildListeners).forEach(([event, listener]) => {
     guilds.forEach((item) => {
-      GatewayEmitter.guildSubscribe(item.id, (data) => {
+      GatewayEmitter.guildSubscribe(event as KeyOfEvents, item.id, (data) => {
         (listener as NamedEventCallback)(data).createJSON();
       });
     });

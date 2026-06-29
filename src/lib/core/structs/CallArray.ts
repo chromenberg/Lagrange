@@ -9,7 +9,7 @@ export class CallArray<V extends VoidCallback = VoidCallback> {
   }
   public push(item: V): V {
     this._items.push(item);
-    Logger.sendLog(1, ["CallArray"], "Call array length is now", this.length)
+    // Logger.sendLog(1, ["CallArray"], "Call array length is now", this.length)
     return item;
   }
 

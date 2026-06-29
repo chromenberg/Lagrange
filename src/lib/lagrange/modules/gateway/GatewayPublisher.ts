@@ -120,42 +120,54 @@ export class GatewayPublisher {
     return this._guilds.get(guildID)?.channels.get(channelID);
   }
 
-  public subscribeArr(ids: Snowflake[], listeners: VoidCallback[]) { }
+  public subscribeArr(ids: Snowflake[], listeners: VoidCallback[]) {}
 
   /**
    * Subscribes to all events of the specified name from a guild
-   * @param eventName 
-   * @param id 
-   * @param listener 
+   * @param eventName
+   * @param id
+   * @param listener
    */
   public guildSubscribe(
     eventName: KeyOfEvents,
     id: Snowflake,
     listener: VoidCallback,
   ) {
+    // Log
+    Logger.sendLog(
+      LogLevel.Verbose,
+      ["LAGRANGE", "Gateway", "GuildPublisher"],
+      "Subscribed to [" + eventName + "] in guild [" + id + "]",
+    );
+
     this.getGuild(id)?.subscribe(eventName, listener);
   }
 
   /**
    * Subscribes to every event from a guild
-   * @param id 
-   * @param listener 
-   * @returns 
+   * @param id
+   * @param listener
+   * @returns
    */
   public wildcardGuildSubscribe(
     id: Snowflake,
     listener: VoidCallback,
   ): symbol[] | undefined {
+    Logger.sendLog(
+      LogLevel.Verbose,
+      ["LAGRANGE", "Gateway", "GuildPublisher"],
+      "New wildcard subscription in guild " + id,
+    );
     return this.getGuild(id)?.wildcardSubscribe(listener);
   }
 
   /**
    * Subscribes to all events of a name from a specified channel
-   * @param eventName 
-   * @param guildID 
-   * @param channelID 
-   * @param listener 
-   * @returns 
+   * @param eventName
+   * @param guildID
+   * @param channelID
+   * @param listener
+   * @returns
    */
   public channelSubscribe(
     eventName: KeyOfEvents,
@@ -163,6 +175,12 @@ export class GatewayPublisher {
     channelID: Snowflake,
     listener: VoidCallback,
   ): symbol | undefined {
+    Logger.sendLog(
+      LogLevel.Verbose,
+      ["LAGRANGE", "Gateway", "GuildPublisher"],
+      `Subscribed to [${eventName}] ` +
+        `in guild [${guildID}] [#${channelID}]`,
+    );
     return this.getChannel(guildID, channelID)?.subscribe(eventName, listener);
   }
 

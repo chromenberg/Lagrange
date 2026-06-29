@@ -10,7 +10,15 @@ import {
 import { eventPublisher } from "../../services/EventService.js";
 import { ClientConnections } from "./Connections.js";
 import "./GatewayPublisher.js";
-
+import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
+import { pubSub } from "./PubSubHandler.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
+import { ClientConnection } from "./Connection.js";
+import { GatewayPublisher } from "./GatewayPublisher.js";
+import { PubSub } from "../../../core/pubsub/PubSub.js";
+import type { EventOrOpcode } from "../../../core/types/GatewayTypes.js";
+import { nextTick } from "node:process";
+import "../events/EventAggregate.js"
 // Timeline
 // Client      | Server | Description
 // ------------|--------|------------
@@ -34,20 +42,7 @@ function getEvent(data: any, conn: any) {
   }
 }
 
-// TODO: Move this
-import "../events/Heartbeat.js";
-import "../events/MessageCreate.js";
-import "../events/Ready.js";
-// import "../events/MessageCreate.js"
-import "../events/Identify.js";
-import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
-import { pubSub } from "./PubSubHandler.js";
-import { Logger, LogLevel } from "../../../core/logging/Logger.js";
-import { ClientConnection } from "./Connection.js";
-import { GatewayPublisher } from "./GatewayPublisher.js";
-import { PubSub } from "../../../core/pubsub/PubSub.js";
-import type { EventOrOpcode } from "../../../core/types/GatewayTypes.js";
-import { nextTick } from "node:process";
+
 
 export class Gateway {
   // private readonly pubsub: PubSub<any>;
