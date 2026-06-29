@@ -14,19 +14,10 @@ eventPublisher.subscribe("MESSAGE_CREATE", (data) => {
 
 export function subscribeToMessages(guildChannel: any, sock: ClientConnection) {
   GatewayEmitter.channelSubscribe(
+    "MESSAGE_CREATE",
     guildChannel.guild_id?.toString() as string,
     guildChannel.channel_id?.toString() as string,
     (msg: any) => {
-      Logger.sendLog(
-        LogLevel.Verbose,
-        ["Events", "Message Create"],
-        "A message was sent in guild",
-        guildChannel.guild_id?.toString() as string,
-        "in channel",
-        guildChannel.channel_id?.toString() as string,
-        "with data:",
-        msg,
-      );
       sock.send(
         JSON.stringify({
           opCode: GatewayEventOpCodes.DISPATCH,

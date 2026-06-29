@@ -4,11 +4,12 @@ import { Collection } from "../../../core/structs/Collection.js";
 import type WebSocket from "ws";
 import {
   type GatewayEvent,
+  GatewayEventOpCodes,
   GatewayEventTypes,
 } from "../events/GatewayEvents.js";
 import { eventPublisher } from "../../services/EventService.js";
 import { ClientConnections } from "./Connections.js";
-import "../subscriptions/PubSubService.js"
+import "./GatewayPublisher.js";
 
 // Timeline
 // Client      | Server | Description
@@ -43,20 +44,22 @@ import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
 import { pubSub } from "./PubSubHandler.js";
 import { Logger } from "../../../core/logging/Logger.js";
 import { ClientConnection } from "./Connection.js";
-import { GatewayPublisher } from "../subscriptions/PubSubService.js";
+import { GatewayPublisher } from "./GatewayPublisher.js";
+import { PubSub } from "../../../core/pubsub/PubSub.js";
+import type { EventOrOpcode } from "../../../core/types/GatewayTypes.js";
 
 export class Gateway {
   // private readonly pubsub: PubSub<any>;
   private readonly socket: WebSocketServer;
+  private readonly _events: PubSub<EventOrOpcode>;
   constructor(/* pubsub?: PubSub<any> */) {
+    this._events = new PubSub()
     // this.pubsub = pubsub ? pubsub : new PubSub();
     this.socket = new WebSocketServer({
       port: 82,
       host: "127.0.0.1",
     });
 
-    
-    
     this.socket.on("connection", (conn) => {
       // Create a client connection that will listen to the events needed
       const socketClient = new ClientConnection(conn);
@@ -66,46 +69,25 @@ export class Gateway {
       });
 
       socketClient.send(new GatewayEventHello().toJSON());
-      
+
       socketClient.on("message", (msg) => {
         const data = JSON.parse(msg);
         getEvent(data, socketClient);
       });
-      
     });
-    process.emit("lagrangeInit")
+    process.emit("lagrangeInit");
+  }
+
+  /*
+  Gets the gateways event emitter, this is used for events like identifying
+  */
+  public get events(): PubSub<EventOrOpcode> {
+    return this._events;
+  }
+
+  public publish(eventName: keyof EventOrOpcode, data: any, ...args: any[]) {
+    this._events.publish(eventName, null, ...args);
   }
 }
-export const GatewayEmitter = new GatewayPublisher()
-export class GuildGateway {
-  // events involving guilds go from the api to here via the api
-}
 
-export class ChannelGateway {
-  constructor() {
-    // Message Sent
-    // Service Resolves
-    // Service Creates Event
-    // Service Emits to gateway
-    // Gateway Publishes event
-    //
-    // --------------------------------------
-    //
-    // API Gets Message Create request
-    // MessageService Resolves, determines its a MessageCreate
-    // Creates a MessageCreate Event and calls the gateway to emit the event
-    // Gateway publishes event with the channel ID
-    // all connections subscribed get that event and relay it to the client
-  }
-  // events that have channel related stuff
-
-  // make a message to the gateway to handle this "gateways" event
-  // we need to loop over all members who can access this channel
-  // and send the event to them
-
-  // we can either get every member in the guild with a database call
-  // or we can get every member in the channel
-  // (guild would be easier to sort)
-
-  public emitEvent(code: GatewayEventTypes, data: GatewayEvent) {}
-}
+export const GatewayEmitter = new GatewayPublisher();

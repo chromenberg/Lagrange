@@ -7,14 +7,37 @@ import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 export class ClientConnection {
   private _subs: Collection<symbol, Function> = new Collection();
   private _sock: WebSocket;
+  private _sequence: number;
   // private _sub = new PubSub()
   constructor(socket: WebSocket) {
     this._sock = socket;
+    this._sequence = 0;
   }
   public get subs(): Collection<symbol, Function> {
     return this._subs;
   }
 
+  // -- Methods for client sequences
+  public get sequence(): number {
+    return this._sequence
+  }
+  
+  /**
+   * Increments the sequence count by 1
+   * @returns New sequence number 
+   */
+  public incrSeq(): number {
+    return this._sequence++
+  }
+  
+  /**
+   * Decrements the sequence count by 1
+   * @returns New sequence number
+   */
+  public decrSeq(): number {
+    return this._sequence--
+  }
+  
   public close(code?: number, data?: string | Buffer<ArrayBufferLike>) {
     // Logger.sendLog(LogLevel.Error, ["Connections"], "Closed Connection")
     this._sock.close(code, data);

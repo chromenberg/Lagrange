@@ -2,6 +2,7 @@ import { Atlas } from "../../../../_Init.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { PubSub } from "../../../core/pubsub/PubSub.js";
 import { Collection } from "../../../core/structs/Collection.js";
+import type { KeyOfEvents } from "../../../core/types/GatewayTypes.js";
 import type { Snowflake, VoidCallback } from "../../../core/types/Types.js";
 import { Registry } from "../../registries/LagrangeRegistry.js";
 import { GatewayEventTypes } from "../events/GatewayEvents.js";
@@ -115,11 +116,21 @@ export class GatewayPublisher {
     this.getGuild(id)?.subscribe("CHANNEL_CREATE", listener);
   }
   public channelSubscribe(
+    eventName: KeyOfEvents,
     guildID: Snowflake,
     channelID: Snowflake,
     listener: VoidCallback,
-  ) {
-    this.getChannel(guildID, channelID)?.subscribe("MESSAGE_CREATE", listener);
+  ): symbol | undefined {
+    return this.getChannel(guildID, channelID)?.subscribe(eventName, listener);
   }
+  
+  public wildcardChannelSubscribe(
+    guildID: Snowflake,
+    channelID: Snowflake,
+    listener: VoidCallback,
+  ): symbol[] | undefined {
+    return this.getChannel(guildID, channelID)?.wildcardSubscribe(listener);
+  }
+  
 }
 // console.log(await Atlas.requests.guilds.getAllGuildChannels());

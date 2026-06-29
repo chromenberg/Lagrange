@@ -96,8 +96,9 @@ export class PubSub<
   protected _publish<E extends keyof EventMap & EventKey>(
     eventName: E,
     data: EventMap[E],
+    ...args: any[]
   ): void {
-    this.emit(eventName, data);
+    this.emit(eventName, data, ...args);
   }
 
   protected _unsubscribe<E extends keyof EventMap & EventKey>(
@@ -117,6 +118,16 @@ export class PubSub<
   ): symbol {
     return this._subscribe(eventName, listener, ctx);
   }
+
+  public wildcardSubscribe<E extends keyof EventMap & EventKey>(
+    listener: VoidCallbackEventMap<EventMap>,
+    ctx?: any,
+  ): symbol[] {
+    return this._registeredEvents.keysArr().map(event => {
+      return this.subscribe(event, listener, ctx)
+    })
+  }
+  
   public unsubscribe<E extends keyof EventMap & EventKey>(
     eventName: E,
     listenerID: symbol,
@@ -126,9 +137,10 @@ export class PubSub<
   public publish<E extends keyof EventMap & EventKey>(
     eventName: E,
     // TODO: Fix this again
-    data: any
+    data: any,
+    ...args: any[]
   ) {
-    this._publish(eventName, data);
+    this._publish(eventName, data, ...args);
   }
 }
 

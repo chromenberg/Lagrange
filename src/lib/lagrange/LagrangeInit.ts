@@ -16,7 +16,7 @@ import { MessageService } from "./services/MessageService.js";
 import { GuildService } from "./services/GuildService.js";
 import { AuthService } from "./services/AuthService.js";
 import { UserService } from "./services/UserService.js";
-import { GatewayPublisher } from "./modules/subscriptions/PubSubService.js";
+import { GatewayPublisher } from "./modules/gateway/GatewayPublisher.js";
 
 export const __atlas = new Atlas();
 
