@@ -4,7 +4,7 @@ import type { Route } from "../../lagrange/modules/rest/Route.js";
 import type { types } from "cassandra-driver";
 import { type SQLOutputValue } from "node:sqlite";
 
-export type Correct<T> = unknown & T
+export type Correct<T> = unknown & T;
 
 export namespace API {
   export interface RequestParams {
@@ -90,6 +90,7 @@ export type VoidRouteCallback = (route: Route) => void;
 export type VoidCallbackEventMap<EventMap> = <K extends keyof EventMap>(
   data: EventMap[K],
 ) => void;
+export type IterCallback = (value: any, index: number, array: any[]) => void;
 
 export type AsyncCallback<Type> = Callback<Promise<Type>>;
 export type AsyncVoidCallback = AsyncCallback<void>;
