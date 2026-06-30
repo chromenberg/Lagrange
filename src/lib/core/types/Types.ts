@@ -117,17 +117,17 @@ export interface BaseUser {
   display_name: string;
 }
 
-export interface OwnUser extends BaseUser {
-  email: EmailAddress;
-  telephone: string;
+export interface User extends BaseUser {
+  email?: string
 }
 
-export interface User extends BaseUser {}
-
-export interface UserSignupData {
-  username: string;
+export interface UserCreds {
   email: EmailAddress;
   password: string;
+}
+
+export interface UserSignupData extends UserCreds {
+  username: string;
 }
 
 export interface SignupResponse {
@@ -143,7 +143,7 @@ export namespace Templates {
     export const everyone = {
       id: "0",
       name: "@everyone",
-      permissions: "2248329584430657",
+      permissions: "2248329584430657", // This is a bitfield, Need to make a bitfield data type
       color: 0,
       hoist: false,
       mentionable: false,
