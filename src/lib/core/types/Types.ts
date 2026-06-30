@@ -110,7 +110,9 @@ export type ResultSet = Promise<types.ResultSet>;
 export type Snowflake = string;
 export type EmailAddress = `${string}@${string}.${string}`;
 export type Token = `${Snowflake}.${string}.${string}`;
-
+export type WeakObj = {
+  [key: string]: any
+}
 export interface BaseUser {
   id: Snowflake;
   username: string;
