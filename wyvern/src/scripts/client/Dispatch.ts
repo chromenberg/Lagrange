@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export class PubSub<E extends (keyof E extends string ? string : string)> {
+export class Dispatcher<E extends (keyof E extends string ? string : string)> {
   private _emitter: EventTarget;
   constructor() {
     this._emitter = new EventTarget();
@@ -12,5 +12,5 @@ export class PubSub<E extends (keyof E extends string ? string : string)> {
     this._emitter.dispatchEvent(new CustomEvent(eventName, ...data));
   }
 }
-const EventSystem = new PubSub()
+const EventSystem = new Dispatcher()
 export default EventSystem;

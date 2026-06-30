@@ -1,14 +1,10 @@
-// import { useState } from "react";
-// import FlexBox from "../components/Flex";
-import("../styles/ChatPanel.css");
-// import Button from "../test/Button";
-// import { Stack } from "../test/Stack";
+const useContext = (await import("react")).useContext;
+import type { InputKeybind } from "../components/InputBox/InputBox.types";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (await import("../components/InputBox/InputBoxAccessories")).default;
-import { useContext } from "react";
-// import { pubsub } from "../../scripts/client/Listener";
-import type { InputKeybind } from "../components/InputBox/InputBox.types";
-import UserContext from "../../scripts/client/UserContext";
+const UserContext = (await import("../../scripts/client/UserContext")).default;
+import("../styles/ChatPanel.css");
+
 const rightCharms = (
   <InputBoxAccessories>
     <div>#</div>

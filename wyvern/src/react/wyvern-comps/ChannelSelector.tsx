@@ -1,5 +1,5 @@
-import FlexBox from "../components/Flex";
-import HoverBackground from "./HoverBackground";
+const FlexBox = (await import("../components/Flex")).default;
+const HoverBackground = (await import("./HoverBackground")).default;
 
 type ChannelInfo = {
   name: string;

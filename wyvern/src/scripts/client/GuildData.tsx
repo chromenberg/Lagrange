@@ -1,4 +1,4 @@
-import { useState } from "react"
+const useState = (await import("react")).useState
 type GuildData = {
   id: string
   unavailable:boolean

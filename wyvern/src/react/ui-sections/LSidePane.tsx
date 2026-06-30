@@ -1,5 +1,5 @@
 import type { Props } from "../../Core";
-import FlexBox from "../components/Flex";
+const FlexBox = (await import("../components/Flex")).default;
 import("../styles/LPane.css");
 export default function LSidePane({ children }: Props) {
   return (

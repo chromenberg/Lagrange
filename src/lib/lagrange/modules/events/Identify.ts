@@ -5,9 +5,10 @@ import { GatewayEventOpCodes, GatewayEventTypes } from "./GatewayEvents.js";
 
 eventPublisher.subscribe("OPCODE_" + GatewayEventOpCodes.IDENTIFY, (data) => {
   Logger.sendLog(2, ["Events", "Identify"], "Identify received from", data.data)
-  // TODO: What the fuck is this shit --------\
+  // TODO: What the fuck is this shit --------\ - Fix this godawful name convention
   Atlas.requests.users.getFullUserByToken(data.data.data.token).then(user => {
     if (Object.hasOwn(user, "message")) {
+      // TODO: Cant we publish events like this directly to the ClientConnection instance?
       eventPublisher.publish("OPCODE_"+GatewayEventOpCodes.INVALID_SESSION, {cli: data.cli,  data:user })
     }
 

@@ -1,4 +1,4 @@
-import { createContext } from "react";
+const createContext = (await import("react")).createContext;
 
 type UserContext = {
   currentChannel: string;

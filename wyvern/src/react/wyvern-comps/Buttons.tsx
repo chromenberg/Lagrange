@@ -1,6 +1,6 @@
-import Button from "../components/Button";
 import type { ButtonType } from "../../Core";
-import FlexBox from "../components/Flex";
+const Button = (await import("../components/Button")).default;
+const FlexBox = (await import("../components/Flex")).default;
 // import type { ButtonStyle } from "../types/Button";
 
 // export function CodedButton({
