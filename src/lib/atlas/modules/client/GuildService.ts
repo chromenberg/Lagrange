@@ -78,4 +78,15 @@ export class GuildService extends AtlasChild {
   public async getAllGuildChannels() {
     return this.parent.sqlClient.all`SELECT guilds.guild_id, channels.channel_id, channels.guild_id FROM guilds LEFT JOIN channels ON guilds.guild_id = channels.guild_id;`
   }
+
+  public checkInvite(code: string) {
+    return this.parent.sqlClient.get`SELECT guild_invites.guild_id, guilds.guild_name, guild_invites.invite_code 
+      FROM guild_invites, guilds WHERE guild_invites.invite_code = ${code};`
+  }
+  
+  public newInvite(guild_id: string) {
+    const code = btoa(this.snowflake.GenerateID().toBase64())
+    this.parent.sqlClient.run`INSERT INTO guild_invites VALUES (${code}, ${BigInt(guild_id)});`
+    return code
+  }
 }
