@@ -1,7 +1,7 @@
 import type { GuildCreateObj } from "../../../lagrange/interfaces/Guilds.js";
 import type { Atlas } from "../../AtlasManager.js";
 import type { GuildData } from "../../../core/types/FeatureTypes.js";
-import type { UnavailableID } from "../../../core/types/GuildTypes.js";
+import type { UnavailableID } from "../../../core/types/GatewayTypes.js";
 import type { Snowflake, SQLPromiseArray } from "../../../core/types/Types.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";

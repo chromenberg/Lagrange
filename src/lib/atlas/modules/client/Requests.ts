@@ -8,6 +8,7 @@ import { UserService } from "./UserService.js";
 import { ChannelService } from "./ChannelService.js";
 import { GuildService } from "./GuildService.js";
 import { MessageService } from "./MessageService.js";
+import { AuthService } from "./AuthService.js";
 
 /**
  * A Request builder that auto returns and provides abstracted methods for creating requests.
@@ -100,11 +101,13 @@ export class RequestManager {
   private readonly _messages: MessageService;
   private readonly _guilds: GuildService;
   private readonly _channels: ChannelService;
+  private readonly _auth: AuthService;
   constructor(private parent: Atlas) {
     this._users = new UserService(this.parent);
     this._messages = new MessageService(this.parent);
     this._guilds = new GuildService(this.parent);
     this._channels = new ChannelService(this.parent);
+    this._auth = new AuthService(this.parent);
   }
 
   public get users(): UserService {
@@ -118,5 +121,8 @@ export class RequestManager {
   }
   public get messages(): MessageService {
     return this._messages;
+  }
+  public get auth(): AuthService {
+    return this._auth;
   }
 }
