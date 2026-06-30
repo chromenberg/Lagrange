@@ -8,6 +8,7 @@ import {
   __atlas,
   __gatewayEmitter,
 } from "./lib/lagrange/LagrangeInit.js";
+import "./lib/atlas/tables/TableAggregate.js"
 
 Logger.setLogLevel(LogLevel.Debug);
 
@@ -27,6 +28,7 @@ export const API = __api;
 API.listen(Config.REST.Address, Config.REST.Port);
 
 export const Atlas = __atlas;
+
 export const PubSub = __pubsub;
 export const Gateway = initGateway();
 export const GatewayEmitter = __gatewayEmitter;
