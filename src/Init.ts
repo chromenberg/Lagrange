@@ -1,3 +1,3 @@
 import "./_Init.js";
-import "./autoexec/ProcessInfo.js"
+import "./autoexec/imports.js"
 // IF YOU ARE CAUGHT IMPORTING MAJOR THINGS FROM THE PROJECT INTO HERE YOU WILL BE KILLED

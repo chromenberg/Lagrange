@@ -4,7 +4,7 @@ import { Logger, LogLevel } from "../lib/core/logging/Logger.js";
 (() => {
   console.log("autoexec running");
   let lastLoop = eventLoopUtilization();
-  const interval = 5_000;
+  const interval = 15_000;
   
   setInterval(() => {
     const loop = eventLoopUtilization(lastLoop);
