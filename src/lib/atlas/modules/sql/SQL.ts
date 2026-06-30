@@ -21,6 +21,7 @@ export class SQLDatabase {
     this._db = database;
     this.parent = parent;
     this.tagStore = this._db.createTagStore();
+    
   }
 
   /**

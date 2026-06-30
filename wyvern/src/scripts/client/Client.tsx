@@ -3,7 +3,7 @@
 const { useState, useEffect } = await import("react");
 import type { Props } from "../../Core";
 const identify = (await import("./socket/Identify")).default;
-const useTokenStore = (await import("./socket/TokenStore")).default;
+const useToken = (await import("./socket/TokenStore")).default;
 const EventSystem = (await import("./Dispatch")).default;
 const UserContext = (await import("./UserContext")).default;
 
@@ -22,7 +22,7 @@ export default function ClientWrapper({ children }: Props) {
     }[]
   >();
 
-  const token = useTokenStore();
+  const token = useToken();
   if (token === null || token === "NO_TOKEN") {
     throw new Error(
       "A token was not found or provided by the TokenStore, and no fallback information was entered",

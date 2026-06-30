@@ -45,6 +45,7 @@ export class Router implements RouteBase {
       this.server = new Server({ // set incoming message to be request instead
         IncomingMessage: Request
       });
+      
     } else {
       this.server = server;
     }
@@ -90,7 +91,7 @@ export class Router implements RouteBase {
     // ROUTE, THIS WILL KILL THE ENTIRE SERVER AT SOME POINT SOON
 
     this.server.on("request", (req: Request, res) => {
-    
+      // console.log(req.errored)
       // console.log(path, req.url)
       if (req.url && this.aliases.has(req.url)) {
         // if we have an aliased url then set the
@@ -99,7 +100,7 @@ export class Router implements RouteBase {
         console.log("Request was aliased")
       }
       if (req.method !== mode) return;
-    
+      
       // if the path is set to * it is a wildcard path, accept any req
       // WARNING: This could most likely fetch any file if * is appended to the end
       // TODO: make this work for any version

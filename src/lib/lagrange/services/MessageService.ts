@@ -47,6 +47,7 @@ export class MessageService {
     req: Request,
     res: ServerResponse<IncomingMessage>,
   ) {
+    // console.log("dgfgdfg")
     if (!req.headers.authorization) {
       res.setHeader("Content-Type", "application/json");
       res.write(
@@ -59,13 +60,16 @@ export class MessageService {
     Atlas.requests.users
       .getUserByToken(req.headers.authorization)
       .then((user) => {
+        // console.log("DDDD")
         HTTPReader.parseBody(req).then((body: any) => {
           if (!user) return; // add more handling for this
 
           const channelID: string = req.params.id;
-          const guildID: string = Registry.fetch("inverseChannelMap")?.get(channelID);
+          const guildID: string =
+            Registry.fetch("inverseChannelMap")?.get(channelID);
 
           // a message create event should have a body, a channel id and an auth token
+          // console.log(GatewayEmitter.getChannel(guildID, channelID))
           GatewayEmitter.getChannel(guildID, channelID)?.publish(
             "MESSAGE_CREATE",
             {
@@ -79,9 +83,11 @@ export class MessageService {
               content: body.content,
             },
           );
+          res.statusCode = 200;
+          res.write("was this the fix?");
+          res.end();
         });
       });
-    res.statusCode = 200;
   }
   public async deleteMessage(
     req: Request,

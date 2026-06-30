@@ -21,6 +21,10 @@ export class GuildService {
     this.route.post("/", (req, res) => {
       this.newGuild(req, res);
     });
+    
+    this.route.get("/:id/invites/new", (req, res) => {
+      this.newInviteCode(req, res);
+    });
   }
 
   // should have a guild name as of right now
@@ -40,5 +44,12 @@ export class GuildService {
         Atlas.requests.guilds.newGuild(body as GuildData);
       }
     });
+  }
+
+  public newInviteCode(req: Request, res: ServerResponse<IncomingMessage>) {
+    const code = Atlas.requests.guilds.newInvite(req.params.id)
+    res.setHeader("content-type", "application/json")
+    res.write(JSON.stringify({invite_code: code}))
+    res.end()
   }
 }
