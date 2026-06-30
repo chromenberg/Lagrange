@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import type { Props } from "../../Core";
 // import { HandleMessage } from "./HandleMessage";
-const IdentifyProtoBuilder = (await import("./Identify.proto")).IdentifyProtoBuilder;
+const IdentifyProtoBuilder = (await import("./Identify.proto"))
+  .IdentifyProtoBuilder;
 const pubsub = (await import("./Listener")).pubsub;
 const UserContext = (await import("./UserContext")).default;
 
@@ -35,7 +36,7 @@ export default function ClientWrapper({ children }: Props) {
     },
   ): void {
     if (msg.opCode === 10) {
-      console.log("rjsdfjgoidfj")
+      console.log("rjsdfjgoidfj");
       socket.send(
         IdentifyProtoBuilder({
           intents: "1",
@@ -66,23 +67,11 @@ export default function ClientWrapper({ children }: Props) {
     _sock.onmessage = async (message) => {
       try {
         const msg = JSON.parse(message.data);
-        startHeartbeatLoop(_sock, msg);
-
-        if (msg.eventType === "READY") {
-          setUsername(msg.data.user.username);
-          setDisplayName(msg.data.user.display_name);
-          setUserID(msg.data.user.id);
-          setGuilds(msg.data.guilds);
-        }
-
-        pubsub.dispatchEvent(new CustomEvent(msg.eventType, msg.data));
-        console.log("[Client] ", msg);
-        //return _sock;
+        pubsub
       } catch (e) {
         console.log(e);
       }
     };
-
   }, []);
 
   return (

@@ -1,17 +1,16 @@
-class PubSub extends EventTarget {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export class PubSub<E extends (keyof E extends string ? string : string)> {
+  private _emitter: EventTarget;
   constructor() {
-    super()
+    this._emitter = new EventTarget();
   }
-  
+
+  public on(eventName: E, listener: (...args: any[]) => void): void {
+    this._emitter.addEventListener(eventName, listener);
+  }
+  public emit(eventName: E, ...data: any[]): void {
+    this._emitter.dispatchEvent(new CustomEvent(eventName, ...data));
+  }
 }
-
-export const pubsub = new PubSub()
-
-pubsub.addEventListener("MESSAGE_CREATE", (data) => {
-  console.log(data)
-})
-
-
-pubsub.addEventListener("testagain", () => {
-  console.log("sdsdfaggotfsfd")
-})
+const EventSystem = new PubSub()
+export default EventSystem;
