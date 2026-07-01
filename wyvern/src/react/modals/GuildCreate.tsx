@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import useToken from "../../scripts/client/requests/Authorization";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const ActionRow = (await import("../mana/action-row/ActionRow")).default;
 
@@ -10,12 +11,11 @@ const Modal = (await import("./Modal")).default;
 const ModalView = (await import("./ModalView")).default;
 import("../styles/ModalStyles.css");
 
-function requestGuildCreate(guildName: string) {
+function requestGuildCreate(token: string, guildName: string) {
   fetch("/api/v1/guilds/", {
     method: "POST",
     headers: {
-      Authorization:
-        "MTI2NDAwMzg2MDgzODU2Mzg0.ajukxA.A8se2Bl_Jo0HYDEfSRW2gmSCbY55Cst349AyvzgVEAQ",
+      Authorization: token,
     },
     body: JSON.stringify({
       name: guildName,
@@ -27,6 +27,7 @@ function requestGuildCreate(guildName: string) {
 export default function CreateGuildModal() {
   const guildNameInput = useRef(null);
   const modalRef = useRef(null);
+  const token = useToken();
   return (
     <ModalView>
       <Modal height="200px" width="400px" ref={modalRef}>
@@ -67,6 +68,7 @@ export default function CreateGuildModal() {
                 onClick={() => {
                   // FIXME: this is shit
                   requestGuildCreate(
+                    token,
                     (guildNameInput.current as unknown as HTMLDivElement)
                       .innerText,
                   );

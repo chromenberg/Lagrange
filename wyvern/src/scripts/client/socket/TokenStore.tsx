@@ -1,7 +1,7 @@
 
-export default function useToken() {
-  const localToken =
-    localStorage.getItem("ApplicationSessionToken") ?? "NO_TOKEN";
+// export default function useToken() {
+//   const localToken =
+//     localStorage.getItem("ApplicationSessionToken") ?? "NO_TOKEN";
 
-  return localToken;
-}
+//   return localToken;
+// }

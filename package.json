@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node ./dist/Init.js",
+    "start": "tsc && node --inspect ./dist/Init.js",
     "dev": "cd ./wyvern && vite && cd ../",
     "build": "cd ./wyvern && tsc -b && vite build && cd ../",
     "lint": "cd ./wyvern && eslint . && cd ../",

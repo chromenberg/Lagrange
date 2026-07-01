@@ -7,6 +7,7 @@ import type { GuildCreateObj } from "../interfaces/Guilds.js";
 import { Atlas } from "../../../_Init.js";
 import type { GuildData } from "../../core/types/FeatureTypes.js";
 import { SQLDatabase } from "../../atlas/modules/sql/SQL.js";
+import { GatewayEmitter } from "../modules/gateway/Gateway.js";
 
 export class InviteService {
   private readonly route: Route;
@@ -27,6 +28,24 @@ export class InviteService {
   public joinByInvite(req: Request, res: ServerResponse<IncomingMessage>) {
     console.log(req.params.code);
     Atlas.requests.guilds.checkInvite(req.params.code).then(async (inv) => {
+      if (!inv) return;
+      if (!inv.guild_id?.toString()) return;
+      
+      Atlas.requests.guilds
+        .addGuildMember(
+          inv.guild_id.toString(),
+          atob(req.headers.authorization?.split(".")[0] ?? ""),
+        )
+        .then(() => {
+          if (!inv.guild_id?.toString()) return;
+
+          GatewayEmitter.getGuild(inv.guild_id?.toString())?.publish(
+            "GUILD_MEMBER_ADD",
+            atob(req.headers.authorization?.split(".")[0] ?? ""),
+          );
+        });
+
+      
       res.setHeader("Content-Type", "application/json");
       res.write(
         JSON.stringify(

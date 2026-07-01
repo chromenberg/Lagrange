@@ -3,7 +3,7 @@
 const { useState, useEffect } = await import("react");
 import type { Props } from "../../Core";
 const identify = (await import("./socket/Identify")).default;
-const useToken = (await import("./socket/TokenStore")).default;
+const useToken = (await import("./requests/Authorization")).default;
 const EventSystem = (await import("./Dispatch")).default;
 const UserContext = (await import("./UserContext")).default;
 
@@ -11,8 +11,8 @@ export default function ClientWrapper({ children }: Props) {
   const [username] = useState("");
   const [displayName] = useState("");
 
-  const currentChannel = "Not Implemented (CurrentChannel)";
-  const currentGuild = "Not Implemented (CurrentGuild)";
+  const [currentChannel] = useState("127238068477386752");
+  const [currentGuild] = useState("127238068435435520");
 
   const [userID] = useState("");
   const [guilds] = useState<

@@ -70,6 +70,8 @@ export class MessageService {
 
           // a message create event should have a body, a channel id and an auth token
           // console.log(GatewayEmitter.getChannel(guildID, channelID))
+          console.log(`Sent in guild ${guildID} in channel ${channelID}`)
+          console.log(GatewayEmitter.getChannel(guildID, channelID)?.listeners("MESSAGE_CREATE"))
           GatewayEmitter.getChannel(guildID, channelID)?.publish(
             "MESSAGE_CREATE",
             {

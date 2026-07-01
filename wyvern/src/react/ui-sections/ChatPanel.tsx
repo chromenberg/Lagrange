@@ -26,7 +26,7 @@ export default function ChatPanel() {
     keyName: "Enter",
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback: (ref: any) => {
-      fetch("/api/v1/channels/" + "127183420823461888" + "/messages/", {
+      fetch("/api/v1/channels/" + wyvernState.currentChannel + "/messages/", {
         method: "POST",
         headers: {
           Authorization: wyvernState.token ?? ""
