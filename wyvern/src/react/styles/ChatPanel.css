@@ -1,7 +1,8 @@
 .chatPanel {
     flex: 1 1 auto;
-    margin-left: 10px;
     margin-top: 10px;
+    padding-left: var(--padding-m);
+    padding-right: var(--padding-m)
 }
 
 #test {
@@ -10,4 +11,8 @@
 }
 #debugoutput {
     height: 150px;
+}
+
+.chatInputContainer {
+    margin-bottom: var(--padding-m);
 }

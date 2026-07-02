@@ -1,0 +1,6 @@
+#guilds {
+  grid-area: guilds;
+  background-color: green;
+  width: 70px;
+  background: var(--theme-low);
+}

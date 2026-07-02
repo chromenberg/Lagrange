@@ -24,9 +24,9 @@ export default function ClientWrapper({ children }: Props) {
 
   const token = useToken();
   if (token === null || token === "NO_TOKEN") {
-    throw new Error(
-      "A token was not found or provided by the TokenStore, and no fallback information was entered",
-    );
+    // throw new Error(
+    //   "A token was not found or provided by the TokenStore, and no fallback information was entered",
+    // );
   }
   useEffect(() => {
     const _sock = new WebSocket("http://127.0.0.1:82");

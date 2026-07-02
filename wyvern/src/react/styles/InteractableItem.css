@@ -1,0 +1,10 @@
+.interactableItem {
+    padding-block: var(--padding-sm);
+    border-radius: var(--padding-m);
+    padding-inline: var(--padding-sm);
+}
+
+.interactableItem:hover {
+    /* Cannot use interact-hover as it is too bright, this needs to be fixed */
+    background: var(--interact-hover);
+}

@@ -1,14 +1,9 @@
 import { BrowserRouter } from "react-router";
 import ClientWrapper from "./scripts/client/Client";
-import { Route } from "react-router";
-import { Routes } from "react-router";
-import { RouterProvider } from "react-router";
+import LeftPanel from "./LeftPanel";
 
 import("./App.css");
-const PanelHeader = (await import("./react/components/ChannelOverhead"))
-  .default;
-const FlexBox = (await import("./react/components/Flex")).default;
-const LSidePane = (await import("./react/ui-sections/LSidePane")).default;
+
 const MainPanel = (await import("./react/ui-sections/MainPanel")).default;
 const CreateGuildModal = (await import("./react/modals/GuildCreate")).default;
 // import ChannelSelect from "./react/wyvern-comps/ChannelSelector";
@@ -16,34 +11,13 @@ const CreateGuildModal = (await import("./react/modals/GuildCreate")).default;
 export function App() {
   return (
     <>
-      <BrowserRouter basename="/channels/@me">
+      <BrowserRouter basename="/">
         <ClientWrapper>
           <div className="appContent">
             <div id="titleBar">
               {/*Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}*/}
             </div>
-            <div id="lSidePanel">
-              <nav id="guilds"></nav>
-              <div id="channelSelector">
-                <FlexBox direction="updown" className="fillAll">
-                  <PanelHeader>
-                    <div className="fillAll panelHeaderInner">
-                      <div className="flexHoriz centerVert centerHori fillAll">
-                        <div
-                          style={{
-                            marginRight: "auto",
-                          }}
-                        >
-                          <header>| Server Name |</header>
-                        </div>
-                        <div>dropdown - \/</div>
-                      </div>
-                    </div>
-                  </PanelHeader>
-                  <LSidePane>channels</LSidePane>
-                </FlexBox>
-              </div>
-            </div>
+            <LeftPanel />
             <MainPanel></MainPanel>
             {/*<CreateGuildModal />*/}
           </div>

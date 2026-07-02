@@ -1,0 +1,6 @@
+.channelBar {
+    padding-right: var(--padding-m);
+    gap: var(--padding-xs);
+    display: flex;
+    flex-direction: column;
+}

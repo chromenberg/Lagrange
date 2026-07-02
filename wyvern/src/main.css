@@ -5,6 +5,7 @@ html,
     margin: 0;
     height: 100%;
     width: 100%;
+    background: var(--theme-low);
 }
 div,
 button,
@@ -135,7 +136,7 @@ nav {
     --border-subtle: var(--opacity-12);
 
     --interact-active: var(--neutral-1);
-    --interact-hover: hsl(var(--neutral-1)/0.7);
+    --interact-hover: hsl(var(--neutral-1)/0.05);
     --interact-muted: var(--primary-500);
     --interact-normal: hsl(var(--neutral-16)/0.09);
     --chat-background-default: color-mix(
@@ -270,14 +271,14 @@ nav {
     --scrollbar-width: 10px;
 }
 :root {
-    --base-hue: 240;
-    --default-lowest: hsl(var(--base-hue), 10%, 6%);
-    --default-lower: hsl(var(--base-hue), 10%, 8%);
-    --default-low: hsl(var(--base-hue), 10%, 10%);
-    --default-chat: hsl(var(--base-hue), 10%, 12%);
-    --default-high: hsl(var(--base-hue), 10%, 15%);
-    --default-higher: hsl(var(--base-hue), 10%, 17%);
-    --default-highest: hsl(var(--base-hue), 10%, 20%);
+    --base-hue: 245;
+    --default-lowest: hsl(var(--base-hue), 19%, 14%);
+    --default-lower: hsl(var(--base-hue), 19%, 16%);
+    --default-low: hsl(var(--base-hue), 19%, 18%);
+    --default-chat: hsl(var(--base-hue), 19%, 20%);
+    --default-high: hsl(var(--base-hue), 19%, 22%);
+    --default-higher: hsl(var(--base-hue), 19%, 24%);
+    --default-highest: hsl(var(--base-hue), 19%, 26%);
     --theme-lowest: var(--theme-gradient-lowest, var(--default-lowest));
     --theme-lower: var(--theme-gradient-lower, var(--default-lower));
     --theme-low: var(--theme-gradient-low, var(--default-low));

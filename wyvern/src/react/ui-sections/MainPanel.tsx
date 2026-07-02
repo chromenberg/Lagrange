@@ -2,8 +2,7 @@ const PanelHeader = (await import("../components/ChannelOverhead")).default;
 const FlexBox = (await import("../components/Flex")).default;
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const ChatPanel = (await import("./ChatPanel")).default;
-import("../styles/MainPanel.css")
-
+import("../styles/MainPanel.css");
 
 export default function MainPanel() {
   return (
@@ -13,14 +12,18 @@ export default function MainPanel() {
         <PanelHeader>
           <div className="fillAll panelHeaderInner">
             <div className="flexHoriz centerVert fillAll">
-              <div style={{
-                marginRight: "auto"
-              }}>
+              <div
+                style={{
+                  marginRight: "auto",
+                }}
+              >
                 <b>[#ChannelName]</b> - <small>description</small>
               </div>
-              <div style={{
-                width:"100px"
-              }}>
+              <div
+                style={{
+                  width: "100px",
+                }}
+              >
                 <InputBox height="10px" placeholder="Search"></InputBox>
               </div>
             </div>
@@ -31,6 +34,5 @@ export default function MainPanel() {
         </FlexBox>
       </FlexBox>
     </div>
-      
   );
 }

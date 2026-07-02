@@ -3,7 +3,9 @@ import useToken from "../../scripts/client/requests/Authorization";
 import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore";
 import type { InputKeybind } from "../components/InputBox/InputBox.types";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
-const InputBoxAccessories = (await import("../components/InputBox/InputBoxAccessories")).default;
+const InputBoxAccessories = (
+  await import("../components/InputBox/InputBoxAccessories")
+).default;
 // const UserContext = (await import("../../scripts/client/UserContext")).default;
 import("../styles/ChatPanel.css");
 
@@ -22,8 +24,8 @@ const leftCharms = (
 );
 export default function ChatPanel() {
   // const wyvernState = useContext(UserContext)
-  const token = useToken()
-  const currentRoute = useCurrentRoute()
+  const token = useToken();
+  const currentRoute = useCurrentRoute();
   const sendMessage: InputKeybind = {
     shift: true,
     control: false,
@@ -33,43 +35,30 @@ export default function ChatPanel() {
       fetch("/api/v1/channels/" + currentRoute.channel_id + "/messages/", {
         method: "POST",
         headers: {
-          Authorization: token
+          Authorization: token,
         },
         body: JSON.stringify({
-          content: ref.current.innerText
-        })
-      })
-    }
-  }
+          content: ref.current.innerText,
+        }),
+      });
+    },
+  };
   // const [state, setState] = useState(1)
   return (
     <main className="chatPanel">
       <div className="flexHoriz fillAll">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            flex: "1 1 auto",
-          }}
-        >
-          <div
-            style={{ flex: "1 1 auto" }}
-          ></div>
-          <section
-            style={{
-              marginBlock: "7px",
-              paddingBottom: "0px",
-            }}
-          >
-            <form>
+        <div className="fillAll flexVert">
+          <div className="fillAll"></div>
+          <form>
+            <div className="chatInputContainer">
               <InputBox
                 placeholder="Message #{name}"
                 charmLeft={leftCharms}
                 charmRight={rightCharms}
                 keybinds={[sendMessage]}
               ></InputBox>
-            </form>
-          </section>
+            </div>
+          </form>
         </div>
       </div>
     </main>
