@@ -1,0 +1,1 @@
+export type SelfUser<T> = T & {email: string}

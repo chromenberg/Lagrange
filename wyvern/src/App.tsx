@@ -1,4 +1,8 @@
+import { BrowserRouter } from "react-router";
 import ClientWrapper from "./scripts/client/Client";
+import { Route } from "react-router";
+import { Routes } from "react-router";
+import { RouterProvider } from "react-router";
 
 import("./App.css");
 const PanelHeader = (await import("./react/components/ChannelOverhead"))
@@ -12,39 +16,41 @@ const CreateGuildModal = (await import("./react/modals/GuildCreate")).default;
 export function App() {
   return (
     <>
-      <ClientWrapper>
-        <div className="appContent">
-          <div id="titleBar">
-            {/*Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}*/}
-          </div>
-          <div id="lSidePanel">
-            <nav id="guilds"></nav>
-            <div id="channelSelector">
-              <FlexBox direction="updown" className="fillAll">
-                <PanelHeader>
-                  <div className="fillAll panelHeaderInner">
-                    <div className="flexHoriz centerVert centerHori fillAll">
-                      <div
-                        style={{
-                          marginRight: "auto",
-                        }}
-                      >
-                        <header>| Server Name |</header>
-                      </div>
-                      <div>dropdown - \/</div>
-                    </div>
-                  </div>
-                </PanelHeader>
-                <LSidePane>channels</LSidePane>
-              </FlexBox>
+      <BrowserRouter basename="/channels/@me">
+        <ClientWrapper>
+          <div className="appContent">
+            <div id="titleBar">
+              {/*Username: {userData.username} | DisplayName: {userData.display_name} | id: {userData.user_id}*/}
             </div>
+            <div id="lSidePanel">
+              <nav id="guilds"></nav>
+              <div id="channelSelector">
+                <FlexBox direction="updown" className="fillAll">
+                  <PanelHeader>
+                    <div className="fillAll panelHeaderInner">
+                      <div className="flexHoriz centerVert centerHori fillAll">
+                        <div
+                          style={{
+                            marginRight: "auto",
+                          }}
+                        >
+                          <header>| Server Name |</header>
+                        </div>
+                        <div>dropdown - \/</div>
+                      </div>
+                    </div>
+                  </PanelHeader>
+                  <LSidePane>channels</LSidePane>
+                </FlexBox>
+              </div>
+            </div>
+            <MainPanel></MainPanel>
+            {/*<CreateGuildModal />*/}
           </div>
-          <MainPanel></MainPanel>
-          {/*<CreateGuildModal />*/}
-        </div>
-        <CreateGuildModal />
-        {/*<div id="modal-portal"></div>*/}
-      </ClientWrapper>
+          <CreateGuildModal />
+          {/*<div id="modal-portal"></div>*/}
+        </ClientWrapper>
+      </BrowserRouter>
     </>
   );
 }

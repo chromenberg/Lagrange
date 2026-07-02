@@ -1,5 +1,7 @@
-export const EventTypes = {
-  READY: "READY",
+import type { ReadyEvent } from "../../types/ReadyType";
+
+export type EventTypes = {
+  READY: ReadyEvent,
   RESUMED: "RESUMED",
   RATE_LIMITED: "RATE_LIMITED",
   CHANNEL_CREATE: "CHANNEL_CREATE",
@@ -38,5 +40,6 @@ export const EventTypes = {
   PRESENCE_UPDATE: "PRESENCE_UPDATE",
   TYPING_START: "TYPING_START",
   USER_UPDATE: "USER_UPDATE",
+  SELF_USER_UPDATE: "SELF_USER_UPDATE",
   WILDCARD: "*",
 };

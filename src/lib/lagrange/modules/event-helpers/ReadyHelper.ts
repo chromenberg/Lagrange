@@ -22,14 +22,18 @@ export function initEvents(
   guilds: UnavailableID[],
 ) {
   // For now we will subscribe to every event type
-  if (!guildChannels) return;
+  if (!guildChannels) {
+    console.log("no guild channels")
+    return
+  };
 
+  console.log(guilds)
   Object.entries(channelListeners).forEach(([event, listener]) => {
     guildChannels.forEach((guildChannel) => {
       const [guildID, channelID] = getChannelAndGuild(guildChannel);
       if (!guildID || !channelID) return;
-
       // Subscribe to events from the channel
+      console.log(guildChannel)
       GatewayEmitter.channelSubscribe(
         event as KeyOfEvents, // Event as found from the object entries
         guildID,
@@ -44,7 +48,7 @@ export function initEvents(
   Object.entries(guildListeners).forEach(([event, listener]) => {
     guilds.forEach((item) => {
       GatewayEmitter.guildSubscribe(event as KeyOfEvents, item.id, (data) => {
-        (listener as NamedEventCallback)(data).createJSON();
+        client.send((listener as NamedEventCallback)(data).createJSON());
       });
     });
   });

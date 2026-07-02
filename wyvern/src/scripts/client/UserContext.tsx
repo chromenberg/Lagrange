@@ -1,16 +1,12 @@
+import type { GuildStore } from "../stores/StoreTypes";
+import type { SelfUser } from "../types/Generics";
+import type { UserData } from "../types/UserType";
+
 const createContext = (await import("react")).createContext;
 
 type UserContext = {
-  currentChannel: string;
-  currentGuild: string;
-  username: string;
-  display_name: string;
-  id: string;
-  token: string;
-  guilds: {
-    id: string;
-    unavailable: boolean;
-  }[];
+  user: SelfUser<UserData>,
+  guilds: GuildStore
 };
 
 const UserContext = createContext<Partial<UserContext>>({});

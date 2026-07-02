@@ -1,26 +1,26 @@
 // import { useState } from "react";
 // import { useGuildData } from "./GuildData";
-const { useState, useEffect } = await import("react");
+const { /* useState, */ useEffect } = await import("react");
 import type { Props } from "../../Core";
 const identify = (await import("./socket/Identify")).default;
 const useToken = (await import("./requests/Authorization")).default;
-const EventSystem = (await import("./Dispatch")).default;
-const UserContext = (await import("./UserContext")).default;
+const EventSystem = (await import("../core/EventSystem")).default;
+// const UserContext = (await import("./UserContext")).default;
 
 export default function ClientWrapper({ children }: Props) {
-  const [username] = useState("");
-  const [displayName] = useState("");
+  // const [username] = useState("");
+  // const [displayName] = useState("");
 
-  const [currentChannel] = useState("127238068477386752");
-  const [currentGuild] = useState("127238068435435520");
+  // const [currentChannel] = useState("127238068477386752");
+  // const [currentGuild] = useState("127238068435435520");
 
-  const [userID] = useState("");
-  const [guilds] = useState<
-    {
-      id: string;
-      unavailable: boolean;
-    }[]
-  >();
+  // const [userID] = useState("");
+  // const [guilds] = useState<
+  //   {
+  //     id: string;
+  //     unavailable: boolean;
+  //   }[]
+  // >();
 
   const token = useToken();
   if (token === null || token === "NO_TOKEN") {
@@ -52,7 +52,7 @@ export default function ClientWrapper({ children }: Props) {
 
   return (
     <>
-      <UserContext.Provider
+      {/*<UserContext.Provider
         value={{
           display_name: displayName,
           username: username,
@@ -62,9 +62,9 @@ export default function ClientWrapper({ children }: Props) {
           currentGuild: currentGuild,
           token: token,
         }}
-      >
-        {children}
-      </UserContext.Provider>
+      >*/}
+      {children}
+      {/*</UserContext.Provider>*/}
     </>
   );
 }
