@@ -1,11 +1,8 @@
-type NamedWithID<T> = T & { name: string; id: string };
+import type { Channel } from "../types/ChannelTypes";
+import type { Guild } from "../types/GuildTypes";
 
-type Channel = NamedWithID<{
-  index: number;
-}>;
-type Guild = NamedWithID<{
-  channels: Channel[];
-}>;
+
+
 type GuildMembers = {
   id: string;
   members: string[];

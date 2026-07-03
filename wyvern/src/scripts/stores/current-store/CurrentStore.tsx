@@ -10,6 +10,7 @@ export function useCurrentRoute() {
 
   useEffect(() => {
     console.log("hcangechannel event effect");
+    
     LocationAnnouncer.on("CHANGE_CHANNEL", (e: GuildChannel) => {
       console.log("hcangechannel event");
       console.log("new ids, guild:", e.guild_id, " channel: ", e.channel_id);

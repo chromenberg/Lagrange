@@ -11,7 +11,7 @@ const CreateGuildModal = (await import("./react/modals/GuildCreate")).default;
 export function App() {
   return (
     <>
-      <BrowserRouter basename="/">
+      <BrowserRouter basename="/channels/@me">
         <ClientWrapper>
           <div className="appContent">
             <div id="titleBar">

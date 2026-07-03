@@ -1,5 +1,5 @@
-import { useState } from "react";
-import EventSystem from "../../core/EventSystem";
+const { useState } = (await import("react"));
+const EventSystem = (await import("../../core/EventSystem")).default;
 import type { UserData } from "../../types/UserType";
 import type { SelfUser } from "../../types/Generics";
 import type { ReadyEvent } from "../../types/ReadyType";

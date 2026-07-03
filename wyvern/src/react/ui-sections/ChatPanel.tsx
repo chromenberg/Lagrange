@@ -1,6 +1,6 @@
 // const useContext = (await import("react")).useContext;
 import useToken from "../../scripts/client/requests/Authorization";
-import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore";
+// import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore";
 import type { InputKeybind } from "../components/InputBox/InputBox.types";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (
@@ -25,14 +25,14 @@ const leftCharms = (
 export default function ChatPanel() {
   // const wyvernState = useContext(UserContext)
   const token = useToken();
-  const currentRoute = useCurrentRoute();
+  // const currentRoute = useCurrentRoute();
   const sendMessage: InputKeybind = {
     shift: true,
     control: false,
     keyName: "Enter",
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback: (ref: any) => {
-      fetch("/api/v1/channels/" + currentRoute.channel_id + "/messages/", {
+      fetch("/api/v1/channels/" + "127238068477386752"  + "/messages/", {
         method: "POST",
         headers: {
           Authorization: token,

@@ -1,17 +1,8 @@
 import { WebSocketServer } from "ws";
-import type { VoidCallback } from "../../../core/types/Types.js";
-import { Collection } from "../../../core/structs/Collection.js";
-import type WebSocket from "ws";
-import {
-  type GatewayEvent,
-  GatewayEventOpCodes,
-  GatewayEventTypes,
-} from "../events/GatewayEvents.js";
 import { eventPublisher } from "../../services/EventService.js";
 import { ClientConnections } from "./Connections.js";
 import "./GatewayPublisher.js";
 import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
-import { pubSub } from "./PubSubHandler.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { ClientConnection } from "./Connection.js";
 import { GatewayPublisher } from "./GatewayPublisher.js";
