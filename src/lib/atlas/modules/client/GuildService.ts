@@ -89,4 +89,8 @@ export class GuildService extends AtlasChild {
     this.parent.sqlClient.run`INSERT INTO guild_invites VALUES (${code}, ${BigInt(guild_id)});`
     return code
   }
+
+  public getChannels(id: Snowflake) {
+    return this.parent.sqlClient.all`SELECT * FROM channels WHERE channels.guild_id = ${id}`
+  }
 }

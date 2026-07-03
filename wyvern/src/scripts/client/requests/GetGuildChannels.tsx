@@ -4,9 +4,15 @@ const populate = (await import("../../core/SetPlaceholders")).populate;
 const routes = (await import("../Routes")).routes;
 const validateResponse = (await import("./ValidateResponse")).validateResponse;
 
-export function fetchGuildData(token: string, id: string) {
+type A = {
+  name: string;
+  id: string;
+  type: "text" | "voice";
+};
+
+export function getGuildChannels(token: string, id: string): Promise<A[]> {
   return new Promise((res) => {
-    fetch(apiURL+populate(routes.guilds, id), {
+    fetch(apiURL+populate(routes.guild_channels, id), {
       method: "GET",
       headers: {
         Authorization: token,

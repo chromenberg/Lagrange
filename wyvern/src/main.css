@@ -135,9 +135,9 @@ nav {
     --border-strong: var(--opacity-44);
     --border-subtle: var(--opacity-12);
 
-    --interact-active: var(--neutral-1);
+    --interact-active: hsl(var(--neutral-1)/0.1);
     --interact-hover: hsl(var(--neutral-1)/0.05);
-    --interact-muted: var(--primary-500);
+    --interact-muted: hsl(var(--primary-500));
     --interact-normal: hsl(var(--neutral-16)/0.09);
     --chat-background-default: color-mix(
         in oklab,

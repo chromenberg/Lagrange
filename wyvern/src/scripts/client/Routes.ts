@@ -1,11 +1,14 @@
-export const rootURL = "/api/v1";
+export const apiURL = "/api/v1";
 
 export const routes = {
-  messages: rootURL + "/channels/${}/messages",
-  message: rootURL + "/channels/${}/messages/${}",
-  guilds: rootURL + "/guilds",
-  guild_channels: rootURL + "/guilds/${}/channels",
-  register: rootURL + "/auth/register",
-  login: rootURL + "/auth/login",
+  messages: "/channels/${}/messages",
+  message: "/channels/${}/messages/${}",
+  channels: "/channels/${}",
+  guilds: "/guilds",
+  guild_channels: "/guilds/${}/channels",
+  register: "/auth/register",
+  login: "/auth/login",
+  me: "/users/@me",
+  home: "/channels/@me"
 };
 export const routeArray = Object.values(routes)

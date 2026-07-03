@@ -28,4 +28,5 @@ export class ChannelService extends AtlasChild {
       .run`INSERT INTO channels VALUES (${BigInt(channelData.id)}, ${BigInt(guildID)}, ${channelData.name}, ${channelData.channel_index});`;
     return channelData
   }
+
 }

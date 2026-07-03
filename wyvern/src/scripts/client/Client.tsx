@@ -42,7 +42,8 @@ export default function ClientWrapper({ children }: Props) {
         identify(_sock, token, msg);
         // If its the Dispatch OpCode
         if (msg.opCode === 0) {
-          EventSystem.emit(msg.eventName, msg.data);
+  
+          EventSystem.emit(msg.eventType, msg.data);
         }
       } catch (e) {
         console.log(e);

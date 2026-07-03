@@ -1,9 +1,10 @@
 import { Config } from "../../../Config.js";
-import { GatewayEvent, GatewayEventTypes } from "../../../modules/events/GatewayEvents.js";
+import { GatewayEvent, GatewayEventOpCodes, GatewayEventTypes } from "../../../modules/events/GatewayEvents.js";
 
 export class GatewayEventReady extends GatewayEvent { // the data in this will need UNAVAILABLE_GUILD_OBJECT, APPLICATION_OBJECT, RESUME_GATEWAY_URL and USER INFO
   constructor() {
     super({
+      opCode: GatewayEventOpCodes.DISPATCH,
       eventType: GatewayEventTypes.READY,
       data: {
         apiVersion: 1, // integer determining api versioning of lagrange / discord

@@ -1,6 +1,9 @@
 // const useContext = (await import("react")).useContext;
+import { useMemo } from "react";
 import useToken from "../../scripts/client/requests/Authorization";
-// import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore";
+import { apiURL, routes } from "../../scripts/client/Routes";
+import { populate } from "../../scripts/core/SetPlaceholders";
+import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore";
 import type { InputKeybind } from "../components/InputBox/InputBox.types";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (
@@ -25,25 +28,32 @@ const leftCharms = (
 export default function ChatPanel() {
   // const wyvernState = useContext(UserContext)
   const token = useToken();
+  const route = useCurrentRoute()
+  // console.log(route.channel)
   // const currentRoute = useCurrentRoute();
-  const sendMessage: InputKeybind = {
-    shift: true,
-    control: false,
-    keyName: "Enter",
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (ref: any) => {
-      fetch("/api/v1/channels/" + "127238068477386752"  + "/messages/", {
-        method: "POST",
-        headers: {
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          content: ref.current.innerText,
-        }),
-      });
-    },
-  };
+  const sendMessage: InputKeybind = useMemo(() => {
+    // console.log(route.channel)
+    
+    return {
+      shift: true,
+      control: false,
+      keyName: "Enter",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      callback: (ref: any) => {
+        fetch(apiURL + populate(routes.messages, route.channel.id??""), {
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            content: ref.current.innerText,
+          }),
+        });
+      },
+    }
+  }, [route, token]);
   // const [state, setState] = useState(1)
+  // const {channel} = useCurrentRoute()
   return (
     <main className="chatPanel">
       <div className="flexHoriz fillAll">
@@ -52,7 +62,7 @@ export default function ChatPanel() {
           <form>
             <div className="chatInputContainer">
               <InputBox
-                placeholder="Message #{name}"
+                placeholder={"Message "}
                 charmLeft={leftCharms}
                 charmRight={rightCharms}
                 keybinds={[sendMessage]}

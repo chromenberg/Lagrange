@@ -6,6 +6,9 @@ import { HTTPReader } from "../modules/rest/HTTPReader.js";
 import type { GuildCreateObj } from "../interfaces/Guilds.js";
 import { Atlas } from "../../../_Init.js";
 import type { GuildData } from "../../core/types/FeatureTypes.js";
+import type { Snowflake } from "../../core/types/Types.js";
+import { GatewayEmitter } from "../modules/gateway/Gateway.js";
+import type { Server } from "ws";
 
 export class GuildService {
   private readonly route: Route;
@@ -21,10 +24,14 @@ export class GuildService {
     this.route.post("/", (req, res) => {
       this.newGuild(req, res);
     });
-    
+
     this.route.get("/:id/invites/new", (req, res) => {
       this.newInviteCode(req, res);
     });
+
+    this.route.get("/:id/channels", (req, res) => {
+      this.getGuildChannels(req, res)
+    })
   }
 
   // should have a guild name as of right now
@@ -51,5 +58,26 @@ export class GuildService {
     res.setHeader("content-type", "application/json")
     res.write(JSON.stringify({invite_code: code}))
     res.end()
+  }
+
+  public addGuildMember(guildID: Snowflake, userID: Snowflake) {
+
+  }
+
+  public getGuildChannels(req: Request, res: ServerResponse<IncomingMessage>) {
+    Atlas.requests.guilds.getChannels(req.params.id).then((channels) => {
+      const channelMap = channels?.map(channel => {
+        return {
+          id: channel.channel_id?.toString(),
+          name: channel.channel_name,
+          index: channel.channel_index?.toString(),
+          type: "text"
+        }
+      })
+
+      res.setHeader("Content-Type", "application/json")
+      res.write(JSON.stringify(channelMap))
+      res.end()
+    })
   }
 }

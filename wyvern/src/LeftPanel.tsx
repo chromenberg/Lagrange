@@ -1,40 +1,40 @@
+// import { useEffect } from "react";
 import ScrollMenu from "./react/mana/scroll-menu/ScrollMenu";
-import ChannelMapper from "./react/non-mana/channel-mapper/Mapper";
+const ChannelMapper = (await import("./react/non-mana/channel-mapper/Mapper"))
+  .default;
+// import useToken from "./scripts/client/requests/Authorization";
+// import { getGuildChannels } from "./scripts/client/requests/GetGuildChannels";
 // import ChannelButton from "./react/non-mana/channel/ChannelButton";
 
 const PanelHeader = (await import("./react/components/ChannelOverhead"))
   .default;
 const FlexBox = (await import("./react/components/Flex")).default;
 const LSidePane = (await import("./react/ui-sections/LSidePane")).default;
-import("./react/styles/ChannelBar.css")
-
-const data:  {
-  name: string;
-  id: string;
-  type: "text" | "voice";
-  }[] = [
-  {
-    name: "general",
-    id: "1231231",
-    type: "text"
-  },
-  {
-    name: "general2",
-    id: "12354671",
-    type: "text"
-  },
-  {
-    name: "general5",
-    id: "16456256",
-    type: "text"
-  } 
-  
-]
+import("./react/styles/ChannelBar.css");
+  const data = [
+    {
+      id: "127238068460609536",
+      name: "general",
+      index: "0",
+      type: "text",
+    },
+    {
+      id: "127238068477386752",
+      name: "off-topic",
+      index: "1",
+      type: "text",
+    },
+  ];
 
 export default function LeftPanel() {
+  // const token = useToken()
   return (
     <div id="lSidePanel">
-      <nav id="guilds"></nav>
+      <nav id="guilds">
+        {/*<ScrollMenu>
+
+        </ScrollMenu>*/}
+      </nav>
       <div id="channelSelector">
         <FlexBox direction="updown" className="fillAll">
           <PanelHeader>

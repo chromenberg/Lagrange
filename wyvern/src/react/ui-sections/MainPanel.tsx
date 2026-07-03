@@ -1,6 +1,7 @@
+const ChatHeader = (await import("../non-mana/main-headers/ChatHeader")).default;
+
 const PanelHeader = (await import("../components/ChannelOverhead")).default;
 const FlexBox = (await import("../components/Flex")).default;
-const InputBox = (await import("../components/InputBox/InputBox")).default;
 const ChatPanel = (await import("./ChatPanel")).default;
 import("../styles/MainPanel.css");
 
@@ -10,24 +11,7 @@ export default function MainPanel() {
     <div className="mainPanelWrapper">
       <FlexBox direction="updown">
         <PanelHeader>
-          <div className="fillAll panelHeaderInner">
-            <div className="flexHoriz centerVert fillAll">
-              <div
-                style={{
-                  marginRight: "auto",
-                }}
-              >
-                <b>[#ChannelName]</b> - <small>description</small>
-              </div>
-              <div
-                style={{
-                  width: "100px",
-                }}
-              >
-                <InputBox height="10px" placeholder="Search"></InputBox>
-              </div>
-            </div>
-          </div>
+          <ChatHeader />
         </PanelHeader>
         <FlexBox direction="leftright" className="mainContent">
           <ChatPanel />
