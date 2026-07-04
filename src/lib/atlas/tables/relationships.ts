@@ -36,6 +36,10 @@ process.once("atlaspreinit", (a) => {
           type: "DATETIME",
           required: true,
         },
+        {
+          name: "affinity",
+          type: "FLOAT",
+        }
       ],
       shared_pk: ["user_id1", "user_id2"],
     }),

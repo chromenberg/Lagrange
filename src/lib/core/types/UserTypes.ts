@@ -7,6 +7,7 @@ export enum RelationshipType {
   Blocked,
   Incoming,
   Outgoing,
+  Implicit
 }
 
 

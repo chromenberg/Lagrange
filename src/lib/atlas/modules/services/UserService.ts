@@ -217,6 +217,6 @@ export class UserService extends AtlasService {
 
   public getUserData(token: string) {
     const user = this.getUserByToken(token)
-    const relations = 
+    const relations = this
   }
 }
