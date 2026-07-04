@@ -17,20 +17,21 @@
   "dependencies": {
     "@types/ws": "^8.18.1",
     "@typescript/native-preview": "^7.0.0-dev.20260524.1",
+    "bitfield": "^5.0.1",
     "cassandra-driver": "^4.8.0",
     "glob": "^13.0.6",
-    "typescript": "^6.0.2",
-    "ws": "^8.20.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router": "^7.17.0"
+    "react-router": "^7.17.0",
+    "typescript": "^6.0.2",
+    "ws": "^8.20.0"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
     "@babel/core": "^7.29.0",
     "@eslint/js": "^10.0.1",
     "@rolldown/plugin-babel": "^0.2.3",
     "@types/babel__core": "^7.20.5",
+    "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",

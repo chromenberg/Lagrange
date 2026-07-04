@@ -108,6 +108,8 @@ export type SQLPromiseIterator = Promise<NodeJS.Iterator<SQLResponse>>;
 
 export type ResultSet = Promise<types.ResultSet>;
 export type Snowflake = string;
+export type Null<T> = T | null;
+
 export type EmailAddress = `${string}@${string}.${string}`;
 export type Token = `${Snowflake}.${string}.${string}`;
 export type WeakObj = {
