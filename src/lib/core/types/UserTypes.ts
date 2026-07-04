@@ -1,41 +1,85 @@
 import type { Role } from "./GuildTypes.js";
 import type { Null, Snowflake } from "./Types.js";
 
-interface User {
+export enum RelationshipType {
+  Friend = 1,
+  Blocked,
+  Spam,
+}
+
+export interface UserRelationship {
+  /**
+   * Identical to the User ID
+   */
+  id: Snowflake;
+
+  // is_spam_request: boolean
+  nickname: Null<string>;
+
+  /**
+   * When was this user added as a friend
+   */
+  since: Date;
+
+  /**
+   * How is this user related to the client
+   *
+   * Friend - The user is a friend of the client
+   *
+   * Blocked - The user is blocked by the client
+   *
+   * Spam - The user is flagged as spam for the client
+   */
+  type: RelationshipType;
+
+  user_id: Snowflake;
+
+  /**
+   * Is the user ignored by the client,
+   */
+  user_ignored: boolean;
+}
+
+export interface User {
   /**
    * Users avatar hash
    */
   avatar: Null<string>;
+
   /**
    * Users username
    */
   username: string;
+
   /**
    * Is the user a bot user?
    */
   bot: boolean;
+
   /**
    * The users custom discriminator
    *
    * This is NOT "0" if {@link User.bot} is true
    */
   discriminator: string | "0";
+
   /**
    * What is the users display name
    *
    * Used for legacy accounts that do not have a username
    */
   display_name: string;
+
   /**
    * The ACTUAL display name of the user
    */
   globalName: string;
+
   /**
    * Users id
    */
   id: Snowflake;
 }
-
 
 /**
  * Data of a user specific to a guild, contains overrides such as per guild avatars, banners or names
@@ -45,34 +89,44 @@ export interface Member {
    * Users server avatar hash
    */
   avatar: Null<string>;
+
   /**
    * Users server banner hash
    */
   banner: Null<string>;
+
   /**
    * Time until user is not timed out
    */
   communication_disabled_until: Null<Date>;
+
   /**
    * Is the user server deafened?
    */
   deaf: boolean;
+
   /**
    * Is the user server muted?
    */
   mute: boolean;
+
   /**
    * Users server nickname
    */
   nick: Null<string>;
+
   /**
    * Unknown, Pending application accept?
    */
   pending: boolean;
+
   /**
    * Roles the user has in the server
    */
   roles: Role[];
+
+  joined_at: Date;
+
   /**
    * Global data of user
    */
