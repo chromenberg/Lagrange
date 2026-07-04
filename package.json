@@ -9,10 +9,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node --inspect ./dist/Init.js",
-    "dev": "cd ./wyvern && vite && cd ../",
-    "build": "cd ./wyvern && tsc -b && vite build && cd ../",
-    "lint": "cd ./wyvern && eslint . && cd ../",
-    "preview": "cd ./wyvern && vite preview && cd ../"
+    "dev": "cd ./src/lib/wyvern && vite && cd ../../../",
+    "build": "cd ./src/lib/wyvern && tsc -b && vite build && cd ../../../",
+    "lint": "cd ./src/lib/wyvern && eslint . && cd ../../../",
+    "preview": "cd ./src/lib/wyvern && vite preview && cd ../../../"
   },
   "dependencies": {
     "@types/ws": "^8.18.1",

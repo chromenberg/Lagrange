@@ -49,6 +49,6 @@
     
     "experimentalDecorators": true,
   },
-  "exclude": ["wyvern/**/*"],
+  "exclude": ["src/lib/wyvern/**/*"],
   "include": ["src/**/*"]
 }
