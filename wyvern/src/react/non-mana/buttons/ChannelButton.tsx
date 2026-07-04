@@ -6,12 +6,11 @@ const LinkTo = (await import("../links/LinkTo")).default;
 type ChannelButtonData = {
   name: string;
   id: string;
-  type: string;
 };
 
 export default function ChannelButton({
   name,
-  id,
+  id
   // type,
 }: ChannelButtonData) {
   const location = useCurrentRoute();
