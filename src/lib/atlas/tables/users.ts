@@ -35,6 +35,14 @@ process.once("atlaspreinit", (a) => {
           name: "display_name",
           type: "TEXT",
         },
+        {
+          name: "bio",
+          type: "TEXT",
+        },
+        {
+          name: "pronouns",
+          type: "TEXT",
+        },
       ],
       // pk: ["user_id"],
     }),
