@@ -25,6 +25,8 @@ export interface GroupChannel extends DMChannel {
   icon: string;
 }
 
+export type UserChannel = DMChannel | GroupChannel;
+
 export interface ChannelPermission {
   /**
    * Bitfield containing the permissions that are allowed
@@ -97,4 +99,12 @@ export interface TextChannel extends MessageableChannel {
   last_pin_timestamp: string;
 }
 
-export type Channel = TextChannel | MessageableChannel;
+export type Channel =
+  TextChannel | MessageableChannel | GroupChannel | DMChannel | CategoryChannel;
+
+export type PartialChannel = Partial<
+  TextChannel & MessageableChannel & GroupChannel & DMChannel & CategoryChannel
+> & {
+  type: number;
+  id: Snowflake;
+};

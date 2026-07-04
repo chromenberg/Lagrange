@@ -2,10 +2,15 @@ import type { Role } from "./GuildTypes.js";
 import type { Null, Snowflake } from "./Types.js";
 
 export enum RelationshipType {
-  Friend = 1,
+  None,
+  Friend,
   Blocked,
-  Spam,
+  Incoming,
+  Outgoing,
 }
+
+
+
 
 export interface UserRelationship {
   /**
@@ -38,6 +43,11 @@ export interface UserRelationship {
    * Is the user ignored by the client,
    */
   user_ignored: boolean;
+
+  /**
+   * Personalized note written alongside the friend request
+   */
+  note?: string
 }
 
 export interface User {
@@ -47,6 +57,13 @@ export interface User {
   avatar: Null<string>;
 
   /**
+   * Hash of user banner
+   */
+  banner?: Null<string>
+
+  system?: boolean
+  
+  /**
    * Users username
    */
   username: string;
@@ -54,7 +71,7 @@ export interface User {
   /**
    * Is the user a bot user?
    */
-  bot: boolean;
+  bot?: boolean;
 
   /**
    * The users custom discriminator
@@ -80,6 +97,38 @@ export interface User {
    */
   id: Snowflake;
 }
+
+export interface ClientUser extends User {
+  
+
+  /**
+   * User profile bio
+   */
+  bio: string
+  
+  /**
+   * Email that the client registered under
+   */
+  email: string
+
+  /**
+   * Has the client used the mobile client before
+   */
+  mobile: boolean
+
+  /**
+   * Has the client used the desktop client before
+   */
+  desktop: boolean
+
+  /**
+   * Clients phone number
+   */
+  phone: Null<string>
+  
+  
+}
+
 
 /**
  * Data of a user specific to a guild, contains overrides such as per guild avatars, banners or names
