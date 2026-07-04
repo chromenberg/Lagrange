@@ -1,7 +1,7 @@
 import { DatabaseSync } from "node:sqlite";
 import { Logger, LogLevel } from "../core/logging/Logger.js";
 import { AtlasClient } from "./modules/client/AtlasClient.js";
-import { RequestManager } from "./modules/client/Requests.js";
+import { RequestManager } from "./modules/Requests.js";
 import { SQLDatabase } from "./modules/sql/SQL.js";
 import { exec } from "child_process";
 import type { Table } from "./tables/TableBuilder.js";

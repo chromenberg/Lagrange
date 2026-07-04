@@ -3,9 +3,9 @@ import type { Snowflake } from "../../../core/types/Types.js";
 import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import { AtlasChild } from "./AtlasChild.js";
+import { AtlasService } from "../client/AtlasChild.js";
 
-export class ChannelService extends AtlasChild {
+export class ChannelService extends AtlasService {
   protected snowflake: SnowflakeNode;
   constructor(parent: Atlas, snowflake?: SnowflakeNode) {
     super(parent);

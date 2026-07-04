@@ -1,7 +1,37 @@
-import type { WeakObj } from "../../core/types/Types.js";
+type SQLiteFieldTypes =
+  | "INTEGER"
+  | "INT"
+  | "TINYINT"
+  | "SMALLINT"
+  | "MEDIUMINT"
+  | "BIGINT"
+  | "UNSIGNED BIG INT"
+  | "INT2"
+  | "INT8"
+  | "CHARACTER"
+  | "VARCHAR"
+  | "VARYING CHARACTER"
+  | "NCHAR"
+  | "NATIVE CHARACTER"
+  | "NVARCHAR"
+  | "TEXT"
+  | "CLOB"
+  | "BLOB"
+  | "REAL"
+  | "DOUBLE"
+  | "DOUBLE PRECISION"
+  | "FLOAT"
+  | "NUMERIC"
+  | "DECIMAL"
+  | "BOOLEAN"
+  | "BOOL"
+  | "DATE"
+  | "DATETIME"
+  | "NULL";
+
 type FieldData = {
   name: string;
-  type: string;
+  type: SQLiteFieldTypes;
   pk?: boolean;
   required?: boolean;
   reference?: { table: string; field: string };
@@ -33,12 +63,14 @@ export class Table {
     str += this._data.name + " (\n";
 
     const fields = this._data.fields.map((field) => {
-      return `  ${field.name} ${field.type}` +
+      return (
+        `  ${field.name} ${field.type}` +
         (field.pk ? " PRIMARY KEY" : "") +
         (field.required ? " NOT NULL" : "") +
         (field.reference
-        ? ` REFERENCES ${field.reference?.table}(${field.reference?.field})`
-        : "");
+          ? ` REFERENCES ${field.reference?.table}(${field.reference?.field})`
+          : "")
+      );
     });
 
     const references = this._data.references?.map((field) => {

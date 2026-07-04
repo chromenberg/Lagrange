@@ -9,21 +9,17 @@ import type {
 import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { GenToken } from "../crypt/Crypt.js";
-
-// TODO: Unify some of these imports
-
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
 import { SQLDatabase } from "../sql/SQL.js";
-import { toAtlasBase, hexDate } from "./Requests.js";
-import { AtlasChild } from "./AtlasChild.js";
-
+import { toAtlasBase, hexDate } from "../Requests.js";
+import { AtlasService } from "../client/AtlasChild.js";
 import { createHmac, scryptSync } from "crypto"; // TODO: this could be something to make in rust
 import { DBErrors } from "../../../core/errors/DBErrors.js";
-import { GatewayErrorCodes, GatewayErrors } from "../../../core/errors/ServerErrors.js";
+import {  GatewayErrors } from "../../../core/errors/ServerErrors.js";
 
 // TODO: reduce import counts
 
-export class UserService extends AtlasChild {
+export class UserService extends AtlasService {
   protected snowflake: SnowflakeNode;
   constructor(parent: Atlas, snowflake?: SnowflakeNode) {
     super(parent);
@@ -206,6 +202,7 @@ export class UserService extends AtlasChild {
     });
   }
 
+  
   public async getGuildChannelsForID(id: Snowflake) {
     return this.parent.sqlClient.all`
       SELECT guild_members.guild_id,
@@ -216,5 +213,10 @@ export class UserService extends AtlasChild {
       FROM guilds, guild_members 
       LEFT JOIN channels ON guilds.guild_id = channels.guild_id
       WHERE guild_members.user_id = ${BigInt(id)} AND guild_members.guild_id = guilds.guild_id;`
+  }
+
+  public getUserData(token: string) {
+    const user = this.getUserByToken(token)
+    const relations = 
   }
 }

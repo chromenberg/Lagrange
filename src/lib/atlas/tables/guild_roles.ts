@@ -7,10 +7,10 @@ process.once("atlaspreinit", (a) => {
       fields: [
         { name: "role_id", type: "INTEGER", pk: true },
         { name: "guild_id", type: "INTEGER" },
-        { name: "role_name", type: "text" },
+        { name: "role_name", type: "TEXT" },
         { name: "role_color", type: "INTEGER" },
         { name: "role_index", type: "INTEGER" },
-        { name: "permissions", type: "BINARY" },
+        { name: "permissions", type: "BIGINT" },
         { name: "hoist", type: "BOOL" },
         { name: "mentionable", type: "BOOL" },
       ],

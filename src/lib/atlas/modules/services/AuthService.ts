@@ -15,8 +15,8 @@ import { GenToken } from "../crypt/Crypt.js";
 
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
 import { SQLDatabase } from "../sql/SQL.js";
-import { toAtlasBase, hexDate } from "./Requests.js";
-import { AtlasChild } from "./AtlasChild.js";
+import { toAtlasBase, hexDate } from "../Requests.js";
+import { AtlasService } from "../client/AtlasChild.js";
 
 import { createHmac, scryptSync } from "crypto"; // TODO: this could be something to make in rust
 import { DBErrors } from "../../../core/errors/DBErrors.js";
@@ -27,7 +27,7 @@ import {
 
 // TODO: reduce import counts
 
-export class AuthService extends AtlasChild {
+export class AuthService extends AtlasService {
   protected snowflake: SnowflakeNode;
   constructor(parent: Atlas, snowflake?: SnowflakeNode) {
     super(parent);

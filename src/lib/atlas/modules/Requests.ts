@@ -1,21 +1,23 @@
-import { Logger, LogLevel } from "../../../core/logging/Logger.js";
-import type { ResultSet } from "../../../core/types/Types.js";
-import { Atlas } from "../../AtlasManager.js";
-import type { PoolItemPair } from "../pooling/Pool.js";
-import { PoolResourceNotSentError } from "../pooling/PoolErrors.js";
-import { AtlasChild } from "./AtlasChild.js";
-import { UserService } from "./UserService.js";
-import { ChannelService } from "./ChannelService.js";
-import { GuildService } from "./GuildService.js";
-import { MessageService } from "./MessageService.js";
-import { AuthService } from "./AuthService.js";
+import { Logger, LogLevel } from "../../core/logging/Logger.js";
+import type { ResultSet } from "../../core/types/Types.js";
+import { Atlas } from "../AtlasManager.js";
+import type { PoolItemPair } from "./pooling/Pool.js";
+import { PoolResourceNotSentError } from "./pooling/PoolErrors.js";
+import { AtlasService } from "./client/AtlasChild.js";
+import { UserService } from "./services/UserService.js";
+import { ChannelService } from "./services/ChannelService.js";
+import { GuildService } from "./services/GuildService.js";
+import { MessageService } from "./services/MessageService.js";
+import { AuthService } from "./services/AuthService.js";
+import { RelationshipService } from "./services/RelationshipService.js";
+import { UserBulkService } from "./services/UserBulkDataService.js";
 
 /**
  * A Request builder that auto returns and provides abstracted methods for creating requests.
  *
  * This operates on the ATLAS NoSQL Database system
  */
-export class RequestBuilder extends AtlasChild {
+export class RequestBuilder extends AtlasService {
   private connection: PoolItemPair;
   private returned: boolean = false;
   constructor(parent: Atlas, connection?: PoolItemPair) {
@@ -102,12 +104,16 @@ export class RequestManager {
   private readonly _guilds: GuildService;
   private readonly _channels: ChannelService;
   private readonly _auth: AuthService;
+  private readonly _relationships: RelationshipService;
+  private readonly _bulkuser: UserBulkService;
   constructor(private parent: Atlas) {
     this._users = new UserService(this.parent);
     this._messages = new MessageService(this.parent);
     this._guilds = new GuildService(this.parent);
     this._channels = new ChannelService(this.parent);
     this._auth = new AuthService(this.parent);
+    this._relationships = new RelationshipService(this.parent)
+    this._bulkuser = new UserBulkService(this.parent)
   }
 
   public get users(): UserService {
@@ -124,5 +130,11 @@ export class RequestManager {
   }
   public get auth(): AuthService {
     return this._auth;
+  }
+  public get relationships(): RelationshipService {
+    return this._relationships
+  }
+  public get bulkuser(): UserBulkService {
+    return this._bulkuser
   }
 }

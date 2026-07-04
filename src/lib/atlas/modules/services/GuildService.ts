@@ -5,10 +5,10 @@ import type { UnavailableID } from "../../../core/types/GatewayTypes.js";
 import type { Snowflake, SQLPromiseArray } from "../../../core/types/Types.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
-import { AtlasChild } from "./AtlasChild.js";
+import { AtlasService } from "../client/AtlasChild.js";
 import { GuildTemplate } from "../templates/GuildTemplate.js";
 
-export class GuildService extends AtlasChild {
+export class GuildService extends AtlasService {
   protected snowflake: SnowflakeNode;
   constructor(parent: Atlas, snowflake?: SnowflakeNode) {
     super(parent);

@@ -1,12 +1,12 @@
 import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs, type Snowflake } from "../snowflake/Snowflake.js";
-import { AtlasChild } from "./AtlasChild.js";
+import { AtlasService } from "../client/AtlasChild.js";
 
 // /users/@me - some service dedicated to the user making it
 // /users/:id/profile - getProfile
 // /users/
-export class MessageService extends AtlasChild {
+export class MessageService extends AtlasService {
   protected snowflake: SnowflakeNode;
   constructor(
     parent: Atlas, snowflake?: SnowflakeNode
