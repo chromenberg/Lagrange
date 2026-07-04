@@ -1,4 +1,5 @@
 import type { Snowflake } from "./Types.js";
+import type { User } from "./UserTypes.js";
 
 export enum ChannelType {
   GuildText,
@@ -7,6 +8,21 @@ export enum ChannelType {
   GroupDM,
   GuildCategory,
   GuildAnnouncement,
+}
+
+export interface DMChannel {
+  flags: number;
+  id: Snowflake;
+  last_message_id: Snowflake;
+  last_pin_timestamp?: Date;
+  recipients: User[];
+  type: ChannelType;
+}
+
+export interface GroupChannel extends DMChannel {
+  name: string;
+  owner_id: Snowflake;
+  icon: string;
 }
 
 export interface ChannelPermission {
@@ -35,10 +51,10 @@ export interface BaseChannel {
   name: string;
   /**
    * Channel ID, created by the database
-   * 
+   *
    * Client route: `/channels/<guild_id>/<channel_id>`
    */
-  id: Snowflake; 
+  id: Snowflake;
   /**
    * ID of the guild this channel belongs to
    */
@@ -61,7 +77,7 @@ export interface BaseChannel {
 /**
  * A channel that organises multiple channels within it
  */
-export type CategoryChannel = BaseChannel
+export type CategoryChannel = BaseChannel;
 
 /**
  * Any channel that can have messages sent inside
@@ -74,11 +90,11 @@ export interface MessageableChannel extends BaseChannel {
 
 /**
  * Standard Text Channel
- * 
+ *
  * @extends MessageableChannel
  */
 export interface TextChannel extends MessageableChannel {
   last_pin_timestamp: string;
 }
 
-export type Channel = TextChannel | MessageableChannel
+export type Channel = TextChannel | MessageableChannel;
