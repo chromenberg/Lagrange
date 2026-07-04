@@ -6,7 +6,8 @@ const validateResponse = (await import("./ValidateResponse")).validateResponse;
 
 export function fetchGuildData(token: string, id: string) {
   return new Promise((res) => {
-    fetch(apiURL+populate(routes.guilds, id), {
+    console.log(id)
+    fetch(apiURL+populate(routes.guild_channels, id), {
       method: "GET",
       headers: {
         Authorization: token,

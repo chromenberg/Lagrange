@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GuildStore } from "../StoreTypes";
 import EventSystem from "../../core/EventSystem";
 // import type { GuildMemberUpdateData } from "./GuildUpdateType";
@@ -7,16 +7,19 @@ import getAllGuilds from "../../client/requests/GetAllGuilds";
 import useToken from "../../client/requests/Authorization";
 
 function useGuildStore() {
-  const [guildStore /* setGuildStore */] = useState<GuildStore>([]);
+  const [guildStore, setGuildStore] = useState<GuildStore>([]);
   const token = useToken();
-  EventSystem.once("READY", (data: ReadyEvent) => {
-    // get all guilds by mapping the unavailable guilds array to only have the IDs
-    console.log(
-      getAllGuilds(
-        token,
-        data.guilds.map((guild) => guild.id),
-      ),
-    );
+  useEffect(() => {
+    EventSystem.on("READY", async (data: ReadyEvent) => {
+      setGuildStore([]);
+      // get all guilds by mapping the unavailable guilds array to only have the IDs
+      console.log(
+        getAllGuilds(
+          token,
+          data.guilds.map((guild) => guild.id),
+        ).map(async (data) => await data),
+      );
+    });
   });
   // const id = userStore()
   // const addGuild = (data: GuildMemberUpdateData  ) => {

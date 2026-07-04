@@ -1,33 +1,23 @@
+import useGuildStore from "./scripts/stores/guild-store/GuildStore";
+
 // import { useEffect } from "react";
-import ScrollMenu from "./react/mana/scroll-menu/ScrollMenu";
-const ChannelMapper = (await import("./react/non-mana/channel-mapper/Mapper"))
+const ScrollMenu = (await import("./react/mana/scroll-menu/ScrollMenu"))
   .default;
-// import useToken from "./scripts/client/requests/Authorization";
-// import { getGuildChannels } from "./scripts/client/requests/GetGuildChannels";
-// import ChannelButton from "./react/non-mana/channel/ChannelButton";
+const ChannelCreator = (await import("./react/non-mana/channel/ChannelCreator"))
+  .default;
+const useCurrentRoute = (
+  await import("./scripts/stores/current-store/CurrentStore")
+).useCurrentRoute;
 
 const PanelHeader = (await import("./react/components/ChannelOverhead"))
   .default;
 const FlexBox = (await import("./react/components/Flex")).default;
-const LSidePane = (await import("./react/ui-sections/LSidePane")).default;
 import("./react/styles/ChannelBar.css");
-  const data = [
-    {
-      id: "127238068460609536",
-      name: "general",
-      index: "0",
-      type: "text",
-    },
-    {
-      id: "127238068477386752",
-      name: "off-topic",
-      index: "1",
-      type: "text",
-    },
-  ];
 
 export default function LeftPanel() {
   // const token = useToken()
+  const location = useCurrentRoute();
+  console.log(useGuildStore())
   return (
     <div id="lSidePanel">
       <nav id="guilds">
@@ -42,13 +32,15 @@ export default function LeftPanel() {
               <div className="flexHoriz centerVert centerHori fillAll"></div>
             </div>
           </PanelHeader>
-          <LSidePane>
-            <ScrollMenu>
-              <div className="channelBar">
-                <ChannelMapper data={data} />
-              </div>
-            </ScrollMenu>
-          </LSidePane>
+          <div className="lPane">
+            <FlexBox direction="updown" center="horizontal">
+              <ScrollMenu>
+                <div className="channelBar">
+                  <ChannelCreator guild_id={location ? location.guild.id ?? "@me" : "@me"} />
+                </div>
+              </ScrollMenu>
+            </FlexBox>
+          </div>
         </FlexBox>
       </div>
     </div>

@@ -35,7 +35,7 @@ export default function ClientWrapper({ children }: Props) {
       console.log("[Client] Connection opened to Gateway");
     };
 
-    _sock.onmessage = async (message) => {
+    _sock.onmessage = (message) => {
       try {
         const msg = JSON.parse(message.data);
         console.log(msg);

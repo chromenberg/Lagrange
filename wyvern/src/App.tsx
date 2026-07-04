@@ -1,24 +1,20 @@
-import { BrowserRouter } from "react-router";
-import ClientWrapper from "./scripts/client/Client";
-import LeftPanel from "./LeftPanel";
-import TitleBar from "./Title";
+const BrowserRouter = (await import("react-router")).BrowserRouter;
+const ClientWrapper = (await import("./scripts/client/Client")).default;
+const LeftPanel = (await import("./LeftPanel")).default;
+const TitleBar = (await import("./Title")).default;
+const MainPanel = (await import("./react/ui-sections/MainPanel")).default;
 
 import("./App.css");
-
-const MainPanel = (await import("./react/ui-sections/MainPanel")).default;
-const CreateGuildModal = (await import("./react/modals/GuildCreate")).default;
 export function App() {
-return (
+  return (
     <>
       <BrowserRouter basename="/">
         <ClientWrapper>
           <div className="appContent">
             <TitleBar />
             <LeftPanel />
-            <MainPanel/ >
-            {/*<CreateGuildModal />*/}
+            <MainPanel />
           </div>
-          <CreateGuildModal />
           {/*<div id="modal-portal"></div>*/}
         </ClientWrapper>
       </BrowserRouter>
