@@ -15,7 +15,8 @@ import { toAtlasBase, hexDate } from "../Requests.js";
 import { AtlasService } from "../client/AtlasChild.js";
 import { createHmac, scryptSync } from "crypto"; // TODO: this could be something to make in rust
 import { DBErrors } from "../../../core/errors/DBErrors.js";
-import {  GatewayErrors } from "../../../core/errors/ServerErrors.js";
+import { GatewayErrors } from "../../../core/errors/ServerErrors.js";
+import { parseToken } from "./TokenParser.js";
 
 // TODO: reduce import counts
 
@@ -141,22 +142,24 @@ export class UserService extends AtlasService {
       const user = await this.getUserByToken(token);
 
       if (!user) {
-        res(GatewayErrors["4000"])
-        return
+        res(GatewayErrors["4000"]);
+        return;
       }
 
       const guilds = await this.getUserGuilds(token);
 
       if (!guilds) {
-        res({})
+        res({});
         return;
       }
 
       const mapGuilds = () => {
         return Object.values(guilds).map((guild: unknown) => {
-          return this.services.guilds.toUnavailableGuild((guild as {guild_id: bigint}).guild_id)
+          return this.services.guilds.toUnavailableGuild(
+            (guild as { guild_id: bigint }).guild_id,
+          );
         });
-      }
+      };
 
       res({
         user: {
@@ -188,21 +191,29 @@ export class UserService extends AtlasService {
   public getUserByToken(token: string): SQLPromise {
     // Is this truly a safe method?
     return new Promise((res) => {
-      this.parent.sqlClient // get user info, quite basic but thats fine for now
-        .get`SELECT * FROM users WHERE token = ${token};`.then(
-        (user) => {
-          // filter user and convert bigints
-          if (!user) {
-            res({ message: DBErrors.NoDataReturned });
-            return;
-          }
-          res(SQLDatabase.toSafeJS(user));
-        },
-      );
+      this.parent
+        .sqlClient // get user info, quite basic but thats fine for now
+      .get`SELECT * FROM users WHERE token = ${token};`.then((user) => {
+        // filter user and convert bigints
+        if (!user) {
+          res({ message: DBErrors.NoDataReturned });
+          return;
+        }
+        res(SQLDatabase.toSafeJS(user));
+      });
     });
   }
 
-  
+  public getAllGuildInfoForUser(token: string) {
+    const id = parseToken(token);
+    return this.sql.all`SELECT * FROM guild_members,users
+      JOIN guilds
+      ON guild_members.guild_id = guilds.guild_id
+      JOIN channels
+      ON guilds.guild_id = channels.guild_id
+      WHERE users.token = ${token};`;
+  }
+
   public async getGuildChannelsForID(id: Snowflake) {
     return this.parent.sqlClient.all`
       SELECT guild_members.guild_id,
@@ -210,13 +221,18 @@ export class UserService extends AtlasService {
       guilds.guild_id,
       channels.channel_id,
       channels.guild_id
-      FROM guilds, guild_members 
+      FROM guilds, guild_members
       LEFT JOIN channels ON guilds.guild_id = channels.guild_id
-      WHERE guild_members.user_id = ${BigInt(id)} AND guild_members.guild_id = guilds.guild_id;`
+      WHERE guild_members.user_id = ${BigInt(id)} AND guild_members.guild_id = guilds.guild_id;`;
   }
 
-  public getUserData(token: string) {
-    const user = this.getUserByToken(token)
-    const relations = this
+  public async getUserData(token: string): Promise<object | undefined> {
+    const user = this.getUserByToken(token);
+    const friends = this.services.relationships.getUserFriendsWithInfo(token);
+    const relations =
+      this.services.relationships.getUserFriendsAndRequests(token);
+    const guilds = this.getAllGuildInfoForUser(token);
+    console.log(await user, await friends, await relations, await guilds);
+    return user;
   }
 }

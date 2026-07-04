@@ -7,7 +7,7 @@ import { GatewayEventTypes } from "./GatewayEvents.js";
 
 eventPublisher.subscribe(GatewayEventTypes.READY, (data) => {
   Atlas.requests.users
-    .getGuildChannelsForID((data.user as ReadyUserObj).user.id) // Get all guilds and channels the user is in
+    .getAllGuildInfoForUser((data.user as ReadyUserObj).user.id) // Get all guilds and channels the user is in
     .then((res) => {
       initEvents(data.cli, res as GuildChannel[] | undefined, data.user.guilds); // subscribe to events for all channels and guilds
       data.cli.send(new GatewayEventReady().setData(data.user).toJSON()); // send ready data

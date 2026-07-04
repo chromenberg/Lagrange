@@ -20,6 +20,18 @@ process.once("atlaspreinit", (a) => {
           name: "guild_name",
           type: "TEXT",
         },
+        {
+          name: "icon_hash",
+          type: "TEXT"
+        },
+        {
+          name: "banner_hash",
+          type: "TEXT"
+        },
+        {
+          name: "vanity_url",
+          type: "TEXT"
+        }
       ],
     }),
   );

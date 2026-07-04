@@ -9,6 +9,9 @@ process.once("atlaspreinit", (a) => {
         { name: "guild_id", type: "INTEGER", required: true },
         { name: "channel_name", type: "TEXT", required: true },
         { name: "channel_index", type: "INTEGER" },
+        { name: "channel_type", type: "INTEGER" },
+        { name: "channel_flags", type: "INTEGER" },
+        { name: "channel_topic", type: "TEXT" },
       ],
       references: [
         {

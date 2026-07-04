@@ -20,6 +20,26 @@ process.once("atlaspreinit", (a) => {
             field: "guild_id",
           },
         },
+        {
+          name: "nickname",
+          type: "TEXT",
+        },
+        {
+          name: "bio",
+          type: "TEXT"
+        },
+        {
+          name: "pronouns",
+          type: "TEXT"
+        },
+        {
+          name: "banner_hash",
+          type: "TEXT",
+        },
+        {
+          name: "avatar_hash",
+          type: "TEXT",
+        },
       ],
       shared_pk: ["guild_id", "user_id"],
     }),
