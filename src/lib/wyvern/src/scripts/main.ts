@@ -1,0 +1,1 @@
+// export const Client = (await import("./client/Client")).socket;

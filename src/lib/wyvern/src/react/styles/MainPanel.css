@@ -1,0 +1,11 @@
+.mainPanelWrapper {
+    grid-area: page;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--theme-chat);
+    > div {
+        height: 100%;
+    }
+}
+.mainContent {
+    flex: 1
+}

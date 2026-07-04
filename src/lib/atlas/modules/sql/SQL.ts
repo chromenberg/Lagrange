@@ -3,26 +3,25 @@ import {
   type SQLInputValue,
   type SQLOutputValue,
   type SQLTagStore,
-  type StatementResultingChanges
-} from "node:sqlite"
+  type StatementResultingChanges,
+} from "node:sqlite";
 import type { Atlas } from "../../AtlasManager.js";
 
-export type SQLResponse = Record<string, SQLOutputValue>;
-export type SQLPromise = Promise<SQLResponse | undefined>
-export type SQLPromiseArray = Promise<SQLResponse[] | undefined>
-export type SQLPromiseIterator = Promise<NodeJS.Iterator<SQLResponse>>;
+import type {
+  SQLPromise,
+  SQLPromiseArray,
+  SQLPromiseIterator,
+} from "../../../core/types/Types.js";
 
 export class SQLDatabase {
   private readonly _db: DatabaseSync;
   private readonly parent: Atlas;
   private readonly tagStore: SQLTagStore;
-  constructor(
-    parent: Atlas,
-    database: DatabaseSync,
-  ) {
+  constructor(parent: Atlas, database: DatabaseSync) {
     this._db = database;
     this.parent = parent;
     this.tagStore = this._db.createTagStore();
+    
   }
 
   /**
@@ -58,6 +57,23 @@ export class SQLDatabase {
     });
   }
 
+  public async has(
+    table: string,
+    values: { name: string; value: any }[],
+  ): Promise<boolean> {
+    return new Promise((res) => {
+      const whereClause = values
+        .map((pair) => {
+          return `${pair.name} = ${pair.value}`;
+        })
+        .join(" AND ");
+
+      this.get`SELECT * FROM ${table} WHERE ${whereClause};`.then((response) =>
+        res(response ? true : false),
+      );
+    });
+  }
+
   /**
    * Runs a query that returns all values that match the query
    * @param query
@@ -81,7 +97,7 @@ export class SQLDatabase {
   ): SQLPromiseIterator {
     return new Promise((res) => {
       res(this.tagStore.iterate(query, ...args));
-    })
+    });
   }
 
   /**
@@ -91,17 +107,15 @@ export class SQLDatabase {
    */
   public static toSafeJS(data: { [key: string]: any }): SQLPromise {
     return new Promise((res, err) => {
-      const dataEntries = Object.entries(data)
-        .map(([key, value]) => {
-          if (typeof value === "bigint") {
-            return [key, value.toString()]; // convert bigint into string for JSON.Stringify and JS safety
-          } else {
-            return [key, value];
-          }
-        }) as [string, any][];
-      
+      const dataEntries = Object.entries(data).map(([key, value]) => {
+        if (typeof value === "bigint") {
+          return [key, value.toString()]; // convert bigint into string for JSON.Stringify and JS safety
+        } else {
+          return [key, value];
+        }
+      }) as [string, any][];
+
       res(Object.fromEntries(dataEntries));
-      
-    })
+    });
   }
 }

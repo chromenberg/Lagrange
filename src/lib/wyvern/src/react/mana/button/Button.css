@@ -1,0 +1,51 @@
+.manaButton {
+    border: solid 1px var(--border-subtle);
+    transition: 0.2s;
+    padding: var(--padding-m);
+    border-radius: var(--padding-l);
+}
+.manaButtonPrimary:hover,
+.manaButtonSecondary:hover,
+.manaButtonTertiary:hover,
+.manaButtonDanger:hover,
+.manaButtonSuccess:hover {
+    background: color-mix(
+        in oklab,
+        var(--button-color) 80%,
+        color-mix(in oklab, var(--button-color) 100%, white 30%) 30%
+    );
+}
+.manaButtonPrimary {
+    --button-color: var(--button-primary);
+    background: var(--button-color);
+}
+.manaButtonSecondary {
+    --button-color: var(--button-secondary);
+    background: var(--button-color);
+}
+.manaButtonTertiary {
+    --button-color: var(--button-tertiary);
+    background: var(--button-color);
+}
+.manaButtonDanger {
+    --button-color: var(--button-danger);
+    background: var(--button-color);
+}
+.manaButtonSuccess {
+    --button-color: var(--button-success);
+    background: var(--button-color);
+}
+
+.manaButtonGroup {
+    /*margin-top: auto;*/
+    width: 100%;
+    gap: var(--padding-sm);
+    display: flex;
+    > div[mana-type="text-button"] {
+        flex: 1 0;
+    }
+    > div[mana-type="icon-button"] {
+        flex: 0 1;
+        min-width: 2.2rem;
+    }
+}

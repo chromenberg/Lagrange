@@ -1,0 +1,9 @@
+#lSidePanel {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  
+  grid-row: titleEnd / bottom;
+  grid-column: left / channelsEnd;
+  position: relative;
+}

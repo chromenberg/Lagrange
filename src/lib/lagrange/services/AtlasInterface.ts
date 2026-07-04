@@ -1,16 +1,16 @@
-import { AtlasManager } from "../../../atlas.index.js";
-import type { ATLAS } from "../../../common/Typings.js";
+import { Atlas } from "../../../_Init.js";
+import type { Token, Snowflake } from "../../core/types/Types.js";
 import type { types } from "cassandra-driver";
 
 
 export namespace AtlasInterface {
   export namespace NoSQL {
     export async function Request(...args: any[]): Promise<types.ResultSet> {
-      return AtlasManager.client.execute(args.join(" ") + ";");
+      return Atlas.client.execute(args.join(" ") + ";");
     }
   
     export async function FilteringRequest(...args: any[]): Promise<types.ResultSet> {
-      return AtlasManager.client.execute(args.join(" ") + " ALLOW FILTERING;");
+      return Atlas.client.execute(args.join(" ") + " ALLOW FILTERING;");
     }
   
     export async function wrapExpectSingle(...args: any[]): Promise<types.Row[]> {
@@ -25,17 +25,17 @@ export namespace AtlasInterface {
   
 
   export namespace Users {
-    export async function getSelfUserFromToken(token: ATLAS.Token) {
+    export async function getSelfUserFromToken(token: Token) {
 
     }
 
-    export async function getUser(id: ATLAS.Snowflake): Promise<types.Row[]> {
+    export async function getUser(id: Snowflake): Promise<types.Row[]> {
       return NoSQL.wrapExpectSingle(`SELECT * FROM users WHERE user_id = ${id};`);
     }
 
     // export async function getUserCredentials(email: EmailAddress, password: string)
     // export async function getUserCredentials(token: Token)
-    export async function getUserCredentials(id: ATLAS.Snowflake) {
+    export async function getUserCredentials(id: Snowflake) {
       const credentials = await NoSQL.wrapExpectSingle("SELECT * FROM credentials WHERE user_id =", id);
       return credentials;
     }

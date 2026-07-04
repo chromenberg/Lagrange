@@ -1,17 +1,30 @@
+import type { Snowflake } from "../types/Types.js";
 import { Collection } from "./Collection.js";
+type SweepingOptions = {
+  interval: number
+  maxAge: number
+}
+// type WithCache<T> = {
+//   accessed: Snowflake
+//   [keys: keyof T]: 
+// }
+type CacheFlags = {
+  sweeping: SweepingOptions
+}
+export class Cache<K,V> {
+  private data = new Collection<K, V>()
+  private sweepSettings: SweepingOptions;
+  constructor(flags: CacheFlags) {
+    this.sweepSettings = flags.sweeping
 
-export type CacheOptions = {
-  sweepInterval: number;
-  sweepCallback: (cleanedData: []) => void;
-  sweepSizeThreshold: number;
-};
-
-export class Cache<
-  K extends string | symbol = symbol,
-  V = any,
-> extends Collection<K, V> {
-  constructor(options?: Partial<CacheOptions>) {
-    super();
+    setTimeout(() => {
+      this.sweep()
+    })
   }
-  // TODO: cache sweeping, read frequency (move to quicker collection)
+
+  private sweep() {
+    this.data.forEach((item, key) => {
+       
+    })
+  }
 }

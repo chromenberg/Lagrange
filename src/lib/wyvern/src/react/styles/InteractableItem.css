@@ -1,0 +1,19 @@
+.interactableItem {
+    padding-inline: var(--padding-sm);
+    border-radius: var(--padding-m);
+}
+
+.interactableItem:hover {
+    /* Cannot use interact-hover as it is too bright, this needs to be fixed */
+    background: var(--interact-hover);
+}
+
+.interactWrapper {
+    padding-inline: var(--padding-sm);
+    padding-block: 6px;
+}
+
+.interactableItem:has(.channelLink.active)  {
+    background: var(--interact-active);
+    
+}

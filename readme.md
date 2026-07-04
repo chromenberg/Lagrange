@@ -1,4 +1,8 @@
-# Lagrange
-Lagrange is a 100% custom written backend for the Wyvern project, written in Typescript and based off of the gateway docs of Discord.
+# Lagrange Wyvern Test
+This is the testing branch for implementing the frontend of wyvern into the backend. all content subject to change
 
-this project is under heavy development, and has no standards or formatting for commits and updates. I would advise against using this for your own project, as it was designed for Wyvern 
+incredibly fucked setup due to esnext and es2023 being used from vite and lagrange.
+
+probably a better method to sort all this out but i want a one repo solution
+
+todo: fix the fucked website setup

@@ -1,0 +1,47 @@
+@import "./react/styles/left-side-panel/Channels.css";
+@import "./react/styles/left-side-panel/LeftPanel.css";
+@import "./react/styles/left-side-panel/Guilds.css";
+
+.appContent {
+  grid-template-columns: [left] min-content [guildsEnd] 300px [channelsEnd] 1fr [pageEnd];
+  grid-template-rows: [top] 30px [titleEnd] min-content [noticesEnd] 1fr [pageEnd];
+  grid-template-areas: "title title title"
+                      "guilds notice notice"
+                      "guilds channels page";
+
+  position: relative;
+  display: grid;
+  container: "app-content-grid" / normal;
+}
+
+#titleBar {
+  grid-area: title;
+  background: var(--theme-low);
+}
+
+
+
+.fillAll {
+  width: 100%;
+  height: 100%
+}
+
+.debugBgRed {
+    background: red;
+}
+#modal-portal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+#modal-portal:not(:empty) {
+    pointer-events: all;
+    backdrop-filter: brightness(0.6) blur(1px);
+}

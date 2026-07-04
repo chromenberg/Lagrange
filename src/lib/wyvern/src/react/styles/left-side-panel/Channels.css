@@ -1,0 +1,7 @@
+#channelSelector {
+  grid-area: channels;
+  background: var(--theme-low);
+  border-left: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--border-subtle);
+  border-radius: var(--padding-m) 0px 0px 0px;
+}

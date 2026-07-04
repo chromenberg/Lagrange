@@ -1,0 +1,5 @@
+.placeholderText {
+  position:absolute;
+  color:var(--border-strong);
+  user-select: none;
+}

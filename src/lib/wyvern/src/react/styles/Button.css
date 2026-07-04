@@ -1,0 +1,12 @@
+.noVisibility {
+    background: transparent;
+    border: none;
+}
+.buttonRound > div {
+    border-radius: var(--padding-m);
+    padding-inline: var(--padding-sm);
+    padding-block: var(--padding-sm);
+    > div {
+        font-size: large;
+    }
+}

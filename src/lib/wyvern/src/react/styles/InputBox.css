@@ -1,0 +1,77 @@
+.inputBoxWrapper {
+    --box-height: 40px;
+    --accessory-padding: var(--padding-sm);
+    background: var(--theme-higher);
+    border: solid 1px var(--border-subtle);
+    /*padding: var(--padding-sm);*/
+    border-radius: var(--padding-sm);
+    min-height: var(--box-height);
+    max-height: 200px;
+    overflow-y: scroll;
+    padding-right: var(--scrollbar-width);
+    max-width: 100%;
+    position: relative;
+}
+
+.accountScrollTrack {
+    margin-right: 3px;
+}
+.inputInnerContainer {
+    /*padding: 5px;*/
+    height: 100%;
+    display: flex;
+    /*align-items: center;*/
+    padding-inline: var(--padding-m);
+    gap: var(--padding-m);
+    position: relative;
+    
+}
+
+.inputBoxContent {
+    cursor: text;
+    flex: 1;
+    font-size: var(--font-m);
+    position: relative;
+    /*padding-block: calc(var(--box-height) / 4);*/
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    
+}
+
+.separator {
+    height: 100%;
+    width: 1px;
+    border-radius: var(--padding-sm);
+    background: var(--border-subtle);
+    
+}
+.inputBoxEditor {
+    box-sizing: border-box;
+    outline: none;
+    position: relative;
+    padding-block: calc(var(--box-height) / 4);
+    word-break: break-word;
+    /*display: inline-block;*/
+    /*width:100%*/
+   
+}
+.inputBoxContent > .placeholderText {
+    padding-block: calc(var(--box-height) / 4);
+    width: 100%;
+}
+.inputBoxAccessories > .flexHoriz {
+    gap: var(--padding-m)
+}
+.inputBoxAccessories {
+    /*padding-block: var(--accessory-padding);*/
+    padding-block: calc(var(--box-height) / 4);
+
+    width: fit-content;
+    flex: 0 0 auto;
+}
+
+.accessoryStickyWrapper {
+    padding-inline: var(--accessory-padding);
+    top: calc(var(--box-height)/4);
+    position: sticky;
+}

@@ -35,6 +35,7 @@
     // "noPropertyAccessFromIndexSignature": true,
     // Recommended Options
     "strict": true,
+    
     "jsx": "preserve",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
@@ -43,11 +44,11 @@
     "skipLibCheck": true,
     "allowJs": true,
     "esModuleInterop": true,
-    "explainFiles": false,
     "resolveJsonModule": true,
     "pretty": true,
-    "experimentalDecorators": true,
-    "incremental": false,
     
-  }
+    "experimentalDecorators": true,
+  },
+  "exclude": ["src/lib/wyvern/**/*"],
+  "include": ["src/**/*"]
 }

@@ -1,0 +1,25 @@
+:root {
+    --modal-width-maximum: 50%;
+    --modal-height-maximum: 90%;
+}
+.modalPopoverBase {
+    
+    /*top: 50%;*/
+    /*left:50%;*/
+    /*max-height: var(--modal-height-maximum);*/
+    /*max-width: var(--modal-width-maximum);*/
+}
+
+
+
+.modalBackground {
+    
+    border-radius: var(--padding-m);
+    background: var(--theme-high);
+    border: solid 1px var(--border-subtle);
+}
+.guildCreateModal {
+    height: 100%;
+    width: 100%;
+    
+}
