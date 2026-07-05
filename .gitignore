@@ -4,6 +4,8 @@ dbase/
 
 src/lib/atlas/Configs/Config.ts
 
+rust/*/target*
+
 sqlite3
 sqldiff
 
@@ -27,3 +29,13 @@ pids
 *.pid.lock
 
 *server.sqlite
+src/lib/wyvern/package-lock.json
+src/lib/wyvern/package.json
+
+*.map
+*config.d.ts
+
+# csharp stuff
+runtime/obj
+runtime/bin
+dev/*

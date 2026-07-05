@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <StartupObject>Wyvern.CmdlineParser</StartupObject>
+    <PublishSingleFile>true</PublishSingleFile>
+
+    <!-- If you set this to true then you will be smitten -->
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
+
+</Project>

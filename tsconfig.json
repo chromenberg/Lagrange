@@ -8,34 +8,20 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
-    // Other Outputs
+    "types": ["node"],
+    "lib": ["esnext", "DOM"],
+
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    // Stricter Typechecking Options
-    // "noUncheckedIndexedAccess": true,
-    // "exactOptionalPropertyTypes": true,
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
+
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "allowUnreachableCode": false,
+
     // Recommended Options
     "strict": true,
-    
+
     "jsx": "preserve",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
@@ -45,10 +31,15 @@
     "allowJs": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+
     "pretty": true,
-    
     "experimentalDecorators": true,
+
+    "paths": {
+      "@core/*": ["./src/lib/core/*"],
+      "@config": ["./dev/config/Config.js"],
+    },
   },
   "exclude": ["src/lib/wyvern/**/*"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
 }

@@ -10,9 +10,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node --inspect ./dist/Init.js",
     "dev": "cd ./src/lib/wyvern && vite && cd ../../../",
-    "build": "cd ./src/lib/wyvern && tsc -b && vite build && cd ../../../",
+    "build-site": "cd ./src/lib/wyvern && tsc -b && vite build && cd ../../../",
     "lint": "cd ./src/lib/wyvern && eslint . && cd ../../../",
-    "preview": "cd ./src/lib/wyvern && vite preview && cd ../../../"
+    "preview": "cd ./src/lib/wyvern && vite preview && cd ../../../",
+    "build": "cd runtime && dotnet publish --output \"../dev\" && cd ../"
   },
   "dependencies": {
     "@types/ws": "^8.18.1",
