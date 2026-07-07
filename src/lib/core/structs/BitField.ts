@@ -60,4 +60,3 @@ export default class BitField<F> {
     this._bitfield.buffer.values().toArray()
   }
 }
-

@@ -1,5 +1,6 @@
 import EventEmitter from "events";
 import { logStream } from "./FileHelper.js";
+import { BroadcastToIPC } from "./IPCHelper.js";
 export const startEpoch = Date.now();
 
 export function AnsiText(color: string, text: string): string {
@@ -61,18 +62,19 @@ export class _Logger {
     const logText = [this.applyStyling(formatted, color) + " -", ...content];
     const logTime = ((Date.now() - startEpoch) / 1000).toString();
     console.log(...logText);
-    
+
     logStream.write(
       [
         `${logTime.padEnd(9)} | `,
         formatted,
         " - ",
-        ...content.map(item => {
-          if (typeof item === "object") return JSON.stringify(item, null, "  ")
-          return item
+        ...content.map((item) => {
+          if (typeof item === "object") return JSON.stringify(item, null, "  ");
+          return item;
         }),
       ].join(" ") + "\n",
     );
+    BroadcastToIPC(logText.join(" "));
   }
 
   private log(data: LogMessage): void {

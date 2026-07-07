@@ -43,6 +43,10 @@ process.once("atlaspreinit", (a) => {
           name: "pronouns",
           type: "TEXT",
         },
+        {
+          name: "avatar_hash",
+          type: "TEXT"
+        }
       ],
       // pk: ["user_id"],
     }),

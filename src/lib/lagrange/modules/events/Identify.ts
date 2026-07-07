@@ -12,7 +12,7 @@ eventPublisher.subscribe("OPCODE_" + GatewayEventOpCodes.IDENTIFY, (data) => {
       // TODO: Cant we publish events like this directly to the ClientConnection instance?
       eventPublisher.publish("OPCODE_"+GatewayEventOpCodes.INVALID_SESSION, {cli: data.cli,  data:user })
     }
-
+    console.log(user)
     eventPublisher.publish(GatewayEventTypes.READY, {cli: data.cli,  user:user })
   })
 })

@@ -17,6 +17,7 @@ import { createHmac, scryptSync } from "crypto"; // TODO: this could be somethin
 import { DBErrors } from "../../../core/errors/DBErrors.js";
 import { GatewayErrors } from "../../../core/errors/ServerErrors.js";
 import { parseToken } from "./TokenParser.js";
+import { Parser } from "./Parser.js";
 
 // TODO: reduce import counts
 
@@ -191,9 +192,8 @@ export class UserService extends AtlasService {
   public getUserByToken(token: string): SQLPromise {
     // Is this truly a safe method?
     return new Promise((res) => {
-      this.parent
-        .sqlClient // get user info, quite basic but thats fine for now
-      .get`SELECT * FROM users WHERE token = ${token};`.then((user) => {
+      this.parent.sqlClient // get user info, quite basic but thats fine for now
+        .get`SELECT * FROM users WHERE token = ${token};`.then((user) => {
         // filter user and convert bigints
         if (!user) {
           res({ message: DBErrors.NoDataReturned });
@@ -227,12 +227,24 @@ export class UserService extends AtlasService {
   }
 
   public async getUserData(token: string): Promise<object | undefined> {
-    const user = this.getUserByToken(token);
+    const user = await this.getUserByToken(token);
     const friends = this.services.relationships.getUserFriendsWithInfo(token);
     const relations =
       this.services.relationships.getUserFriendsAndRequests(token);
     const guilds = this.getAllGuildInfoForUser(token);
-    console.log(await user, await friends, await relations, await guilds);
-    return user;
+
+    const parsedGuilds = Parser.parseReadyData((await guilds) as object[]);
+
+    return {
+      user: {
+        id: user?.user_id,
+        username: user?.username,
+        email: user?.email,
+        display_name: user?.display_name,
+        avatar: user?.avatar ?? null,
+      },
+      relations: await relations,
+      guilds: parsedGuilds.guilds,
+    };
   }
 }
