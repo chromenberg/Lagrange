@@ -19,4 +19,17 @@ export class HTTPReader {
       })
     })
   }
+  static getBody(request: Request): Promise<Buffer> {
+    return new Promise((res) => {
+      const body: Uint8Array[] = [];
+      
+      request.on("data", (data) => {
+        body.push(data);
+      });
+  
+      request.on("end", () => {
+        res(Buffer.concat(body));
+      })
+    })
+  }
 }

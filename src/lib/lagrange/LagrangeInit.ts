@@ -18,6 +18,7 @@ import { UserService } from "./services/UserService.js";
 import { GatewayPublisher } from "./modules/gateway/GatewayPublisher.js";
 import { Gateway } from "./modules/gateway/Gateway.js";
 import { InviteService } from "./services/InviteService.js";
+import { CDNService } from "./services/CDNService.js";
 
 export const __atlas = new Atlas();
 
@@ -49,3 +50,5 @@ __api.route("/api/v1/users/", (route) => new UserService(route));
 __api.route("/api/v1/auth/", (route) => new AuthService(route));
 __api.route("/api/v1/guilds/", (route) => new GuildService(route));
 __api.route("/invite/", (route) => new InviteService(route));
+__api.route("/attachments/", (route) => new CDNService(route));
+File

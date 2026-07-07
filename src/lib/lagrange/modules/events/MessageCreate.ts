@@ -13,6 +13,7 @@ eventPublisher.subscribe("MESSAGE_CREATE", (data) => {
 });
 
 export function subscribeToMessages(guildChannel: any, sock: ClientConnection) {
+  console.log(guildChannel.guild_id?.toString(), guildChannel.channel_id?.toString())
   GatewayEmitter.channelSubscribe(
     "MESSAGE_CREATE",
     guildChannel.guild_id?.toString() as string,

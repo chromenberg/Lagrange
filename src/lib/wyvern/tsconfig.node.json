@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "outDir": "../dist/lib/wyvern"
+    "outDir": "../../../dist/lib/wyvern"
     
   },
   "include": ["vite.config.ts"]
