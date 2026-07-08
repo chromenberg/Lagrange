@@ -1,12 +1,11 @@
 const { useState } = await import("react");
 const EventSystem = (await import("../../core/EventSystem")).default;
-import type { UserData } from "../../types/UserType";
-import type { SelfUser } from "../../types/Generics";
+import type { ClientUser } from "../../types/UserTypes";
 import type { ReadyEvent } from "../../types/ReadyType";
 import { useEffect } from "react";
 
 function useUserInfo() {
-  const [userData, setUserInfo] = useState<Partial<SelfUser<UserData>>>({});
+  const [userData, setUserInfo] = useState<Partial<ClientUser>>({});
 
   useEffect(() => {
     console.log("sdgdgf")

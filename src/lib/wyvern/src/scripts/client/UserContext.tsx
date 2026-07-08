@@ -1,11 +1,10 @@
 import type { GuildStore } from "../stores/StoreTypes";
-import type { SelfUser } from "../types/Generics";
-import type { UserData } from "../types/UserType";
+import type { ClientUser } from "../types/UserTypes";
 
 const createContext = (await import("react")).createContext;
 
 type UserContext = {
-  user: SelfUser<UserData>,
+  user: ClientUser,
   guilds: GuildStore
 };
 
