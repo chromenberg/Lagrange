@@ -1,0 +1,15 @@
+.tempGuildIconPlaceholder {
+    width: calc(100% - var(--padding-m));
+    aspect-ratio: 1/1;
+    border-radius: var(--padding-l);
+    background-color: var(--interact-active);
+}
+
+.guildIconContainer {
+    display: flex;
+    align-items: center !important;
+    justify-content: center;
+    width: 100%;
+    text-decoration: none;
+    height: 100%;
+}

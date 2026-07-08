@@ -15,9 +15,18 @@ export default function ChannelButton({
 }: ChannelButtonData) {
   const location = useCurrentRoute();
 
+  const guild = {
+    id: location.guild.id ?? "@me",
+    name: location.guild.name ?? "@me"
+  }
+  const channel = {
+    id: id,
+    name: name
+  }
+  
   return (
     <div className="interactableItem">
-      <LinkTo guild={location.guild.id ?? "@me"} channel={id}>
+      <LinkTo guild={guild} channel={channel}>
         <div className="interactWrapper">
           <div className="channelIconContainer" mana-type="svg-container"></div>
           <div className="channelTextContainer">

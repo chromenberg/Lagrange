@@ -102,7 +102,7 @@ export interface TextChannel extends MessageableChannel {
 }
 
 export type Channel =
-  TextChannel | MessageableChannel | GroupChannel | DMChannel | CategoryChannel;
+  TextChannel | MessageableChannel  | CategoryChannel;
 
 export type PartialChannel = Partial<
   TextChannel & MessageableChannel & GroupChannel & DMChannel & CategoryChannel

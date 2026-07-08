@@ -1,0 +1,15 @@
+.scrollMenu-vertical {
+    flex-direction: column;
+    display: flex;
+}
+
+.scrollMenu-horizontal {
+    flex-direction: row;
+    display: flex;
+}
+
+
+.scrollMenuContainer:has(.scrollMenu-horizontal) {
+    overflow-y: hidden;
+    overflow-x: scroll;
+}

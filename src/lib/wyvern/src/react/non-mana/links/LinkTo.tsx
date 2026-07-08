@@ -5,6 +5,21 @@ export default function LinkTo({
   guild,
   channel,
   children,
-}: Props & { guild: string; channel: string }) {
-  return <NavLink to={`/channels/${guild}/${channel}`}>{children}</NavLink>;
+  className,
+}: Props & {
+  guild: { id: string; name: string };
+  channel: { id: string; name: string };
+}) {
+  return (
+    <NavLink
+      to={`/channels/${guild.id}/${channel.id}`}
+      className={className}
+      state={{
+        guild,
+        channel,
+      }}
+    >
+      {children}
+    </NavLink>
+  );
 }

@@ -9,7 +9,7 @@ export function useCurrentRoute(): LocationStore {
   const location = useLocation()
 
   useEffect(() => {
-    console.log(location.state)
+    console.log("ROUTE CHANGE | GOING TO "+location.pathname)
     // Emit the location change to the announcer
     LocationAnnouncer.emit("ROUTE_CHANGE", location.state);
   }, [location]);

@@ -1,0 +1,15 @@
+.gapXS {
+    gap: var(--padding-xs)
+}
+.gapSM {
+    gap: var(--padding-sm)
+}
+.gapM {
+    gap: var(--padding-m)
+}
+.gapL {
+    gap: var(--padding-l)
+}
+.gapXL {
+    gap: var(--padding-xl)
+}

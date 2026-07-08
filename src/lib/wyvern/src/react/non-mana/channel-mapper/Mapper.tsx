@@ -15,17 +15,6 @@ function mapChannel({ name, id }: A) {
   return <ChannelButton key={id} name={name} id={id} />;
 }
 
-// function GuildButton({ id, name }) {
-//   // const guilds = useGuildStore()
-
-//   // return <div className="guildButton">
-//   //   <NavLink to={}
-
-//   //   </NavLink>
-//   //   {guild.name.slice(4)}
-//   // </div>
-// }
-
 export default function ChannelMapper({
   data,
 }: {
@@ -41,8 +30,3 @@ export default function ChannelMapper({
     </>
   );
 }
-// export function GuildMapper({ data }: { data: A[] }) {
-//   return <>{data.map((guild) => {
-//     return
-//   })}</>;
-// }
