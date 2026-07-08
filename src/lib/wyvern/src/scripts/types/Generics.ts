@@ -10,3 +10,4 @@ export type WithGuild<T> = {
     name: string
   }
 } & T
+export type Null<T> = T | null

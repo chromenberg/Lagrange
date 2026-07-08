@@ -1,5 +1,6 @@
-import type { SelfUser } from "./Generics"
-import type { UserData } from "./UserType"
+import type { Guild } from "./GuildTypes"
+import type { UserRelationship } from "./RelationshipTypes"
+import type { ClientUser } from "./UserTypes"
 
 export type UnavailableGuild = {
   id: string,
@@ -7,6 +8,7 @@ export type UnavailableGuild = {
 }
 
 export type ReadyEvent = {
-  user: SelfUser<UserData>
-  guilds: UnavailableGuild[]
+  relations: UserRelationship[]
+  user: ClientUser
+  guilds: Guild[]
 }
