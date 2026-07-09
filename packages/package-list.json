@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "laytan/odin-http": "1"
+  }
+}
