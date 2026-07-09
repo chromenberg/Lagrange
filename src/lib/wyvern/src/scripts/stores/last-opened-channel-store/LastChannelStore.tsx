@@ -24,9 +24,9 @@ export default function useLastOpenedChannel(
   return openedChannels;
 }
 
-LocationAnnouncer.on("ROUTE_CHANGE", (data) => {
-  if (data === null) {
-    return
-  }
-  console.log(useLastOpenedChannel(data.guild.id, data.channel.id))
-})
+// LocationAnnouncer.on("ROUTE_CHANGE", (data) => {
+//   if (data === null) {
+//     return
+//   }
+//   console.log(useLastOpenedChannel(data.guild.id, data.channel.id))
+// })
