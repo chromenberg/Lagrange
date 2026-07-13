@@ -83,7 +83,7 @@ alloc_resize :: proc(img: ^LoadResult, output: ^LoadResult) {
 	output.data = make([^]f32, pixels)
 }
 
-resize_image :: proc(img: ^LoadResult, size: Vector2i32) -> ^LoadResult {
+resize_image :: proc(img: ^LoadResult, size: Vector2i32, flags: ProxyParams) -> ^LoadResult {
 	assert(img != nil, "img must not be nil")
 	assert(img.data != nil, "img.data must not be nil")
 
@@ -91,6 +91,9 @@ resize_image :: proc(img: ^LoadResult, size: Vector2i32) -> ^LoadResult {
 	output.width = size.x
 	output.height = size.y
 	output.channels = img.channels
+	if flags.channels != nil {
+		output.channels = cast(i32)_to_int(flags.channels.(URLParamInt))
+	}
 
 	alloc_resize(img, output)
 
@@ -139,6 +142,30 @@ linear_to_srgb_u8 :: proc(linear: f32) -> u8 {
 	return u8(v * 255 + 0.5)
 }
 
+encode_jpeg :: proc(img: ^LoadResult, quality: QualityPresets,  allocator := context.allocator) -> []u8 {
+	pixel_count := img.width * img.height * img.channels
+	pixels_u8 := make([]u8, pixel_count, allocator)
+
+	for i in 0 ..< pixel_count {
+		pixels_u8[i] = linear_to_srgb_u8(img.data[i])
+	}
+	
+	buf: [dynamic]u8
+	buf.allocator = allocator
+
+	stb_image.write_jpg_to_func(
+		_write_callback,
+		&buf,
+		img.width,
+		img.height,
+		img.channels,
+		raw_data(pixels_u8),
+		cast(i32)quality,
+	)
+
+	return buf[:]
+}
+
 encode_png :: proc(img: ^LoadResult, allocator := context.allocator) -> []u8 {
 	assert(img != nil)
 	assert(img.data != nil)
@@ -164,6 +191,18 @@ encode_png :: proc(img: ^LoadResult, allocator := context.allocator) -> []u8 {
 	)
 
 	return buf[:]
+}
+
+encode_image :: proc(type: string, img: ^LoadResult, flags: ProxyParams) -> []u8 {
+	switch type {
+		case "png": 
+			return encode_png(img)
+		case "jpeg":
+		case "jpg":
+			return encode_jpeg(img, flags.quality)
+	}
+	// If nothing matches, just convert to jpeg with medium quality
+	return encode_jpeg(img, .Medium)
 }
 
 /*

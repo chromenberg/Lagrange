@@ -12,11 +12,22 @@ const useLastOpenedChannel = (
 const { GuildNameSize } = await import("../../../sizings/GuildSizings");
 import("./GuildIcon.css");
 import("./GuildIconText.css");
+
+
+// https://cdn.discordapp.com/icons/<guild_id>/<icon_hash>.webp?size=80&quality=lossless
+function GuildIconImage() {
+  return <div>
+    <img src></img>
+  </div>
+}
+
 export default function GuildIcon({ guildInfo }: GuildIconProps) {
   const guildName = guildInfo.name;
   const guildID = guildInfo.id;
+  
   const lastOpenedChannel = useLastOpenedChannel(guildInfo.id);
-  const channel = useGuildStore().find((guild) => guild.id === guildID)
+  const channel = useGuildStore()
+    .find((guild) => guild.id === guildID)
     ?.channels.find(
       (channel) => channel.id === lastOpenedChannel || guildInfo.firstChannel,
     )?.name;
@@ -40,14 +51,10 @@ export default function GuildIcon({ guildInfo }: GuildIconProps) {
 
   return (
     <div className="tempGuildIconPlaceholder">
-      <LinkTo
-        guild={{
-          name: guildName,
-          id: guildID,
-        }}
-        channel={{ id: ensureString(), name: channel??"NOCHANNEL" }}
-        className="guildIconContainer"
-      >
+      <div className="guildIconContainer">
+        <div className="red fillAll">
+          
+        </div>
         {/* Ensure the guild name is actually scaling properly */}
         <AutoTextSize
           className="tempGuildIconNamePlaceholder"
@@ -56,7 +63,7 @@ export default function GuildIcon({ guildInfo }: GuildIconProps) {
           {/* Get first letters of every word in the name */}
           {firstLettersOfName()}
         </AutoTextSize>
-      </LinkTo>
+      </div>
     </div>
   );
 }

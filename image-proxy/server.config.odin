@@ -1,11 +1,18 @@
 package main
-import "core:net"
 
-ipaddress := net.IP4_Address{127, 0, 0, 1}
+Snowflake :: "([0-9]*)"
+
 MaxCacheSize :: 200
+
+AvatarRoute :: "/avatars/([0-9]*)/(.*).webp"
+AttachmentRoute :: "/attachments/([0-9]*)/([0-9]*)/(.*)"
+
 R2ImageRoute :: "/([0-9]*)/([0-9]*)/(.*)"
 ProxyPath    :: "https://cdn.wyvernapp.com"
+
 QualityPresets :: enum {
+	Shittest = 1,
+	Shitter = 5,
 	Shit    = 10,
 	Low     = 30,
 	MedLow  = 40,
@@ -15,5 +22,6 @@ QualityPresets :: enum {
 	None    = 100
 }
 
-ServerAddress :: "127.0.0.1"
-ServerPort    :: 82
+HostAddress   :: "media.wyvernapp.com"
+ServerAddress :: "192.168.0.40"
+ServerPort    :: 80

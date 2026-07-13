@@ -49,6 +49,7 @@ ProxyParams :: struct {
 	size    : Maybe(URLParamInt),
 	width   : Maybe(URLParamInt),
 	height  : Maybe(URLParamInt),
+	channels: Maybe(URLParamInt),
 	quality : QualityPresets,
 	format  : string,
 }
@@ -75,7 +76,7 @@ check_for_cached_image :: proc(path: string) -> ([]u8, bool) {
 	return res, ok
 }
 
-run_resize :: proc(data: []u8, flags: ProxyParams) -> []u8 {
+run_resize :: proc(data: []u8, flags: ProxyParams, type: string) -> []u8 {
 
 	load, err := load_image(data) // load image data from cloudflare
 	if err != nil do return nil
@@ -105,13 +106,13 @@ run_resize :: proc(data: []u8, flags: ProxyParams) -> []u8 {
 		height = auto_cast _to_int(flags.size.(URLParamInt))
 	}
 
-	resized := resize_image(load, {x = width, y = height}) // resize the image
+	resized := resize_image(load, {x = width, y = height}, flags) // resize the image
 	if resized == nil do return nil
 	defer result_free(resized) // free results after exit
 
 	log.info("resized:", resized.width, resized.height, resized.channels)
 
-	return encode_png(resized) // encode back and return
+	return encode_image(type, resized, flags)
 }
 
 manip_image :: proc(path: string, flags: ProxyParams) -> []u8 {
@@ -120,14 +121,14 @@ manip_image :: proc(path: string, flags: ProxyParams) -> []u8 {
 
 	if ok {
 		log.debug("Root image", path, "was cached... Using cached content instead")
-		return run_resize(cached, flags)
+		return run_resize(cached, flags, get_name(path))
 	}
 
 	img_data := fetch_image_bytes(path)
 	// if we encounter an error then it will end up caching that
 	// this is something to fix
 	cache_result(path, &img_data) // if we had to fetch the result then instantly cache the image
-	return run_resize(img_data, flags)
+	return run_resize(img_data, flags, get_name(path))
 }
 
 cache_result :: proc(name: string, data: ^[]u8) {
@@ -152,6 +153,8 @@ parse_query :: proc(query: string) -> ProxyParams {
 
 	parse_quality :: proc(quality: QualityPresets, flags: ^ProxyParams) {
 		switch quality {
+			case .Shittest    : flags.quality = .Shittest
+			case .Shitter    : flags.quality = .Shitter
 			case .Shit    : flags.quality = .Shit
 			case .Low     : flags.quality = .Low
 			case .MedLow  : flags.quality = .MedLow
@@ -172,6 +175,7 @@ parse_query :: proc(query: string) -> ProxyParams {
 				case "width":  flags.width = val
 				case "height": flags.height = val
 				case "format": flags.format = val
+				case "channels": flags.channels = val
 				case "quality": parse_quality(auto_cast _to_int(val), &flags)
 			}
 		}
@@ -181,8 +185,7 @@ parse_query :: proc(query: string) -> ProxyParams {
 }
 
 image_handler :: proc(req: ^http.Request, res: ^http.Response) {
-	log.info("Request URL:", req.url.path)
-	log.info("Request Query:", req.url.query)
+	if req.headers._kv["host"] != HostAddress do return
 
 	full_name := strings.concatenate([]string{
 		req.url.path,
@@ -237,7 +240,6 @@ main :: proc() {
 	context.logger = log.create_console_logger(log.Level.Debug)
 	lru.init(&cache, MaxCacheSize)
 	defer lru.destroy(&cache, false)
-
 	validate_allowed_sizes()
 	init_server()
 }

@@ -13,3 +13,7 @@
     text-decoration: none;
     height: 100%;
 }
+
+.red {
+  background: red;
+}
