@@ -149,6 +149,7 @@ nav {
     --padding-sm: 4px;
     --padding-m: 8px;
     --padding-l: 12px;
+    --padding-ml: 18px;
     --padding-xl: 24px;
 }
 :root {

@@ -1,7 +1,7 @@
 import type { Props } from "../../../Core";
-
+import("./ScrollMenu.css");
 import("../../styles/ScrollMenu.css");
-import("../../styles/Gaps.css")
+import("../../styles/Gaps.css");
 // Only allow vertical or horizontal
 type ScrollDirs = "vertical" | "horizontal";
 const GapSize = {
@@ -14,19 +14,22 @@ const GapSize = {
 
 function parseGap(gap?: keyof typeof GapSize): string {
   if (!gap) return "";
-  return " gap" + GapSize[gap];
+  return GapSize[gap];
 }
 export default function ScrollMenu({
   children,
   direction,
   gap,
-  className
+  className,
 }: Props & { direction: ScrollDirs; gap?: keyof typeof GapSize }) {
   return (
-    <div className={className+" scrollMenuContainer"} mana-type="scroll-menu">
-      <div className={"scrollMenu-" + direction + parseGap(gap)}>
-        {children}
-      </div>
+    <div
+      className={className}
+      mana-type="scroll-menu"
+      data-stack-gap={parseGap(gap)}
+      data-stack-direction={direction}
+    >
+      {children}
     </div>
   );
 }

@@ -3,7 +3,7 @@
 @import "./react/styles/left-side-panel/Guilds.css";
 
 .appContent {
-  grid-template-columns: [left] min-content [guildsEnd] 300px [channelsEnd] 1fr [pageEnd];
+  grid-template-columns: [left] min-content [guildsEnd] 250px [channelsEnd] 1fr [pageEnd];
   grid-template-rows: [top] 30px [titleEnd] min-content [noticesEnd] 1fr [pageEnd];
   grid-template-areas: "title title title"
                       "guilds notice notice"
@@ -19,6 +19,10 @@
   background: var(--theme-low);
 }
 
+[data-fill] {
+    width: 100%;
+    height: 100%;
+}
 
 
 .fillAll {

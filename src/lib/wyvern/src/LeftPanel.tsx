@@ -7,9 +7,9 @@ import ChannelBar from "./react/non-mana/channel-bar/ChannelBar";
 //   .default;
 // const ChannelCreator = (await import("./react/non-mana/channel/ChannelCreator"))
 //   .default;
-// const useCurrentRoute = (
-//   await import("./scripts/stores/current-store/CurrentStore")
-// ).useCurrentRoute;
+const useCurrentRoute = (
+  await import("./scripts/stores/current-store/CurrentStore")
+).useCurrentRoute;
 
 const PanelHeader = (await import("./react/components/ChannelOverhead"))
   .default;
@@ -18,7 +18,7 @@ import("./react/styles/ChannelBar.css");
 import("./react/styles/GuildsBar.css");
 export default function LeftPanel() {
   // const token = useToken()
-  // const location = useCurrentRoute();
+  const location = useCurrentRoute();
 
   return (
     <div id="lSidePanel">
@@ -31,7 +31,7 @@ export default function LeftPanel() {
         <FlexBox direction="updown" className="fillAll">
           <PanelHeader>
             <div className="fillAll panelHeaderInner">
-              <div className="flexHoriz centerVert centerHori fillAll"></div>
+              <div className="flexHoriz centerVert centerHori fillAll">{location.guild.name}</div>
             </div>
           </PanelHeader>
           <div className="lPane">

@@ -1,3 +1,7 @@
 .listScroller > .scrollMenu-vertical {
     align-items: center;
 }
+
+.listScroller {
+    scrollbar-width: thin !important;
+}

@@ -43,11 +43,11 @@ export class CDNService {
     req: Request,
     res: ServerResponse<IncomingMessage>,
   ): Promise<Response> {
-    console.log("Uploading file");
+    console.log("Uploading file");  
     return new Promise((response) => {
       HTTPReader.getBody(req).then(async (body) => {
         const result = await this.s3.putObject(
-          GenToken(16).ToBase64Atlas(),
+          "icons/142409349984174080/"+GenToken(16).ToBase64Atlas()+".jpg",
           body,
           req.headers["content-type"],
         );

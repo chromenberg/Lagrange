@@ -43,7 +43,7 @@ export class GuildService extends AtlasService {
     data.id = this.snowflake.GenerateID().toString();
     console.log(data);
     await this.parent.sqlClient
-      .run`INSERT INTO guilds VALUES (${BigInt(data.id)}, ${BigInt(data.owner_id)}, ${data.name});`;
+      .run`INSERT INTO guilds VALUES (${BigInt(data.id)}, ${BigInt(data.owner_id)}, ${data.name}, null, null, null);`;
     // Create a new channel in the database
     const channel = this.parent.requests.channels.newChannel(
       {

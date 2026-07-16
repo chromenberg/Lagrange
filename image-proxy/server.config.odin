@@ -7,7 +7,7 @@ MaxCacheSize :: 200
 AvatarRoute :: "/avatars/([0-9]*)/(.*).webp"
 AttachmentRoute :: "/attachments/([0-9]*)/([0-9]*)/(.*)"
 
-R2ImageRoute :: "/([0-9]*)/([0-9]*)/(.*)"
+R2ImageRoute :: "/icons/([0-9]*)/(.*)"
 ProxyPath    :: "https://cdn.wyvernapp.com"
 
 QualityPresets :: enum {
@@ -22,6 +22,6 @@ QualityPresets :: enum {
 	None    = 100
 }
 
-HostAddress   :: "media.wyvernapp.com"
-ServerAddress :: "192.168.0.40"
-ServerPort    :: 80
+HostAddress   :: "127.0.0.1:82"
+ServerAddress :: "127.0.0.1"
+ServerPort    :: 82

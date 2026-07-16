@@ -4,7 +4,7 @@ const routes = (await import("../../../scripts/client/Routes")).routes;
 const populate = (await import("../../../scripts/core/SetPlaceholders"))
   .populate;
 import("../../styles/InteractableItem.css");
-
+import("../../styles/ChannelBar.css")
 export default function ChannelButton({
   name,
   id,

@@ -1,6 +1,7 @@
 
 
 import type { Guild } from "../../../scripts/types/GuildTypes";
+import GuildCreateButton from "./GuildCreate";
 const useGuildStore = (await import("../../../scripts/stores/guild-store/GuildStore")).default
 const ScrollMenu = (await import("../../mana/scroll-menu/ScrollMenu")).default
 const GuildIcon = (await import("./GuildIcon")).default
@@ -13,7 +14,7 @@ export default function GuildListCreator() {
     return {
       id: data.id,
       name: data.properties.name,
-      icon: data.properties.name,
+      icon: data.properties.icon,
       firstChannel: data.channels[0].id
     };
   };
@@ -24,5 +25,8 @@ export default function GuildListCreator() {
     });
   };
 
-  return <ScrollMenu direction="vertical" className="listScroller" gap="med">{mapGuilds()}</ScrollMenu>
+  return <ScrollMenu direction="vertical" className="listScroller" gap="med">
+    {mapGuilds()}
+    <GuildCreateButton />
+  </ScrollMenu>
 }

@@ -1,18 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // import LocationAnnouncer from "../../core/LocationAnnouncer";
 // import type { GuildChannel } from "../../types/GuildTypes";
-import { useLocation } from "react-router";
 import type { LocationStore } from "../../types/LocationStoreType";
 import LocationAnnouncer from "../../core/LocationAnnouncer";
+import { ChannelType } from "../../types/ChannelTypes";
 
 export function useCurrentRoute(): LocationStore {
-  const location = useLocation()
+  const [location, setLocation] = useState<LocationStore>({
+    guild: { id: "@me", name: "@me" },
+    channel: { id: null, name: null, type: ChannelType.GuildText },
+  });
 
   useEffect(() => {
-    console.log("ROUTE CHANGE | GOING TO "+location.pathname)
+    // console.log("ROUTE CHANGE | GOING TO "+location.pathname)
     // Emit the location change to the announcer
-    LocationAnnouncer.emit("ROUTE_CHANGE", location.state);
+    LocationAnnouncer.on("ROUTE_CHANGE", (data) => {
+      console.log("[Routes] Going to", "/channels/"+data.guild.id+"/"+data.channel.id)
+      setLocation(data);
+    });
   }, [location]);
 
-  return location.state;
+  return location;
 }

@@ -1,0 +1,32 @@
+div[mana-type="scroll-menu"] {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    * {
+        flex: 0 0 auto;
+    }
+}
+
+[data-stack-gap="XS"] {
+    gap: var(--padding-xs);
+}
+
+[data-stack-gap="SM"] {
+    gap: var(--padding-sm);
+}
+
+[data-stack-gap="M"] {
+    gap: var(--padding-m);
+}
+
+[data-stack-gap="L"] {
+    gap: var(--padding-l);
+}
+
+[data-stack-gap="XL"] {
+    gap: var(--padding-xl);
+}

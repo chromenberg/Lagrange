@@ -1,5 +1,6 @@
 export const apiURL = "/api/v1";
 
+export const attachments = "http://127.0.0.1:82"
 export const routes = {
   messages: "/channels/${}/messages",
   message: "/channels/${}/messages/${}",
@@ -9,6 +10,9 @@ export const routes = {
   register: "/auth/register",
   login: "/auth/login",
   me: "/users/@me",
-  home: "/channels/@me"
+  home: "/channels/@me",
+  guild_icons: "/icons/${}/${}",
+  attachments: "/attachments/${}/${}/${}",
+  user_avatars: "/avatars/${}/${}"
 };
 export const routeArray = Object.values(routes)

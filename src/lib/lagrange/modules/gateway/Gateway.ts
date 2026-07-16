@@ -10,6 +10,7 @@ import { PubSub } from "../../../core/pubsub/PubSub.js";
 import type { EventOrOpcode } from "../../../core/types/GatewayTypes.js";
 import { nextTick } from "node:process";
 import "../events/EventAggregate.js"
+import { Config } from "../../Config.js";
 // Timeline
 // Client      | Server | Description
 // ------------|--------|------------
@@ -43,7 +44,7 @@ export class Gateway {
     this._events = new PubSub();
     // this.pubsub = pubsub ? pubsub : new PubSub();
     this.socket = new WebSocketServer({
-      port: 82,
+      port: Config.Gateway.Socket.Port,
       host: "127.0.0.1",
     });
 

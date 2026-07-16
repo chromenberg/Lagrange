@@ -22,6 +22,7 @@ export class GuildService {
     // -----------------------
 
     this.route.post("/", (req, res) => {
+      console.log("sddfsg")
       this.newGuild(req, res);
     });
 
@@ -36,6 +37,7 @@ export class GuildService {
 
   // should have a guild name as of right now
   public async newGuild(req: Request, res: ServerResponse<IncomingMessage>) {
+    console.log("gdfgdfgsdf")
     HTTPReader.parseBody(req).then((body) => {
       console.log(body);
       // TODO: Clean this up
@@ -43,6 +45,7 @@ export class GuildService {
         Object.hasOwn(body as Record<string, any>, "id") &&
         Object.hasOwn(body as Record<string, any>, "name")
       ) {
+        console.log("new guild");
         (body as GuildData).owner_id = atob(
           req.headers.authorization?.split(".")[0] ?? "",
         );
@@ -50,6 +53,8 @@ export class GuildService {
         (body as GuildData).roles = [];
         Atlas.requests.guilds.newGuild(body as GuildData);
       }
+      res.write("dfgdfg")
+      res.end()
     });
   }
 

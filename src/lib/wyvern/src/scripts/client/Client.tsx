@@ -29,7 +29,7 @@ export default function ClientWrapper({ children }: Props) {
     // );
   }
   useEffect(() => {
-    const _sock = new WebSocket("http://127.0.0.1:82");
+    const _sock = new WebSocket("http://127.0.0.1:81");
 
     _sock.onopen = () => {
       console.log("[Client] Connection opened to Gateway");

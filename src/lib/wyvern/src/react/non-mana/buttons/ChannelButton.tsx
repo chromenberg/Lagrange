@@ -2,7 +2,7 @@ const useCurrentRoute = (
   await import("../../../scripts/stores/current-store/CurrentStore")
 ).useCurrentRoute;
 const LinkTo = (await import("../links/LinkTo")).default;
-
+import("../../styles/InteractableItem.css")
 type ChannelButtonData = {
   name: string;
   id: string;

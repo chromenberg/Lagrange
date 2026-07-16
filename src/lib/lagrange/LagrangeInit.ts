@@ -51,4 +51,3 @@ __api.route("/api/v1/auth/", (route) => new AuthService(route));
 __api.route("/api/v1/guilds/", (route) => new GuildService(route));
 __api.route("/invite/", (route) => new InviteService(route));
 __api.route("/attachments/", (route) => new CDNService(route));
-File
