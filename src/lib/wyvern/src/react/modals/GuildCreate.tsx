@@ -1,4 +1,4 @@
-import { useRef, type Dispatch, type SetStateAction } from "react";
+import { useRef} from "react";
 import useToken from "../../scripts/client/requests/Authorization";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const ActionRow = (await import("../mana/action-row/ActionRow")).default;
@@ -24,7 +24,7 @@ function requestGuildCreate(token: string, guildName: string) {
   });
 }
 
-export default function CreateGuildModal({state}:{state: Dispatch<SetStateAction<boolean>>}) {
+export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void}) {
   const guildNameInput = useRef(null);
   const modalRef = useRef(null);
   const token = useToken();
@@ -57,9 +57,7 @@ export default function CreateGuildModal({state}:{state: Dispatch<SetStateAction
                 style="Tertiary"
                 mana-type="text-button"
                 onClick={() => {
-                  (modalRef.current as unknown as HTMLDivElement).remove();
-                  state(false)
-                  console.log(state(false))
+                  state?.(false)
                 }}
               >
                 Cancel
