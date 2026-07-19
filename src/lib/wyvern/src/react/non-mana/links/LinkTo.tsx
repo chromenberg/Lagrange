@@ -7,12 +7,13 @@ export default function LinkTo({
   children,
   className,
 }: Props & {
-  guild: { id: string; name: string };
+  guild: { id: string | null; name: string };
   channel: { id: string; name: string };
 }) {
+  console.log("ddsf", guild, channel);
   return (
     <NavLink
-      to={`/channels/${guild.id}/${channel.id}`}
+      to={`/channels/${guild.id ?? "@me"}/${channel.id}`}
       className={className}
       state={{
         guild,

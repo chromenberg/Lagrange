@@ -5,7 +5,7 @@ export default function useRoute() {
   const [route, setRoute] = useState("/channels/@me");
 
   LocationAnnouncer.on("ROUTE_CHANGE", (e) => {
-    console.log("route change")
+    console.log("[Routing/URL] Changing URL to "+`/channel/${e.guild.id}/${e.channel.id}`)
     setRoute(`/channel/${e.guild.id}/${e.channel.id}`);
   });
 

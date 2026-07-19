@@ -4,7 +4,7 @@ export const attachments = "http://127.0.0.1:82"
 export const routes = {
   messages: "/channels/${}/messages",
   message: "/channels/${}/messages/${}",
-  channels: "/channels/${}",
+  channels: "/channels/${}/${}",
   guilds: "/guilds",
   guild_channels: "/guilds/${}/channels",
   register: "/auth/register",

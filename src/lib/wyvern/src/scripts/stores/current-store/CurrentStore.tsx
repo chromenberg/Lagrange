@@ -7,7 +7,7 @@ import { ChannelType } from "../../types/ChannelTypes";
 
 export function useCurrentRoute(): LocationStore {
   const [location, setLocation] = useState<LocationStore>({
-    guild: { id: "@me", name: "@me" },
+    guild: { id: null, name: null },
     channel: { id: null, name: null, type: ChannelType.GuildText },
   });
 
@@ -15,7 +15,8 @@ export function useCurrentRoute(): LocationStore {
     // console.log("ROUTE CHANGE | GOING TO "+location.pathname)
     // Emit the location change to the announcer
     LocationAnnouncer.on("ROUTE_CHANGE", (data) => {
-      console.log("[Routes] Going to", "/channels/"+data.guild.id+"/"+data.channel.id)
+      console.log("[Routes] Going to", "/channels/" + data.guild.id + "/" + data.channel.id)
+      console.log(data)
       setLocation(data);
     });
   }, [location]);
