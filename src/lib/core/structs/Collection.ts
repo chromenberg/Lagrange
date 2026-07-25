@@ -1,6 +1,3 @@
-type keysof<T extends readonly any[]> = {
-  [K in T[number]]: string;
-};
 export class Collection<K, V> extends Map<K, V> {
   constructor(data?: [K, V][]) {
     if (data) {
@@ -83,5 +80,4 @@ export class Collection<K, V> extends Map<K, V> {
   public toArray(): [K, V][] {
     return this.entries().toArray();
   }
-
 }

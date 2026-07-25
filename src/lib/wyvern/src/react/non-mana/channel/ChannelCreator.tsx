@@ -8,7 +8,7 @@ const ChannelButton = (await import("../buttons/ChannelButton")).default;
 
 export default function ChannelCreator(/* { guild_id }: { guild_id: string } */) {
   const location = useCurrentRoute()
-  const id = location ? location.guild.id : "@me"
+  const id = location ? location.guild.id : "@jk"
   const channels = useGuildStore().find(
     (guild) => guild.id === (id),
   )?.channels;
@@ -16,7 +16,8 @@ export default function ChannelCreator(/* { guild_id }: { guild_id: string } */)
   return (
     <>
       {channels?.map((channel) => {
-        return <ChannelButton key={channel.id} id={channel.id} name={channel.name} />;
+        console.log("creating button for", channel.id, location.guild.id)
+        return <ChannelButton key={channel.id} channel={channel} guild={location.guild} />;
       })}
     </>
   );

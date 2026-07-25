@@ -13,7 +13,7 @@ export default function LinkTo({
   console.log("ddsf", guild, channel);
   return (
     <NavLink
-      to={`/channels/${guild.id ?? "@me"}/${channel.id}`}
+      to={`/channels/${guild.id}/${channel.id}`}
       className={className}
       state={{
         guild,

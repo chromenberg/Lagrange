@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export class Dispatcher<E> {
+export class Dispatcher<E = any> {
   private _emitter: EventTarget;
   constructor() {
     this._emitter = new EventTarget();
@@ -9,6 +9,7 @@ export class Dispatcher<E> {
     eventName: K,
     listener: (...args: any[]) => void,
   ): void {
+    console.log("new listener created")
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this._emitter.addEventListener(eventName as string, (e: CustomEvent) => {
@@ -34,5 +35,12 @@ export class Dispatcher<E> {
     this._emitter.dispatchEvent(
       new CustomEvent(eventName as string, { detail: data }),
     );
+  }
+  public remove(eventName: keyof E, callback: any) {
+    if (typeof eventName !== "string")
+      throw new Error(
+        "Cannot remove a listener when the event name is not a string",
+      );
+    this._emitter.removeEventListener(eventName as string, callback);
   }
 }
