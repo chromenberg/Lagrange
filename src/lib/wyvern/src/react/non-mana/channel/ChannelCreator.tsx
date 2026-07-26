@@ -1,4 +1,8 @@
 // import { useEffect } from "react";
+const useChannels = (
+  await import("../../../scripts/stores/channel-store/ChannelStore")
+).default;
+
 import { useCurrentRoute } from "../../../scripts/stores/current-store/CurrentStore";
 
 const useGuildStore = (
@@ -6,18 +10,26 @@ const useGuildStore = (
 ).default;
 const ChannelButton = (await import("../buttons/ChannelButton")).default;
 
-export default function ChannelCreator(/* { guild_id }: { guild_id: string } */) {
-  const location = useCurrentRoute()
-  const id = location ? location.guild.id : "@jk"
-  const channels = useGuildStore().find(
-    (guild) => guild.id === (id),
-  )?.channels;
-  
+export default function ChannelCreator(
+  /* { guild_id }: { guild_id: string } */
+) {
+  const location = useCurrentRoute();
+  const channels2 = useChannels();
+  console.log(channels2)
+  const id = location ? location.guild.id : "@jk";
+  const channels = useGuildStore().find((guild) => guild.id === id)?.channels;
+
   return (
     <>
       {channels?.map((channel) => {
-        console.log("creating button for", channel.id, location.guild.id)
-        return <ChannelButton key={channel.id} channel={channel} guild={location.guild} />;
+        console.log("creating button for", channel.id, location.guild.id);
+        return (
+          <ChannelButton
+            key={channel.id}
+            channel={channel}
+            guild={location.guild}
+          />
+        );
       })}
     </>
   );
