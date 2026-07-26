@@ -11,3 +11,4 @@ export type WithGuild<T> = {
   }
 } & T
 export type Null<T> = T | null
+export type Entry<K, V> = [K, V]
