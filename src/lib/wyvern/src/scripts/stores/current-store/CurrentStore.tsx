@@ -1,12 +1,9 @@
+const { useLocation } = await import("react-router");
 const { useEffect, useState } = await import("react");
-
-import { useLocation } from "react-router";
-// import LocationAnnouncer from "../../core/LocationAnnouncer";
-// import type { GuildChannel } from "../../types/GuildTypes";
-import type { LocationStore } from "../../types/LocationStoreType";
 const LocationAnnouncer = (await import("../../core/LocationAnnouncer"))
   .default;
 const { ChannelType } = await import("../../types/ChannelTypes");
+import type { LocationStore } from "../../types/LocationStoreType";
 
 export function useCurrentRoute(): LocationStore {
   const route = useLocation()
