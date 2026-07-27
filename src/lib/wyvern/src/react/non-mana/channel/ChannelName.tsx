@@ -2,6 +2,5 @@ const useCurrentRoute = (await import("../../../scripts/stores/current-store/Cur
 
 export default function ChannelName() {
   const location = useCurrentRoute()
-  
   return <span>{location ? location.channel.name : "none"}</span>
 }
