@@ -1,6 +1,15 @@
 const { useState } = (await import("react"));
 import type LastOpenedStore from "./LastOpenedType";
-// const LocationAnnouncer = (await import("../../core/LocationAnnouncer")).default;
+// const LocationAnnouncer = (await import("3../../core/LocationAnnouncer")).default;
+const lastOpenedChannels: LastOpenedStore = {}
+
+export function getLastOpenedChannel(guildID: string): string | undefined {
+  return lastOpenedChannels[guildID]
+}
+
+export function setLastOpenedChannel(guildID: string, channelID: string) {
+  lastOpenedChannels[guildID] = channelID
+}
 
 export default function useLastOpenedChannel(
   guildID?: string,

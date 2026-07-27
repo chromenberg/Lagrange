@@ -10,7 +10,7 @@
 
 .interactWrapper {
     padding-inline: var(--padding-sm);
-    padding-block: 6px;
+    padding-block:3px;
 }
 
 .interactableItem:has(.channelLink.active)  {

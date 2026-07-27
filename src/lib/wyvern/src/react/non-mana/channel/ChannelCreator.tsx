@@ -1,4 +1,3 @@
-// import { useEffect } from "react";
 const { useCurrentRoute } =
   await import("../../../scripts/stores/current-store/CurrentStore");
 const ChannelButton = (await import("../buttons/ChannelButton")).default;
@@ -10,7 +9,7 @@ export default function ChannelCreator() {
   const { guild } = useCurrentRoute();
   // Get the current channels from the selected guild ID
   const channels = useGuildChannels(guild.id);
-  console.log("dfgdfg")
+
   return (
     <>
       {channels?.map((channel) => {

@@ -6,6 +6,7 @@ const useGuildStore = (
 ).default;
 const ClickCapture = (await import("../../mana/wrappers/ClickCapture")).default;
 const GuildIconImage = (await import("./GuildIconImage")).default;
+import { getLastOpenedChannel } from "../../../scripts/stores/last-opened-channel-store/LastChannelStore";
 import type { GuildIconProps } from "./GuildIconProps";
 const { AutoTextSize } = await import("auto-text-size");
 const { Regex } = await import("../../../scripts/text/RegexData");
@@ -13,9 +14,7 @@ const { Regex } = await import("../../../scripts/text/RegexData");
 const RegexParseError = (
   await import("../../../scripts/errors/RegexParseError")
 ).default;
-const useLastOpenedChannel = (
-  await import("../../../scripts/stores/last-opened-channel-store/LastChannelStore")
-).default;
+
 const { GuildNameSize } = await import("../../../sizings/GuildSizings");
 import("./GuildIcon.css");
 import("./GuildIconText.css");
@@ -23,12 +22,14 @@ import("./GuildIconText.css");
 export default function GuildIcon({ guildInfo }: GuildIconProps) {
   const guildName = guildInfo.name;
   const guildID = guildInfo.id;
-  const lastOpenedChannel = useLastOpenedChannel(guildInfo.id);
+  const lastOpenedChannel = getLastOpenedChannel(guildInfo.id);
+  console.log("last opened channel",lastOpenedChannel)
   const channel = useGuildStore()
     .find((guild) => guild.id === guildID)
     ?.channels.find(
       (channel) => channel.id === lastOpenedChannel || guildInfo.firstChannel,
     )?.name;
+  
   const invokeGuildChange = () => {
     LocationAnnouncer.emit("ROUTE_CHANGE", {
       guild: {
