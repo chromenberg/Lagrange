@@ -13,7 +13,34 @@ type PubType = {
   publisher: GatewayPubSub;
   channels: Collection<string, GatewayPubSub>;
 };
+/*
+Currently the layout we have follows this structure
 
+A guild has its own publisher stored within an object which also includes its channels.
+Each channel has its own emitter too
+
+This means we need to modify that object when a new channel is created or guild is made
+
+Instead what we can do is create a publisher for every GUILD instead,
+Which means the format would go as follows
+
+<guild_emitter>.on("eventname")
+OR
+<guild_emitter>.on("channel_id-eventname")
+
+Meaning subscribing to new channel events is as simple as subscribing to that channel id
+And when a new guild is made, all the server has to do is create a new emitter.
+
+This is most likely a subpar way of doing this, and could be further optimised by following a format of
+GuildID-EventName | GuildID-ChannelID-EventName
+
+Meaning only one emitter is needed, however for now this would work without too much refactoring
+with the current publisher system
+
+Actually nevermind im stupid, because youre subscribing to all events of a guild and its channels
+Meaning it doesnt actually matter. Maybe I should have done that instead of this crappy hack
+To get it to work, which means refactoring this into modules will be impossible
+*/
 class GuildPublisher {
   private _channels: Snowflake[];
   private _id: Snowflake;
@@ -43,7 +70,8 @@ class GuildPublisher {
   public json() {
     return {
       publisher: this._publisher,
-      channels: new Collection( // Returns a map of [channelID, pubsub][] to convert into a collection
+      channels: new Collection(
+        // Returns a map of [channelID, pubsub][] to convert into a collection
         this._channels.map((channel) => {
           // map the channels to have their own publishers
           return [channel, new PubSub<typeof GatewayEventTypes>()];
@@ -178,8 +206,7 @@ export class GatewayPublisher {
     Logger.sendLog(
       LogLevel.Verbose,
       ["LAGRANGE", "Gateway", "GuildPublisher"],
-      `Subscribed to [${eventName}] ` +
-        `in guild [${guildID}] [#${channelID}]`,
+      `Subscribed to [${eventName}] ` + `in guild [${guildID}] [#${channelID}]`,
     );
     return this.getChannel(guildID, channelID)?.subscribe(eventName, listener);
   }
