@@ -15,17 +15,17 @@ function entriesOfChannels(guilds: Guild[]): Entry<string, Channel[]>[] {
 }
 
 export default function useChannels() {
-  const [channelData, setChannelData] = useState({});
+  const [channelData, setChannelData] = useState<Record<string, Channel[]>>({});
 
   useEffect(() => {
     // We need to get every channel and organise them by guild ID
     // like {[guild]:{[channels]}}
     EventSystem.once("READY", (data: ReadyEvent) => {
       const channelData = Object.fromEntries(entriesOfChannels(data.guilds));
-      console.log("channel data:",channelData,entriesOfChannels(data.guilds))
-      setChannelData(channelData)
+      console.log("channel data:", channelData, entriesOfChannels(data.guilds));
+      setChannelData(channelData);
     });
   }, []);
 
-  return channelData
+  return channelData;
 }
