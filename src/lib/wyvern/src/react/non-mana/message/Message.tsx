@@ -1,7 +1,7 @@
 import type { Markup } from "../../../scripts/types/Markup";
 import MessageContent from "./MessageContent";
 import MessageContext from "./MessageContext";
-
+import("./styles/Message.css")
 interface UserData {
   id: string;
   avatar: string;

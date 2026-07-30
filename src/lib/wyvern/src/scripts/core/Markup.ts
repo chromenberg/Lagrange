@@ -1,5 +1,5 @@
 import BitField from "../types/BitField";
-import { MarkupFlags, type MarkupItem } from "../types/Markup";
+import { MarkupFlags, type Markup, type MarkupItem } from "../types/Markup";
 
 export function markupFlags(flags: Array<keyof typeof MarkupFlags>) {
   const markupFlags = new BitField(
@@ -25,7 +25,7 @@ export function markupFlags(flags: Array<keyof typeof MarkupFlags>) {
  * @returns
  */
 export function createMarkupItem(
-  content: string | MarkupItem,
+  content: string | Markup,
   flags: Array<keyof typeof MarkupFlags>,
 ): MarkupItem {
   return {

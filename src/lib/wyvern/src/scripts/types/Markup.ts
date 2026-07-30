@@ -1,3 +1,4 @@
+
 import BitField from "./BitField";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -18,9 +19,11 @@ export enum MarkupFlags {
   heading_small,
 }
 
+// @grok is this a good circular dependency
 export interface MarkupItem {
-  content: string | MarkupItem; // Weird self referencing thing for nested markup
+  content: string | Markup; // Weird self referencing thing for nested markup
   flags: BitField<typeof MarkupFlags>;
 }
-
 export type Markup = MarkupItem[];
+
+

@@ -1,5 +1,5 @@
 import MessageAvatar from "./MessageAvatar";
-
+import("./styles/MessageContext.css")
 interface MessageUser {
   id: string;
   username: string;
@@ -17,11 +17,12 @@ interface MessageContext {
 }
 
 export default function MessageContext({ user, info }: MessageContext) {
+  // const userData = useGetUser(user.id)
   return (
     <>
       <MessageAvatar avatar={user.avatar} id={user.id}/>
       <div className="messageContext">
-        <span className="messageDisplayname">
+        <span className="messageDisplayName">
           {user.display_name ?? user.username}
         </span>
         <span>
