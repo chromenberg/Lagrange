@@ -219,7 +219,9 @@ init_server :: proc() {
 	defer http.router_destroy(&router) // defer router close until end
 
 	router_handler := http.router_handler(&router)
-	http.route_get(&router, R2ImageRoute, http.handler(image_handler))
+	http.route_get(&router, AttachmentRoute, http.handler(image_handler))
+	http.route_get(&router, IconRoute, http.handler(image_handler))
+	http.route_get(&router, AvatarRoute, http.handler(image_handler))
 
 	log.info("Server listening on", ServerAddress,":", ServerPort ,"(change this to use config)")
 

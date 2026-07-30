@@ -1,13 +1,13 @@
 package main
 
+
 Snowflake :: "([0-9]*)"
 
 MaxCacheSize :: 200
 
-AvatarRoute :: "/avatars/([0-9]*)/(.*).webp"
+AvatarRoute :: "/avatars/([0-9]*)/(.*)"
 AttachmentRoute :: "/attachments/([0-9]*)/([0-9]*)/(.*)"
-
-R2ImageRoute :: "/icons/([0-9]*)/(.*)"
+IconRoute :: "/icons/([0-9]*)/(.*)"
 ProxyPath    :: "https://cdn.wyvernapp.com"
 
 QualityPresets :: enum {
