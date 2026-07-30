@@ -10,5 +10,5 @@ export default function ModalView({ children }: Props) {
       </div>
     </div>
   }
-  return createPortal(children, modalPortal);
+  return createPortal(<div className="modalContainer">{children}</div>, modalPortal);
 }

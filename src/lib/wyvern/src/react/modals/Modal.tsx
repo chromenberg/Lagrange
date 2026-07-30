@@ -10,6 +10,7 @@ export default function Modal({
   children,
   width,
   height,
+  classes,
   ...rest
 }: Props & {
   width?: string;
@@ -18,10 +19,10 @@ export default function Modal({
 }) {
   return (
     <div
-      className="modalPopoverBase modalBackground"
+      className={(classes??"")+" modalPopoverBase"}
       style={{
-        width: width ?? "fit-content",
-        height: height ?? "fit-content",
+        width: width ?? "",
+        height: height ?? "",
       }}
       {...rest}
     >

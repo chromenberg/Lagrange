@@ -31,7 +31,7 @@ export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void})
   return (
     <ModalView>
       <Modal height="200px" width="400px" ref={modalRef}>
-        <div className="guildCreateModal">
+        <div className="guildCreateModal modalBackground">
           <div
             style={{
               height: "100%",

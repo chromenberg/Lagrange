@@ -1,0 +1,43 @@
+.settingsModal {
+  width: 55%;
+  height: 80%;
+  background: var(--theme-chat) !important;
+  border-radius: var(--radius-xs) !important;
+  contain: paint;
+}
+.settingsContainer {
+  display: flex;
+  flex-direction: row;
+}
+.settingsFlexColumn {
+  display: flex;
+  flex-direction: column;
+}
+.settingsItems {
+  width: 150px;
+  flex: 0 0 150px;
+  background: var(--theme-low);
+}
+.menuPanel {
+  width: 100%;
+  flex: 0 1 auto;
+  background: var(--theme-chat);
+}
+.settingsItems > .scrollbarHeader {
+  flex: 1 0 auto;
+  height: 35px;
+  border-bottom: 1px solid var(--border-normal);
+}
+.menuHeader {
+  height: 35px;
+  border-bottom: 1px solid var(--border-subtle);
+  > div {
+    width: 100%;
+  }
+}
+.alignCenter {
+  display: flex;
+  align-items: center;
+  padding-inline: var(--padding-xs);
+  font-size: var(--padding-sm);
+}
