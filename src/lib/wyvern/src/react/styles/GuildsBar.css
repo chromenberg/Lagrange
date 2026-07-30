@@ -2,3 +2,28 @@
     /*padding-inline: var(--padding-m);*/
     padding-block: var(--padding-sm);
 }
+#lSidePanel {
+  position: relative;
+}
+.userCard {
+  position: absolute;
+  width: 300px;
+  height: 40px;
+  background-color: var(--theme-higher);
+  border: 1px solid var(--border-subtle);
+  bottom: 10px;
+  border-radius: var(--radius-sm);
+  left: 10px;
+
+  .modalInvokeWrapper {
+    cursor: pointer;
+  }
+}
+.userCard:hover {
+  background: color-mix(in srgb, var(--theme-higher) 100%, white 1%);
+}
+
+.userCard:active {
+  background: color-mix(in srgb, var(--theme-higher) 100%, white 5%);
+  
+}

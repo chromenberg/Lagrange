@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import GuildListCreator from "./react/non-mana/guild/GuildCreator";
 import ChannelBar from "./react/non-mana/channel-bar/ChannelBar";
+import InvokeModal from "./react/mana/wrappers/InvokeModal";
+import SettingsModal from "./react/modals/Settings";
 
 // import { useEffect } from "react";
 // const ScrollMenu = (await import("./react/mana/scroll-menu/ScrollMenu"))
@@ -22,11 +24,15 @@ export default function LeftPanel() {
 
   return (
     <div id="lSidePanel">
+      
       <nav id="guilds">
         <Suspense>
           <GuildListCreator />
         </Suspense>
       </nav>
+      <section className="userCard">
+        <InvokeModal modal={<SettingsModal />}/>
+      </section>
       <div id="channelSelector">
         <FlexBox direction="updown" className="fillAll">
           <PanelHeader>
@@ -40,6 +46,7 @@ export default function LeftPanel() {
             </FlexBox>
           </div>
         </FlexBox>
+        
       </div>
     </div>
   );

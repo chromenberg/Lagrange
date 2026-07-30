@@ -1,7 +1,7 @@
 .guildBarIcon {
     width: calc(50px);
     aspect-ratio: 1/1;
-    border-radius: var(--padding-l);
+    border-radius: var(--radius-lg);
     background-color: var(--interact-active);
     /*contain: strict;*/
     overflow: hidden;
@@ -15,7 +15,7 @@
     border: solid 1px var(--border-subtle);
 }
 .guildBarIcon:hover {
-    border-radius: calc(var(--padding-l) - var(--padding-sm));
+    border-radius: calc(var(--padding-md) - var(--padding-xs));
 }
 
 .guildIconContainer {
