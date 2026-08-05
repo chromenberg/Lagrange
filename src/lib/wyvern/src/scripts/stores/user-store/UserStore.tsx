@@ -6,21 +6,21 @@ import { useEffect } from "react";
 
 function useUserInfo() {
   const [userData, setUserInfo] = useState<Partial<ClientUser>>({});
-
   useEffect(() => {
-    console.log("sdgdgf")
-    EventSystem.on("READY", (data: ReadyEvent) => {
-      console.log("1111")
+    EventSystem.once("READY", (data: ReadyEvent) => {
+      console.log("[Stores/UserInfo] Synchronizing")
       setUserInfo({
         username: data.user.username,
         display_name: data.user.display_name,
         id: data.user.id,
         email: data.user.email,
+        avatar: data.user.avatar,
+        discriminator: data.user.discriminator
       });
     });
     
   }, []);
-
+  console.log(userData)
   return userData;
 }
 

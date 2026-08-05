@@ -6,6 +6,6 @@ export default function TitleBar() {
   const userData = useUserInfo()
   
   return <div id="titleBar">
-    Currently logged in as: {`${userData.username} (${userData.id})`}
+    Currently logged in as: {`${userData?.username} (${userData?.id})`}
   </div>
 }

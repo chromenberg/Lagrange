@@ -6,6 +6,7 @@ export default function ChannelBar() {
     <ScrollMenu direction="vertical">
       <div className="channelBar">
         <ChannelCreator />
+        
       </div>
     </ScrollMenu>
   );

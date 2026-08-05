@@ -1,8 +1,15 @@
 .manaButton {
-    border: solid 1px var(--border-subtle);
-    transition: 0.2s;
+    /*border: solid 1px var(--border-subtle);*/
+    transition: 0.1s;
     padding: var(--padding-m);
-    border-radius: var(--padding-l);
+    border-radius: var(--padding-xs);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    user-select: none;
+    > div {
+      flex: 1;
+    }
 }
 .manaButtonPrimary:hover,
 .manaButtonSecondary:hover,
@@ -48,4 +55,15 @@
         flex: 0 1;
         min-width: 2.2rem;
     }
+}
+
+
+div[mana-button-height="xsmall"] {
+  height: 30px;
+}
+div[mana-button-height="small"] {
+  height: 35px;
+}
+div[mana-button-height="medium"] {
+  height: 40px;
 }

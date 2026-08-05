@@ -135,8 +135,8 @@ nav {
 
   --text-default: color-mix(
     in oklab,
-    var(--neutral-9) 100%,
-    var(--theme-text-color-dark, #000) var(--theme-text-amount, 0%)
+    var(--neutral-9) 10%,
+    var(--theme-text-color-dark, #040) var(--theme-text-amount, 10%)
   );
 
   --border-normal: var(--opacity-20);
@@ -160,6 +160,14 @@ nav {
   --padding-ml: 18px;
   --padding-xl: 24px;
 }
+
+:root {
+  --green-new-40: hsl(141.649 calc(1*44.292%) 42.941% /1);
+  
+  --text-primary: color-mix(in oklab, hsl(240 20.483516483516482% calc(50.84313725490196% + 50.59%) /1) 100%, #000 0%);
+  --theme-text-amount: 80%;
+}
+
 :root {
   --theme-background-gradient-color: 0 0 0;
 

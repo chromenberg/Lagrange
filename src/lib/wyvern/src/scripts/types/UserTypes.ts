@@ -50,8 +50,6 @@ export interface User {
 }
 
 export interface ClientUser extends User {
-  
-
   /**
    * User profile bio
    */

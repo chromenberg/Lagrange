@@ -31,13 +31,46 @@
 .menuHeader {
   height: 35px;
   border-bottom: 1px solid var(--border-subtle);
+  flex: 0 0 auto;
   > div {
     width: 100%;
   }
+}
+.settingsContent {
+  padding: var(--padding-sm);
+  display: flex;
+  justify-content: center;
+  > div {
+    margin-top:20px;
+    width: 60%;
+  }
+}
+.settingsContent header {
+  color: var(--text-primary);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.settingsContent span {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
 }
 .alignCenter {
   display: flex;
   align-items: center;
   padding-inline: var(--padding-xs);
   font-size: var(--padding-sm);
+}
+.labeledComponent {
+  align-items: center;
+  padding-block: var(--padding-sm);
+  div[mana-type="button"] {
+    width: 100px;
+  }
+}
+.labelSpread {
+  width: 100%;
+  :first-child {
+    margin-right: auto;
+  }
 }
