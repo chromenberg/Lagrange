@@ -1,0 +1,26 @@
+div[data-stack] {
+  display: flex;
+
+  &[stack-direction="vertical"] {
+    flex-direction: column;
+  }
+  &[stack-direction="horizontal"] {
+    flex-direction: row;
+  }
+
+  &[stack-gap="xsmall"] {
+    gap: var(--padding-tiny);
+  }
+  &[stack-gap="small"] {
+    gap: var(--padding-xxs) ;
+  }
+  &[stack-gap="medium"] {
+    gap:var(--padding-xs)  ;
+  }
+  &[stack-gap="large"] {
+    gap: var(--padding-sm);
+  }
+  &[stack-gap="xlarge"] {
+    gap: var(--padding-md);
+  }
+}

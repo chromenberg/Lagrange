@@ -1,0 +1,131 @@
+div[mana-type="divider"] {
+  --thickness-vthin: 1px;
+  --thickness-thin: 2px;
+  --thickness-thick: 4px;
+  --thickness-vthick: 6px;
+
+  --darken-light: 0.9 --darken-heavy: 0.8;
+
+  --lighten-light: 1.2;
+  --lighten-heavy: 1.3;
+  /* overrides for dividers set to horizontal */
+  &[divider-direction="horizontal"] {
+    &[divider-thickness="vthin"] {
+      height: var(--thickness-vthin);
+      border-radius: var(--thickness-vthin);
+    }
+    &[divider-thickness="thin"] {
+      height: var(--thickness-thin);
+      border-radius: var(--thickness-thin);
+    }
+    &[divider-thickness="thick"] {
+      height: var(--thickness-thick);
+      border-radius: var(--thickness-thick);
+    }
+    &[divider-thickness="vthick"] {
+      height: var(--thickness-vthick);
+      border-radius: var(--thickness-vthick);
+    }
+
+    /* i am aware this is called "padding" and uses "margin" */
+    &[divider-padding="xsmall"] {
+      margin-inline: 2px;
+    }
+    &[divider-padding="small"] {
+      margin-inline: var(--padding-xxs);
+    }
+    &[divider-padding="medium"] {
+      margin-inline: var(--padding-xs);
+    }
+    &[divider-padding="large"] {
+      margin-inline: var(--padding-lg);
+    }
+    &[divider-padding="xlarge"] {
+      margin-inline: var(--padding-xxl);
+    }
+
+    &[divider-gap="none"] {
+      margin-block: 2px;
+    }
+    &[divider-gap="xsmall"] {
+      margin-block: 2px;
+    }
+    &[divider-gap="small"] {
+      margin-block: 4px;
+    }
+    &[divider-gap="medium"] {
+      margin-block: calc(var(--padding-xs) - 2px);
+    }
+    &[divider-gap="large"] {
+      margin-block: var(--padding-xs);
+    }
+    &[divider-gap="xlarge"] {
+      margin-block: var(--padding-sm);
+    }
+  }
+
+  /* overrides for dividers set to vertical */
+  &[divider-direction="vertical"] {
+    &[divider-thickness="vthin"] {
+      width: var(--thickness-vthin);
+    }
+    &[divider-thickness="thin"] {
+      width: var(--thickness-thin);
+    }
+    &[divider-thickness="thick"] {
+      width: var(--thickness-thick);
+    }
+    &[divider-thickness="vthick"] {
+      width: var(--thickness-vthick);
+    }
+
+    /* i am aware this is called "padding" and uses "margin" */
+    &[divider-padding="xsmall"] {
+      margin-block: 2px;
+    }
+    &[divider-padding="small"] {
+      margin-block: var(--padding-xxs);
+    }
+    &[divider-padding="medium"] {
+      margin-block: var(--padding-xs);
+    }
+    &[divider-padding="large"] {
+      margin-block: var(--padding-lg);
+    }
+    &[divider-padding="xlarge"] {
+      margin-block: var(--padding-xxl);
+    }
+
+    &[divider-gap="none"] {
+      margin-inline: 2px;
+    }
+    &[divider-gap="xsmall"] {
+      margin-inline: 2px;
+    }
+    &[divider-gap="small"] {
+      margin-inline: 4px;
+    }
+    &[divider-gap="medium"] {
+      margin-inline: calc(var(--padding-xs) - 2px);
+    }
+    &[divider-gap="large"] {
+      margin-inline: var(--padding-xs);
+    }
+    &[divider-gap="xlarge"] {
+      margin-inline: var(--padding-sm);
+    }
+  }
+
+  &[divider-color="subtle"] {
+    background: var(--border-subtle);
+  }
+  &[divider-color="strong"] {
+    background: var(--border-strong);
+  }
+  &[divider-color="darken"] {
+    backdrop-filter: brightness(var(--darken-light));
+  }
+  &[divider-color="lighten"] {
+    backdrop-filter: brightness(var(--lighten-light));
+  }
+}
