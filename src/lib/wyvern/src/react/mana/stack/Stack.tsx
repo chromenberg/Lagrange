@@ -1,23 +1,53 @@
 import type { Props } from "../../../Core";
 import type { Direction, SizingName } from "../../../scripts/types/SizingTypes";
-import("./Stack.css")
+import("./Stack.css");
+
+type Positionings = "center" | "start" | "end" | "center";
+
+interface StackProps extends Props {
+  /**
+   * Controls the alignment of elements vertically.
+   *
+   * For example, `start` would position the children at the top of the element
+   */
+  align: Positionings;
+  /**
+   * Controls the alignment of elements horizontally
+   *
+   * For example, `start` would position the children at the left of the element
+   */
+  justify: Positionings;
+  direction: Direction;
+  gap: SizingName;
+  wrap: boolean;
+  fillWidth: boolean;
+  fillHeight: boolean;
+  fillAll: boolean;
+}
 
 export default function Stack({
-  className,
+  fillHeight,
+  fillWidth,
   direction,
+  className,
   children,
+  fillAll,
+  justify,
+  align,
+  wrap,
   gap,
-}: Props & {
-  direction?: Direction;
-  gap?: SizingName;
-}) {
+}: Partial<StackProps>) {
   return (
     <div
-      data-fill
-      className={className}
-      data-stack
-      stack-direction={direction ?? "vertical"}
-      stack-gap={gap ?? "small"}
+      data-full-width={fillWidth}
+      data-full-height={fillHeight}
+      data-full={fillAll}
+      data-justify={justify}
+      data-align={align}
+      data-wrap={wrap}
+      data-direction={direction ?? "horizontal"}
+      data-stack-gap={gap}
+      className={"stack " + (className??"")}
     >
       {children}
     </div>
