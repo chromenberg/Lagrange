@@ -1,0 +1,13 @@
+.manaIconButton {
+  padding: var(--padding-xs) !important;
+}
+
+button[data-button-style="subtle"] .manaIconButton {
+  border: 1px solid var(--border-subtle);
+}
+button[data-button-style="overlay"] .manaIconButton {
+  border: 1px solid var(--border-normal);
+}
+button[data-button-style="menu"] .manaIconButton {
+  border: 1px solid var(--border-strong);
+}
