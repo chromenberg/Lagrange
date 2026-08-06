@@ -1,16 +1,37 @@
+import type { MouseEvent } from "react";
 import type { Props } from "../../../Core";
-const Button = (await import("./Button")).default;
-
+import type { SizingName } from "../../../scripts/types/SizingTypes";
+import ManaButton from "./ManaButton";
+import("./TextButton.css")
 
 type ButtonStyle = "Primary" | "Secondary" | "Tertiary" | "Success" | "Danger";
+interface ButtonProps extends Partial<Props> {
+  onclick: (ev: MouseEvent<Element>, ...args: unknown[]) => void;
+  height?: SizingName;
+  text: string;
+}
 
-export default function ManaButton({
+export default function TextButton({
   style,
-  children,
-  // active,
-}: Props & {
-  style: ButtonStyle;
+  text,
+  height,
+  className,
+  onclick,
+  ...rest
+}: ButtonProps & {
+  style?: ButtonStyle;
   active?: boolean;
 }) {
-  return <Button className={`manaButton${style}`}>{children}</Button>;
+  return (
+    <ManaButton
+      manaType="button"
+      height={height}
+      className={className}
+      style={style}
+      onclick={onclick}
+      {...rest}
+    >
+      <span className="text-md">{text}</span>
+    </ManaButton>
+  );
 }
