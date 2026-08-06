@@ -9,19 +9,19 @@
 }
 
 .stack[data-stack-gap="xsmall"] {
-  gap: var(--padding-tiny);
+  gap: var(--padding-xs);
 }
 .stack[data-stack-gap="small"] {
-  gap: var(--padding-xxs) ;
+  gap: var(--padding-sm) ;
 }
 .stack[data-stack-gap="medium"] {
-  gap:var(--padding-xs)  ;
+  gap:var(--padding-md)  ;
 }
 .stack[data-stack-gap="large"] {
-  gap: var(--padding-sm);
+  gap: var(--padding-lg);
 }
 .stack[data-stack-gap="xlarge"] {
-  gap: var(--padding-md);
+  gap: var(--padding-xl);
 }
 
 .stack[data-full-width=true] {
