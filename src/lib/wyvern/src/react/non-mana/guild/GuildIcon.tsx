@@ -16,8 +16,8 @@ const RegexParseError = (
 ).default;
 
 const { GuildNameSize } = await import("../../../sizings/GuildSizings");
-import("./GuildIcon.css");
-import("./GuildIconText.css");
+import("./styles/GuildIcon.css");
+import("./styles/GuildIconText.css");
 
 export default function GuildIcon({ guildInfo }: GuildIconProps) {
   const guildName = guildInfo.name;

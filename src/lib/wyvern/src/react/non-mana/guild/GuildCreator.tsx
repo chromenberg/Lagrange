@@ -5,7 +5,7 @@ import GuildCreateButton from "./GuildCreate";
 const useGuildStore = (await import("../../../scripts/stores/guild-store/GuildStore")).default
 const ScrollMenu = (await import("../../mana/scroll-menu/ScrollMenu")).default
 const GuildIcon = (await import("./GuildIcon")).default
-import("./GuildListScroller.css")
+import("./styles/GuildListScroller.css")
 
 export default function GuildListCreator() {
   const guilds = useGuildStore();
