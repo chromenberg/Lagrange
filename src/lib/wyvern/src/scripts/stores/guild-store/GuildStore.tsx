@@ -9,11 +9,11 @@ function useGuildStore() {
 
   useEffect(() => {
     EventSystem.once("READY", async (data: ReadyEvent) => {
-      setGuildStore(data.guilds)
-      console.log(data.guilds)
+      setGuildStore(data.guilds);
+      console.log(data.guilds);
     });
   }, []);
-  
+
   EventSystem.on("GUILD_MEMBER_ADD", (data) => {
     console.log(data);
   });

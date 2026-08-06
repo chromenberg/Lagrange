@@ -1,13 +1,14 @@
-.manaIconButton {
-  padding: var(--padding-xs) !important;
+
+button[mana-type="icon-button"] {
+  padding: unset !important;
 }
 
-button[data-button-style="subtle"] .manaIconButton {
+.manaIconButton[data-button-style="subtle"]  {
   border: 1px solid var(--border-subtle);
 }
-button[data-button-style="overlay"] .manaIconButton {
+.manaIconButton[data-button-style="overlay"]{
   border: 1px solid var(--border-normal);
 }
-button[data-button-style="menu"] .manaIconButton {
+.manaIconButton[data-button-style="menu"] {
   border: 1px solid var(--border-strong);
 }

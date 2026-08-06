@@ -14,9 +14,10 @@ export default function ManaButton({
   children,
   onclick,
   height,
+  className,
   ...rest
 }: ButtonProps & {
-  style: ButtonStyle;
+  style?: ButtonStyle;
   active?: boolean;
 }) {
   return (
@@ -24,7 +25,8 @@ export default function ManaButton({
       manaType="button"
       height={height}
       callback={onclick}
-      className={`manaButton${style}`}
+      className={className}
+      style={style}
       {...rest}
     >
       {children}
