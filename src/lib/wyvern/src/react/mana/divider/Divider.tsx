@@ -1,4 +1,5 @@
 import type {
+    BorderStyle,
   Direction,
   SizingName,
   Thickness,
@@ -9,7 +10,7 @@ interface DividerProps {
   padding: SizingName;
   direction: Direction;
   thickness: Thickness;
-  color: "subtle" | "strong" | "darken" | "lighten" | "primary" | "secondary" | "tertiary"
+  color: BorderStyle
 }
 export default function Divider({
   thickness,

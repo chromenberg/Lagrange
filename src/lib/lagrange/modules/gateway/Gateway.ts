@@ -48,6 +48,7 @@ export class Gateway {
       host: "127.0.0.1",
     });
 
+    // TODO: Make this more simplified, add a method that is responsible for handling initializing connections
     this.socket.on("connection", (conn) => {
       // Create a client connection that will listen to the events needed
       const socketClient = new ClientConnection(conn);
