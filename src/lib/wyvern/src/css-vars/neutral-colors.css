@@ -1,9 +1,33 @@
 :root {
-  --neutral-1: 0 calc(var(--saturation, 1) * 0%) 100%;
-  --neutral-9: 220 calc(var(--saturation, 1) * 4.918%) 88.039%;
-  --neutral-16: 228 calc(var(--saturation, 1) * 4.425%) 77.843%;
-  --neutral-27: 232.5 calc(var(--saturation, 1) * 4.167%) 62.353%;
-  --neutral-64: 232.5 calc(var(--saturation, 1) * 6.557%) 23.922%;
-  --neutral-66: 232.5 calc(var(--saturation, 1) * 6.897%) 22.745%;
-  --neutral-73: 230 calc(var(--saturation, 1) * 6.383%) 18.431%;
+  --neutral-1: var(--base-hue) var(--base-s, 1) 100%;
+  --neutral-2: var(--base-hue) var(--base-s, 1) 98%;
+  --neutral-3: var(--base-hue) var(--base-s, 1) 96%;
+  --neutral-4: var(--base-hue) var(--base-s, 1) 94%;
+  --neutral-5: var(--base-hue) var(--base-s, 1) 92%;
+  --neutral-6: var(--base-hue) var(--base-s, 1) 90%;
+  --neutral-7: var(--base-hue) var(--base-s, 1) 88%;
+  --neutral-8: var(--base-hue) var(--base-s, 1) 89%;
+  --neutral-9: var(--base-hue) var(--base-s, 1) 88.039%;
+  --neutral-10: var(--base-hue) var(--base-s, 1) 87%;
+  --neutral-11: var(--base-hue) var(--base-s, 1) 85%;
+  --neutral-12: var(--base-hue) var(--base-s, 1) 83%;
+  --neutral-13: var(--base-hue) var(--base-s, 1) 81%;
+  --neutral-14: var(--base-hue) var(--base-s, 1) 79%;
+  --neutral-15: var(--base-hue) var(--base-s, 1) 78.039%;
+  --neutral-16: var(--base-hue) var(--base-s, 1) 77.843%;
+  --neutral-17: var(--base-hue) var(--base-s, 1) 75.039%;
+  --neutral-18: var(--base-hue) var(--base-s, 1) 73.039%;
+  --neutral-19: var(--base-hue) var(--base-s, 1) 72.039%;
+  --neutral-20: var(--base-hue) var(--base-s, 1) 70.039%;
+  --neutral-21: var(--base-hue) var(--base-s, 1) 69.039%;
+  --neutral-22: var(--base-hue) var(--base-s, 1) 67.039%;
+  --neutral-23: var(--base-hue) var(--base-s, 1) 66.039%;
+  --neutral-24: var(--base-hue) var(--base-s, 1) 65.039%;
+  --neutral-25: var(--base-hue) var(--base-s, 1) 64.039%;
+  --neutral-26: var(--base-hue) var(--base-s, 1) 63.039%;
+  --neutral-27: var(--base-hue) var(--base-s, 1) 62.353%;
+  /*--neutral-28: var(--base-hue) var(--base-s, 1) 62.353%;*/
+  --neutral-64: var(--base-hue) var(--base-s, 1) 23.922%;
+  --neutral-66: var(--base-hue) var(--base-s, 1) 22.745%;
+  --neutral-73: var(--base-hue) var(--base-s, 1) 18.431%;
 }

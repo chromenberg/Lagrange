@@ -1,11 +1,11 @@
 
 :root {
-  --opacity-8-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-8-hsl: 240 calc(var(--base-s, 1) * 4%) 60.784%;
   --opacity-8: hsl(var(--opacity-8-hsl)/0.0784313725490196);
-  --opacity-12-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-12-hsl: 240 calc(var(--base-s, 1) * 4%) 60.784%;
   --opacity-12: hsl(var(--opacity-12-hsl)/0.12156862745098039);
-  --opacity-20-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-20-hsl: 240 calc(var(--base-s, 1) * 4%) 60.784%;
   --opacity-20: hsl(var(--opacity-20-hsl)/0.2);
-  --opacity-44-hsl: 240 calc(var(--saturation, 1) * 4%) 60.784%;
+  --opacity-44-hsl: 240 calc(var(--base-s, 1) * 4%) 60.784%;
   --opacity-44: hsl(var(--opacity-44-hsl)/0.4392156862745098);
 }

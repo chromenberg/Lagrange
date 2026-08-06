@@ -1,7 +1,7 @@
 :root {
   --border-normal: var(--opacity-20);
   --border-strong: var(--opacity-44);
-  --border-subtle: var(--opacity-12);
+  --border-subtle: var(--opacity-8);
 
   --interact-active: hsl(var(--neutral-1)/0.1);
   --interact-hover: hsl(var(--neutral-1)/0.05);
@@ -61,7 +61,7 @@
   );
 
   /* This needs to be fixed soon */
-  --background-base-low:  color-mix(in oklab, var(--neutral-66) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --background-base-low:  color-mix(in oklab, hsl(var(--neutral-66)/0.5)  100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
   --background-base-lower:  color-mix(in oklab, var(--neutral-69) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
   --background-base-lowest:  color-mix(in oklab, var(--neutral-73) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
   --interactive-background-selected:  color-mix(in oklab, hsl(var(--opacity-20-hsl) / 0.2) 100%, hsl(var(--custom-theme-base-color-hsl, 0 0% 0%) / 0.2) var(--custom-theme-base-color-amount, 0%));
