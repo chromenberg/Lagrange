@@ -1,0 +1,9 @@
+:root {
+  --neutral-1: 0 calc(var(--saturation, 1) * 0%) 100%;
+  --neutral-9: 220 calc(var(--saturation, 1) * 4.918%) 88.039%;
+  --neutral-16: 228 calc(var(--saturation, 1) * 4.425%) 77.843%;
+  --neutral-27: 232.5 calc(var(--saturation, 1) * 4.167%) 62.353%;
+  --neutral-64: 232.5 calc(var(--saturation, 1) * 6.557%) 23.922%;
+  --neutral-66: 232.5 calc(var(--saturation, 1) * 6.897%) 22.745%;
+  --neutral-73: 230 calc(var(--saturation, 1) * 6.383%) 18.431%;
+}

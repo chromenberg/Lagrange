@@ -1,0 +1,83 @@
+:root {
+  --border-normal: var(--opacity-20);
+  --border-strong: var(--opacity-44);
+  --border-subtle: var(--opacity-12);
+
+  --interact-active: hsl(var(--neutral-1)/0.1);
+  --interact-hover: hsl(var(--neutral-1)/0.05);
+  --interact-muted: hsl(var(--primary-500));
+  --interact-normal: hsl(var(--neutral-16)/0.09);
+  --chat-background-default: color-mix(
+    in oklab,
+    var(--neutral-64) 100%,
+    var(--theme-base-color, #000) var(--theme-base-amount, 0%)
+  );
+
+  --border-feedback-critical: color-mix(
+    in oklab,
+    var(--red-new-18) 100%,
+    var(--custom-theme-base-color, #000)
+      var(
+        --custom-theme-border-color-amount,
+        var(--custom-theme-base-color-amount, 0%)
+      )
+  );
+  --border-feedback-info: color-mix(
+    in oklab,
+    var(--blue-new-21) 100%,
+    var(--custom-theme-base-color, #000)
+      var(
+        --custom-theme-border-color-amount,
+        var(--custom-theme-base-color-amount, 0%)
+      )
+  );
+  --border-feedback-positive: color-mix(
+    in oklab,
+    var(--green-new-22) 100%,
+    var(--custom-theme-base-color, #000)
+      var(
+        --custom-theme-border-color-amount,
+        var(--custom-theme-base-color-amount, 0%)
+      )
+  );
+  --border-feedback-warning: color-mix(
+    in oklab,
+    var(--yellow-new-38) 100%,
+    var(--custom-theme-base-color, #000)
+      var(
+        --custom-theme-border-color-amount,
+        var(--custom-theme-base-color-amount, 0%)
+      )
+  );
+  --border-focus: color-mix(
+    in oklab,
+    var(--blue-new-30) 100%,
+    var(--custom-theme-base-color, #000)
+      var(
+        --custom-theme-border-color-amount,
+        var(--custom-theme-base-color-amount, 0%)
+      )
+      --custom-theme-border-color-amount is not defined
+  );
+
+  /* This needs to be fixed soon */
+  --background-base-low:  color-mix(in oklab, var(--neutral-66) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --background-base-lower:  color-mix(in oklab, var(--neutral-69) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --background-base-lowest:  color-mix(in oklab, var(--neutral-73) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --interactive-background-selected:  color-mix(in oklab, hsl(var(--opacity-20-hsl) / 0.2) 100%, hsl(var(--custom-theme-base-color-hsl, 0 0% 0%) / 0.2) var(--custom-theme-base-color-amount, 0%));
+  --interactive-icon-active:  color-mix(in oklab, var(--neutral-1) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --interactive-icon-default:  color-mix(in oklab, var(--neutral-16) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --interactive-icon-hover:  color-mix(in oklab, var(--neutral-1) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --interactive-muted:  color-mix(in oklab, var(--primary-500) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --interactive-text-active:  color-mix(in oklab, var(--neutral-1) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --interactive-text-default:  color-mix(in oklab, var(--neutral-16) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --interactive-text-hover:  color-mix(in oklab, var(--neutral-1) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --icon-default:  color-mix(in oklab, var(--neutral-4) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --channel-background-default:  color-mix(in oklab, var(--neutral-69) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --channel-icon:  color-mix(in oklab, var(--neutral-28) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --channel-text-area-placeholder:  color-mix(in oklab, var(--primary-430) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --channels-default:  color-mix(in oklab, var(--neutral-28) 100%, var(--custom-theme-text-color, #000) var(--custom-theme-text-color-amount, 0%));
+  --background-surface-high:  color-mix(in oklab, var(--neutral-64) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --background-surface-higher:  color-mix(in oklab, var(--neutral-62) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+  --background-surface-highest:  color-mix(in oklab, var(--neutral-60) 100%, var(--custom-theme-base-color, #000) var(--custom-theme-base-color-amount, 0%));
+}
