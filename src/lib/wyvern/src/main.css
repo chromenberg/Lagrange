@@ -3,6 +3,8 @@
 @import "css-vars/preset-gradients.css";
 @import "css-vars/component-colors.css";
 @import "css-vars/sizings.css";
+@import "css-defaults/button.css";
+@import "css-vars/button-colors.css";
 
 body,
 html,
@@ -47,7 +49,7 @@ nav {
 :root {
   --channels-list-width: 200px;
   --background-main: rgb(63, 63, 66);
-  --saturation: 1;
+  --base-s:3.5;
 
   --font-xs: 0.2rem;
   --font-sm: 0.6rem;
@@ -56,47 +58,12 @@ nav {
   --font-l: 1.6px;
   --font-xl: 2px;
 
-  --button-primary-hsl: 230 calc(var(--saturation, 1) * 100%) 70%;
-  --button-primary: hsl(var(--button-primary-hsl)/0.9);
-
-  --button-secondary: color-mix(
-    in oklab,
-    hsl(var(--neutral-66)/1) 100%,
-    var(--default-high) 10%
-  );
-
-  --button-tertiary: color-mix(
-    in oklab,
-    hsl(var(--neutral-66)/1) 50%,
-    var(--default-high) 50%
-  );
-
-  --button-success-hsl: 120 calc(var(--saturation, 1) * 60%) 40%;
-  --button-success: hsl(var(--button-success-hsl)/0.8);
-
-  --button-danger-hsl: 0 calc(var(--saturation, 1) * 60%) 50%;
-  --button-danger: hsl(var(--button-danger-hsl)/0.9);
-
-  --button-primary-hover: color-mix(
-    in oklab,
-    var(--button-primary) 100%,
-    var(--interact-hover) 10%
-  );
-  --button-secondary-hover: color-mix(
-    in oklab,
-    var(--button-secondary) 100%,
-    var(--interact-hover) 10%
-  );
-  --button-tertiary-hover: color-mix(
-    in oklab,
-    var(--button-tertiary) 100%,
-    var(--interact-hover) 10%
-  );
+  
 
   --test-color-var: hsl(235, 100%, 7%);
 
-  --bg-color-1: 247 calc(var(--saturation, 1) * 70%) 60%;
-  --bg-color-2: 233 calc(var(--saturation, 1) * 50%) 30%;
+  --bg-color-1: 247 calc(var(--base-s, 1) * 70%) 60%;
+  --bg-color-2: 233 calc(var(--base-s, 1) * 50%) 30%;
   /* --bg-gradient-color-3:;
     --bg-gradient-color-4:;
     --bg-gradient-color-5:; */
@@ -248,14 +215,16 @@ nav {
   --scrollbar-width: 10px;
 }
 :root {
-  --base-hue: 245;
-  --default-lowest: hsl(var(--base-hue), 19%, 14%);
-  --default-lower: hsl(var(--base-hue), 19%, 16%);
-  --default-low: hsl(var(--base-hue), 19%, 18%);
-  --default-chat: hsl(var(--base-hue), 19%, 20%);
-  --default-high: hsl(var(--base-hue), 19%, 22%);
-  --default-higher: hsl(var(--base-hue), 19%, 24%);
-  --default-highest: hsl(var(--base-hue), 19%, 26%);
+  --base-hue: 236;
+  --base-l: 14.5%;
+  
+  --default-lowest: hsl(var(--base-hue), var(--base-l), 14%);
+  --default-lower: hsl(var(--base-hue), var(--base-l), 16%);
+  --default-low: hsl(var(--base-hue), var(--base-l), 18%);
+  --default-chat: hsl(var(--base-hue), var(--base-l), 20%);
+  --default-high: hsl(var(--base-hue), var(--base-l), 22%);
+  --default-higher: hsl(var(--base-hue), var(--base-l), 24%);
+  --default-highest: hsl(var(--base-hue), var(--base-l), 26%);
   --theme-lowest: var(--theme-gradient-lowest, var(--default-lowest));
   --theme-lower: var(--theme-gradient-lower, var(--default-lower));
   --theme-low: var(--theme-gradient-low, var(--default-low));

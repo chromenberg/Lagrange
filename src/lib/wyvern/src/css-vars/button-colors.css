@@ -1,0 +1,48 @@
+:root {
+  --control-button-border: hsl(var(--opacity-12-hsl) / 0.1);
+  --control-button-background: hsl(var(--opacity-12-hsl) / 0.1);
+  --control-button-border-hover: hsl(var(--opacity-12-hsl) / 0.1);
+  --control-button-background-hover: hsl(var(--opacity-12-hsl) / 0.12);
+  --control-button-border-active: hsl(var(--opacity-12-hsl) / 0.1);
+  --control-button-background-active: hsl(var(--opacity-12-hsl) / 0.12);
+  
+  --icon-color-default: hsl(var(--neutral-1) / 0.6);
+  
+  --button-primary-hsl: 230 calc(var(--base-s, 1) * 100%) 70%;
+  --button-primary: hsl(var(--button-primary-hsl)/0.9);
+
+  --button-secondary: color-mix(
+    in oklab,
+    hsl(var(--neutral-66)/1) 100%,
+    var(--default-high) 10%
+  );
+
+  --button-tertiary: color-mix(
+    in oklab,
+    hsl(var(--neutral-35)/1) 100%,
+    var(--default-high) 50%
+  );
+
+  --button-success-hsl: 120 calc(var(--base-s, 1) * 60%) 40%;
+  --button-success: hsl(var(--button-success-hsl)/0.8);
+
+  --button-danger-hsl: 0 calc(var(--base-s, 1) * 60%) 50%;
+  --button-danger: hsl(var(--button-danger-hsl)/0.9);
+
+  --button-primary-hover: color-mix(
+    in oklab,
+    var(--button-primary) 100%,
+    var(--interact-hover) 10%
+  );
+  --button-secondary-hover: color-mix(
+    in oklab,
+    var(--button-secondary) 100%,
+    var(--interact-hover) 10%
+  );
+  
+  --button-tertiary-hover: color-mix(
+    in oklab,
+    var(--button-tertiary) 100%,
+    var(--interact-hover) 10%
+  );
+}
