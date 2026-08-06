@@ -2,7 +2,7 @@ import type { Props } from "../../../Core";
 import type { Direction, SizingName } from "../../../scripts/types/SizingTypes";
 import("./Stack.css");
 
-type Positionings = "center" | "start" | "end" | "center";
+type Positionings = "center" | "start" | "end" | "stretch";
 
 interface StackProps extends Props {
   /**
