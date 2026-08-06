@@ -1,5 +1,5 @@
 import InvokeModal from "../../mana/wrappers/InvokeModal";
-import CreateGuildModal from "../../modals/GuildCreate";
+import CreateGuildModal from "../../layers/modals/guild-create/GuildCreate";
 export default function GuildCreateButton() {
   return (
     <div className="guildBarIcon" data-rounding="full">

@@ -2,7 +2,7 @@ import { Suspense, useState } from "react";
 import GuildListCreator from "./react/non-mana/guild/GuildCreator";
 import ChannelBar from "./react/non-mana/channel-bar/ChannelBar";
 import InvokeModal from "./react/mana/wrappers/InvokeModal";
-import SettingsModal from "./react/modals/Settings";
+import SettingsModal from "./react/layers/modals/settings/Settings";
 import ClientUsername from "./scripts/hooks/components/ClientUsername";
 import useUserInfo from "./scripts/stores/user-store/UserStore";
 
