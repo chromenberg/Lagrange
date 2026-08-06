@@ -1,4 +1,33 @@
 .settingsControl {
   display: grid;
-  grid-area: ;
+  grid-template-areas:
+    "labels control"
+    "empty  helper-text";
+  grid-template-rows: auto auto;
+  grid-template-columns: auto auto;
+}
+.controlLabelContainer {
+  grid-area: "labels";
+  align-content: center;
+}
+.controlLabel {
+  /*padding: 2px;*/
+}
+.controlsContainer {
+  grid-area: "control";
+
+}
+.settingControl {
+  height: 100%;
+  > .stack {
+    height: 100%;
+  }
+}
+.settingHelperText {
+  grid-area: "helper-text";
+}
+
+.baseSettingWrapper {
+  min-height: var(--space-7);
+  padding-block: var(--padding-sm) ;
 }
