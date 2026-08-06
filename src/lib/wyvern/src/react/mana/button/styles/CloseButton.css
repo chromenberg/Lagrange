@@ -1,0 +1,11 @@
+.manaCloseButton {
+  border: none !important;
+  padding:var(--padding-sm) !important;
+  > div > div {
+    color: var(--icon-color-default) ;
+  }
+}
+
+.manaCloseButton:hover {
+  background: var(--control-button-background-active);
+} 
