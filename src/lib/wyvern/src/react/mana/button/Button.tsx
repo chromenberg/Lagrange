@@ -1,11 +1,5 @@
-import type { MouseEvent } from "react";
-import type { Props } from "../../../Core";
+import type { ManaTextButtonProps } from "../../../scripts/types/Button";
 import("./Button.css");
-interface ButtonProps extends Props {
-  callback: (ev: MouseEvent, ...args: unknown[]) => void;
-  height?: "xsmall" | "small" | "medium" | "large" | "xlarge";
-  manaType?: string
-}
 
 export default function Button({
   manaType,
@@ -13,11 +7,23 @@ export default function Button({
   className,
   callback,
   height,
+  style,
   ...rest
-}: ButtonProps) {
+}: ManaTextButtonProps & { style?: string }) {
   return (
-    <div mana-type={manaType??"button-base"} className={"manaButton " + className} onClick={callback} mana-button-height={height} {...rest}>
-      <div className="flexHoriz centerVert centerHori">{children}</div>
-    </div>
+    <button
+      mana-type={manaType ?? "button-base"}
+      onClick={callback}
+      mana-button-height={height}
+      data-button-theme={style}
+      className={"manaButton " + (className ?? "")}
+      {...rest}
+    >
+      <div className="buttonChildrenWrapper">
+        <div className="buttonChildren">
+          {children}
+        </div>
+      </div>
+    </button>
   );
 }
