@@ -1,15 +1,14 @@
 import { useRef} from "react";
-import useToken from "../../scripts/client/requests/Authorization";
-const InputBox = (await import("../components/InputBox/InputBox")).default;
-const ActionRow = (await import("../mana/action-row/ActionRow")).default;
+import useToken from "../../../../scripts/client/requests/Authorization";
+const InputBox = (await import("../../../components/InputBox/InputBox")).default;
+const ActionRow = (await import("../../../mana/action-row/ActionRow")).default;
 
-const ButtonGroup = (await import("../mana/button-group/ButtonGroup")).default;
+const ButtonGroup = (await import("../../../mana/button-group/ButtonGroup")).default;
 // import Button from "../mana/button/Button";
-const ManaButton = (await import("../mana/button/ManaButton")).default;
-const Modal = (await import("./Modal")).default;
+const ManaButton = (await import("../../../mana/button/ManaButton")).default;
+const Modal = (await import("../Modal")).default;
 
-const ModalView = (await import("./ModalView")).default;
-import("../styles/ModalStyles.css");
+const ModalView = (await import("../ModalView")).default;
 
 function requestGuildCreate(token: string, guildName: string) {
   fetch("/api/v1/guilds/", {
@@ -56,7 +55,7 @@ export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void})
               <ManaButton
                 style="Tertiary"
                 mana-type="text-button"
-                onClick={() => {
+                onclick={() => {
                   state?.(false)
                 }}
               >
@@ -65,7 +64,7 @@ export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void})
               <ManaButton
                 style="Primary"
                 mana-type="text-button"
-                onClick={() => {
+                onclick={() => {
                   // FIXME: this is shit
                   requestGuildCreate(
                     token,

@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import type { Props } from "../../Core";
+import type { Props } from "../../../Core";
 
 export default function ModalView({ children }: Props) {
   const modalPortal = document.getElementById("modal-portal")

@@ -1,5 +1,5 @@
-import type { Props } from "../../Core";
-import("../styles/ModalStyles.css")
+import type { Props } from "../../../Core";
+import("../../styles/ModalStyles.css")
 
 /**
  * Creates a popover on the screen that is positioned above everything. Helpful for overlays

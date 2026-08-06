@@ -1,0 +1,6 @@
+.controlButton {
+  --button-color: var(--control-button-background);
+  background: var(--button-color);
+  border: 1px solid var(--control-button-border);
+  box-sizing: border-box;
+}
