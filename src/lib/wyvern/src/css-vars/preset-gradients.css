@@ -1,17 +1,17 @@
 :root {
   --bg-gradient-chroma-glow-1: hsl(var(--bg-gradient-chroma-glow-1-hsl) / 1);
-  --bg-gradient-chroma-glow-1-hsl: 183.39 calc(var(--saturation, 1) * 86.341%)
+  --bg-gradient-chroma-glow-1-hsl: 183.39 calc(var(--base-s, 1) * 86.341%)
     40.196%;
   --bg-gradient-chroma-glow-2: hsl(var(--bg-gradient-chroma-glow-2-hsl) / 1);
-  --bg-gradient-chroma-glow-2-hsl: 258.113 calc(var(--saturation, 1) * 89.831%)
+  --bg-gradient-chroma-glow-2-hsl: 258.113 calc(var(--base-s, 1) * 89.831%)
     46.275%;
   --bg-gradient-chroma-glow-3: hsl(var(--bg-gradient-chroma-glow-3-hsl) / 1);
-  --bg-gradient-chroma-glow-3-hsl: 298.491 calc(var(--saturation, 1) * 90.857%)
+  --bg-gradient-chroma-glow-3-hsl: 298.491 calc(var(--base-s, 1) * 90.857%)
     34.314%;
   --bg-gradient-chroma-glow-4: hsl(var(--bg-gradient-chroma-glow-4-hsl) / 1);
-  --bg-gradient-chroma-glow-4-hsl: 264.767 calc(var(--saturation, 1) * 100%)
+  --bg-gradient-chroma-glow-4-hsl: 264.767 calc(var(--base-s, 1) * 100%)
     66.275%;
   --bg-gradient-chroma-glow-5: hsl(var(--bg-gradient-chroma-glow-5-hsl) / 1);
-  --bg-gradient-chroma-glow-5-hsl: 206.702 calc(var(--saturation, 1) * 75.494%)
+  --bg-gradient-chroma-glow-5-hsl: 206.702 calc(var(--base-s, 1) * 75.494%)
     50.392%;
 }
