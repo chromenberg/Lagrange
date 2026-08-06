@@ -4,7 +4,11 @@ import ScrollMenu from "../mana/scroll-menu/ScrollMenu";
 import Stack from "../mana/stack/Stack";
 import Modal from "./Modal";
 import ModalView from "./ModalView";
+import DisplayNameItem from "./settings/account/DisplayName";
+import UserIDItem from "./settings/account/UserID";
+import UsernameItem from "./settings/account/Username";
 import("./styles/Settings.css");
+
 
 export default function SettingsModal({
   state,
@@ -48,26 +52,9 @@ export default function SettingsModal({
                 {/*<Divider padding="xsmall" color="subtle" thickness="vthin" direction="horizontal"/>*/}
                 <div style={{ paddingTop: "16px" }}>
                   <Stack>
-                    <div className="labeledComponent labelSpread flexleftright">
-                      <span>Username</span>
-                      <div id="usernameContainer" className="labelValueContainer">
-                        <span id="usernameText">{data.username}</span>
-                      </div>
-                      <div className="buttonContainerSettings">
-                        <ManaButton
-                          height="medium"
-                          onclick={() => {
-                            console.log("Requested to change username");
-                          }}
-                          style="Tertiary"
-                        >
-                          Edit
-                        </ManaButton>
-                      </div>
-                    </div>
-                    <div className="flexleftright">
-                      <span>Display Name</span>
-                    </div>
+                    <UsernameItem data={data} />
+                    <DisplayNameItem data={data} />
+                    <UserIDItem data={data} />
                   </Stack>
                 </div>
               </Stack>

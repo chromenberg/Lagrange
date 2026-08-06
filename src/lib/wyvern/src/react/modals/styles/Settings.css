@@ -1,3 +1,8 @@
+
+:root {
+  --settings-header-height: 60px;
+}
+
 .settingsModal {
   width: 55%;
   height: 80%;
@@ -14,8 +19,9 @@
   flex-direction: column;
 }
 .settingsItems {
-  width: 150px;
-  flex: 0 0 150px;
+  --width: 225px;
+  width: var(--width);
+  flex: 0 0 var(--width);
   background: var(--theme-low);
 }
 .menuPanel {
@@ -25,11 +31,12 @@
 }
 .settingsItems > .scrollbarHeader {
   flex: 1 0 auto;
-  height: 35px;
+  height: var(--settings-header-height);
   border-bottom: 1px solid var(--border-normal);
 }
 .menuHeader {
-  height: 35px;
+  height: var(--settings-header-height);
+
   border-bottom: 1px solid var(--border-subtle);
   flex: 0 0 auto;
   > div {
@@ -47,12 +54,12 @@
 }
 .settingsContent header {
   color: var(--text-primary);
-  font-size: 1.4rem;
+  font-size: var(--font-lg);
   font-weight: 400;
 }
 .settingsContent span {
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: var(--font-md);
   font-weight: 500;
 }
 .alignCenter {
@@ -73,4 +80,9 @@
   :first-child {
     margin-right: auto;
   }
+}
+.labeledComponent.labelSpread.flexleftright {
+  gap: 24px;
+}
+.labelValueContainer {
 }
