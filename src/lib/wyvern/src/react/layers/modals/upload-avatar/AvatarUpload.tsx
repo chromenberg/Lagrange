@@ -2,10 +2,13 @@ import Modal from "../Modal";
 import ModalView from "../ModalView";
 
 export default function AvatarUploadModal() {
-
-  return <Modal>
+  return (
     <ModalView>
-      sdfgsdfg
+      <div className="modalContainerInner">
+        <Modal style="modal" classes="modalType1">
+          sdfgsdfg
+        </Modal>
+      </div>
     </ModalView>
-  </Modal>
+  );
 }

@@ -3,13 +3,7 @@
   --settings-header-height: 49px;
   --settings-control-min-height: 40px;
 }
-.modalContainerWrapper {
-  width: 100vw;
-  height: 100dvh;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
+
 .settingsModal {
   height: calc(100% - (var(--viewport-padding)) * 2);
   width: calc(100% - (var(--viewport-padding)) * 2);

@@ -29,8 +29,8 @@ export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void})
   const token = useToken();
   return (
     <ModalView>
-      <Modal height="200px" width="400px" ref={modalRef}>
-        <div className="guildCreateModal modalBackground">
+      <Modal height="200px" width="400px" ref={modalRef} style="modal">
+        <div className="guildCreateModal">
           <div
             style={{
               height: "100%",

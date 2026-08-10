@@ -1,29 +1,28 @@
 import type { Props } from "../../../Core";
-import("../../styles/ModalStyles.css")
+import("./ModalStyles.css")
+
+interface ModalProps extends Props {
+  width?: string;
+  height?: string;
+  style: "modal" | "criticalModal";
+  [rest: string]: unknown
+}
 
 /**
  * Creates a popover on the screen that is positioned above everything. Helpful for overlays
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
 export default function Modal({
   children,
-  width,
-  height,
   classes,
+  style,
   ...rest
-}: Props & {
-  width?: string;
-    height?: string;
-  [rest:string]:unknown
-}) {
+}: ModalProps) {
   return (
     <div
-      className={(classes??"")+" modalPopoverBase"}
-      style={{
-        width: width ?? "",
-        height: height ?? "",
-      }}
+      className={(classes ?? "") + " modalPopoverBase"}
+      data-modal-style={style}
       {...rest}
     >
       {children}

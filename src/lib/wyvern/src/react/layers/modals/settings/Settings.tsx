@@ -1,7 +1,6 @@
 import type { WeakObj } from "../../../../scripts/types/WeakObj";
 import CloseButton from "../../../mana/button/subtypes/Close";
 import Divider from "../../../mana/divider/Divider";
-import FileUploadButton from "../../../mana/file-upload/FileUploadButton";
 import ScrollMenu from "../../../mana/scroll-menu/ScrollMenu";
 import Stack from "../../../mana/stack/Stack";
 import Modal from "../Modal";
@@ -21,8 +20,8 @@ export default function SettingsModal({
 }) {
   return (
     <ModalView>
-      <div className="modalContainerWrapper">
-        <Modal classes="settingsModal modalBackground">
+      <div className="modalContainerInner">
+        <Modal classes="settingsModal" style="modal">
           <div data-fill className="settingsContainer">
             <div data-fill className="settingsItems settingsFlexColumn">
               <div className="scrollbarHeader alignCenter">

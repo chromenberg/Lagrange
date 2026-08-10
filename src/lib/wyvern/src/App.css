@@ -50,5 +50,5 @@ body {
 
 #modal-portal:not(:empty) {
     pointer-events: all;
-    backdrop-filter: brightness(0.6) blur(1px);
+    /*backdrop-filter: brightness(0.6) blur(1px);*/
 }

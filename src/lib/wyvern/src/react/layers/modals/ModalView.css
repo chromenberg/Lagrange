@@ -1,3 +1,12 @@
 .modalLayer {
   position: absolute;
+
+  backdrop-filter: blur(var(--elevation-blur-small)) brightness(var(--elevation-shadow-small));
+}
+ 
+.modalType1 {
+  /*height: calc(100% - (var(--viewport-padding)) * 2);
+  width: calc(100% - (var(--viewport-padding)) * 2);*/
+  height: 400px;
+  width: 350px;
 }

@@ -2,6 +2,9 @@
   --border-normal: var(--opacity-20);
   --border-strong: var(--opacity-44);
   --border-subtle: var(--opacity-8);
+  
+  --elevation-blur-small: 4px;
+  --elevation-shadow-small: 70%;
 
   --interact-active: hsl(var(--neutral-1)/0.1);
   --interact-hover: hsl(var(--neutral-1)/0.05);
