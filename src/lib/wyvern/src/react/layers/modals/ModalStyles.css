@@ -14,15 +14,14 @@
 
 
 .modalBackground {
-    
     border-radius: var(--padding-m);
     background: var(--theme-high);
     border: solid 1px var(--border-subtle);
+    
 }
 .guildCreateModal {
     height: 100%;
-    width: 100%;
-    
+    width: 100%; 
 }
 
 .modalContainer {
@@ -31,4 +30,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
+}
+
+.modalPopoverBase[data-modal-style="modal"] {
+  border-radius: var(--padding-m);
+  background: var(--theme-high);
+  border: solid 1px var(--border-subtle);
+  
+}
+
+.modalContainerInner {
+  width: 100vw;
+  height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
