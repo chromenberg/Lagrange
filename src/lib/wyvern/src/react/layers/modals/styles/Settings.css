@@ -76,12 +76,6 @@
   min-height: var(--settings-control-min-height);
 }
 
-.alignCenter {
-  display: flex;
-  align-items: center;
-  padding-inline: var(--padding-xs);
-  font-size: var(--padding-sm);
-}
 .controlContainer {
   /*align-items: center;
   padding-block: var(--padding-sm);*/
@@ -94,11 +88,6 @@
   :first-child {
     margin-right: auto;
   }
-}
-.labeledComponent.labelSpread.flexleftright {
-  gap: 24px;
-}
-.labelValueContainer {
 }
 
 .container_settings {
