@@ -6,6 +6,7 @@ import ScrollMenu from "../../../mana/scroll-menu/ScrollMenu";
 import Stack from "../../../mana/stack/Stack";
 import Modal from "../Modal";
 import ModalView from "../ModalView";
+import AvatarItem from "./account/AvatarUpload";
 import DisplayNameItem from "./account/DisplayName";
 import UserIDItem from "./account/UserID";
 import UsernameItem from "./account/Username";
@@ -64,7 +65,7 @@ export default function SettingsModal({
                               {/* Mark new section */}
                               <Divider gap="medium" /> 
                               {/* Mark new section */}
-                              
+                              <AvatarItem data={data} />
                             </Stack>
                           </div>
                         </Stack>
