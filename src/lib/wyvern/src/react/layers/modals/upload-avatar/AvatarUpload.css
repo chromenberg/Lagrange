@@ -1,0 +1,30 @@
+.panel_avatarUpload {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  /*padding-inline: var(--padding-md);
+  padding-block: var(--padding-sm);*/
+}
+.header_avatarUpload {
+  padding: var(--padding-md) var(--padding-lg) var(--padding-sm);
+}
+
+.heading-lg {
+  font-size: 20px;
+  color: var(--text-strong)
+}
+
+.semibold {
+  font-weight: 600;
+}
+
+.headerLast_avatarUpload {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  margin-top: calc(var(--padding-sm) * -1);
+  margin-right: calc(var(--padding-md) * -1);
+}
