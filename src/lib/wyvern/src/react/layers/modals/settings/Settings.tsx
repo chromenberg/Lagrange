@@ -1,5 +1,7 @@
 import type { WeakObj } from "../../../../scripts/types/WeakObj";
 import CloseButton from "../../../mana/button/subtypes/Close";
+import Divider from "../../../mana/divider/Divider";
+import FileUploadButton from "../../../mana/file-upload/FileUploadButton";
 import ScrollMenu from "../../../mana/scroll-menu/ScrollMenu";
 import Stack from "../../../mana/stack/Stack";
 import Modal from "../Modal";
@@ -37,7 +39,7 @@ export default function SettingsModal({
               <div className="menuHeader alignCenter">
                 <Stack fillAll align="center">
                   <div className="autoRight settingsCategoryTitle">Account</div>
-                  <CloseButton style="subtle" />
+                  <CloseButton callback={()=>{state?.(false)}} style="subtle" />
                 </Stack>
               </div>
               <div
@@ -51,10 +53,18 @@ export default function SettingsModal({
                           <header>Account Info</header>
                           {/*<Divider padding="xsmall" color="subtle" thickness="vthin" direction="horizontal"/>*/}
                           <div>
+                            {/* 
+                              User info jargon, each item is a settings control group component
+                              (Label -> Control [Value, Input])
+                            */}
                             <Stack direction="vertical" gap="medium" className="categoryContents_settings">
                               <UsernameItem data={data} />
                               <DisplayNameItem data={data} />
                               <UserIDItem data={data} />
+                              {/* Mark new section */}
+                              <Divider gap="medium" /> 
+                              {/* Mark new section */}
+                              
                             </Stack>
                           </div>
                         </Stack>
