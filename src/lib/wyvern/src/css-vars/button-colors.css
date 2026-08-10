@@ -8,7 +8,7 @@
   
   --icon-color-default: hsl(var(--neutral-1) / 0.6);
   
-  --button-primary-hsl: 230 calc(var(--base-s, 1) * 100%) 70%;
+  --button-primary-hsl: 240 calc(var(--base-s, 1) * 42%) 73%;
   --button-primary: hsl(var(--button-primary-hsl)/0.9);
 
   --button-secondary: color-mix(
