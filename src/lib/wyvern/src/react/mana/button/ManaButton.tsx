@@ -5,7 +5,7 @@ const Button = (await import("./Button")).default;
 
 type ButtonStyle = "Primary" | "Secondary" | "Tertiary" | "Success" | "Danger";
 interface ButtonProps extends Props {
-  onclick: (ev: MouseEvent<Element>, ...args: unknown[]) => void;
+  onclick?: (ev: MouseEvent<Element>, ...args: unknown[]) => void;
   height?: SizingName;
 }
 

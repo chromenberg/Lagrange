@@ -5,7 +5,7 @@ export interface InteractiveProps {
   style?: "subtle" | "overlay" | "menu"
 }
 export interface BaseButtonProps extends Props {
-  callback: (ev: MouseEvent, ...args: unknown[]) => void;
+  callback?: (ev: MouseEvent, ...args: unknown[]) => void;
   manaType?: string;
 }
 export interface ManaTextButtonProps extends BaseButtonProps {
