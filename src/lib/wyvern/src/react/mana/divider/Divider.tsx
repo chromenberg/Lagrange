@@ -7,10 +7,10 @@ import type {
 import("./Divider.css")
 interface DividerProps {
   gap?: SizingName | "none";
-  padding: SizingName;
-  direction: Direction;
-  thickness: Thickness;
-  color: BorderStyle
+  padding?: SizingName;
+  direction?: Direction;
+  thickness?: Thickness;
+  color?: BorderStyle
 }
 export default function Divider({
   thickness,
@@ -22,11 +22,11 @@ export default function Divider({
   return (
     <div
       mana-type="divider"
-      divider-thickness={thickness}
-      divider-direction={direction}
-      divider-padding={padding}
-      divider-color={color}
-      divider-gap={gap}
+      divider-thickness={thickness??"vthin"}
+      divider-direction={direction??"horizontal"}
+      divider-padding={padding??"xsmall"}
+      divider-color={color??"subtle"}
+      divider-gap={gap??"small"}
     ></div>
   );
 }
