@@ -1,5 +1,5 @@
 import type { Props } from "../../Core";
-import type { AllColoringStyles, BorderStyle, SizingName } from "./SizingTypes";
+import type { SizingName } from "./SizingTypes";
 import type { MouseEvent, ReactNode } from "react";
 export interface InteractiveProps {
   style?: "subtle" | "overlay" | "menu"
