@@ -32,10 +32,10 @@ div[mana-type="divider"] {
       margin-inline: 2px;
     }
     &[divider-padding="small"] {
-      margin-inline: var(--padding-xxs);
+      margin-inline: var(--padding-sm);
     }
     &[divider-padding="medium"] {
-      margin-inline: var(--padding-xs);
+      margin-inline: var(--padding-md);
     }
     &[divider-padding="large"] {
       margin-inline: var(--padding-lg);
@@ -48,19 +48,19 @@ div[mana-type="divider"] {
       margin-block: 2px;
     }
     &[divider-gap="xsmall"] {
-      margin-block: 2px;
-    }
-    &[divider-gap="small"] {
-      margin-block: 4px;
-    }
-    &[divider-gap="medium"] {
-      margin-block: calc(var(--padding-xs) - 2px);
-    }
-    &[divider-gap="large"] {
       margin-block: var(--padding-xs);
     }
-    &[divider-gap="xlarge"] {
+    &[divider-gap="small"] {
       margin-block: var(--padding-sm);
+    }
+    &[divider-gap="medium"] {
+      margin-block: var(--padding-md);
+    }
+    &[divider-gap="large"] {
+      margin-block: var(--padding-lg);
+    }
+    &[divider-gap="xlarge"] {
+      margin-block: var(--padding-xl);
     }
   }
 

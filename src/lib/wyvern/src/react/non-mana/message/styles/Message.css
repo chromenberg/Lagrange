@@ -1,4 +1,5 @@
 .messageContents {
   position: relative;
-  margin-left: 42px;
+  margin-left: 54px;
+  padding-inline-start: 4px;
 }

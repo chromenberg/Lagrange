@@ -1,4 +1,4 @@
-import { routes } from "../../../scripts/client/Routes";
+import { attachments, routes } from "../../../scripts/client/Routes";
 import { populate } from "../../../scripts/core/SetPlaceholders";
 import AvatarSizing from "../../../sizings/AvatarSizings";
 import("./styles/MessageAvatar.css")
@@ -13,7 +13,7 @@ export default function MessageAvatar({
     <div className="messageAvatarWrapper">
       <div className="messageAvatar">
         <img
-          src={populate(routes.user_avatars, id, avatar)}
+          src={attachments+populate(routes.user_avatars, id, avatar)+"?size=64"}
           width={AvatarSizing.Message.size}
           height={AvatarSizing.Message.size}
         />

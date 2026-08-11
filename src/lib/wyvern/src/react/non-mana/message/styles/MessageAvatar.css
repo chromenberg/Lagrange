@@ -1,4 +1,11 @@
 .messageAvatarWrapper {
   position: absolute;
-  left: -44px;
+  left: -46px;
+  top:2px;
+}
+
+.messageAvatar {
+  display: flex;
+  border-radius: var(--radius-round);
+  overflow: hidden;
 }

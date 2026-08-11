@@ -71,10 +71,10 @@ export default function ChatPanel() {
                 },
                 id: "dfgdfgsdfgsfghdfgh",
                 user: {
-                  avatar: "image hash",
-                  display_name: "display MD!ame",
+                  avatar: "MTYwOTY1MjM1NDIxNzQ5MjQ4",
+                  display_name: "raine",
                   username: "raine",
-                  id: "5485230233642356456"
+                  id: "126400386083856384"
                 }
               }}
             />
