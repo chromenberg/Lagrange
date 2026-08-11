@@ -7,6 +7,7 @@ import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore
 import type { InputKeybind } from "../components/InputBox/InputBox.types";
 import Message from "../non-mana/message/Message";
 import { createMarkupItem } from "../../scripts/core/Markup";
+import ScrollMenu from "../mana/scroll-menu/ScrollMenu";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (
   await import("../components/InputBox/InputBoxAccessories")
@@ -27,6 +28,38 @@ const leftCharms = (
     <div>+</div>
   </InputBoxAccessories>
 );
+const Raine = {
+  avatar: "MTYwOTY1MjM1NDIxNzQ5MjQ4",
+  display_name: "raine",
+  username: "raine",
+  id: "126400386083856384"
+}
+function makeMessage(content: string) {
+  return {
+    channel: "384752398457",
+    content: [createMarkupItem(content, ["none"])],
+    properties: {
+      timestamp: new Date()
+    },
+    id: "dfgdfgsdfgsfghdfgh",
+    user: Raine
+  }
+}
+
+const msgs = [
+  makeMessage("hi"),
+  makeMessage("howe are you"),
+  makeMessage("fuck you"),
+  makeMessage("sorry that was rude"),
+  makeMessage("did you hear about hte codebase"),
+  makeMessage("its compete and utter dogshit"),
+  makeMessage("whoever made it is stupid"),
+  makeMessage("wanna play factorio multiplayer?"),
+  makeMessage("hi"),
+  makeMessage("hi"),
+  makeMessage("hi"),
+]
+
 export default function ChatPanel() {
   // const wyvernState = useContext(UserContext)
   const token = useToken();
@@ -60,24 +93,15 @@ export default function ChatPanel() {
     <main className="chatPanel">
       <div className="flexHoriz fillAll">
         <div className="fillAll flexVert">
-          <div className="fillAll">
-            <h1> MAKE THIS SCROLLABLE!!!! </h1>
-            <Message
-              info={{
-                channel: "384752398457",
-                content: [createMarkupItem("hi this has no markup", ["none"])],
-                properties: {
-                  timestamp: new Date()
-                },
-                id: "dfgdfgsdfgsfghdfgh",
-                user: {
-                  avatar: "MTYwOTY1MjM1NDIxNzQ5MjQ4",
-                  display_name: "raine",
-                  username: "raine",
-                  id: "126400386083856384"
-                }
-              }}
-            />
+          <div data-fill>
+            <ScrollMenu direction="vertical" align="start">
+              <ul className="container_channelContent">
+                <li>sdgdfg</li>
+              {msgs.map(msg => <Message info={msg} />)}
+              </ul>
+              <h1> MAKE THIS SCROLLABLE!!!! </h1>
+
+            </ScrollMenu>
           </div>
           <form>
             <div className="chatInputContainer">
