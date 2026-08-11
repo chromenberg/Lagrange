@@ -204,6 +204,10 @@ export class UserService extends AtlasService {
     });
   }
 
+  public updateUserAvatar(userID: Snowflake, hash: string) {
+    this.sql.run`UPDATE users SET avatar_hash = ${hash} WHERE user_id = ${userID};`
+  }
+
   public getAllGuildInfoForUser(token: string) {
     const id = parseToken(token);
     return this.sql.all`SELECT * FROM guild_members,users
@@ -241,7 +245,7 @@ export class UserService extends AtlasService {
         username: user?.username,
         email: user?.email,
         display_name: user?.display_name,
-        avatar: user?.avatar ?? null,
+        avatar: user?.avatar_hash ?? null,
       },
       relations: await relations,
       guilds: parsedGuilds.guilds,

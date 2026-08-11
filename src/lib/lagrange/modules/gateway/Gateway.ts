@@ -20,11 +20,11 @@ import { Config } from "../../Config.js";
 // Identify    |        | Identify with token and client intents
 //             | Ready  | (ident valid) send client info [guilds, friends, dms]
 //             | Reauth | (ident invalid) reject client, request reconnect
-
 // Subscribe   |        | Listen to events that occur in a channel?
 // *ALT*       |        | Server subscribes using guilds internally instead
 
 function getEvent(data: any, conn: any) {
+
   if (data.opCode) {
     eventPublisher.publish("OPCODE_" + data.opCode, { cli: conn, data: data });
   }
@@ -32,9 +32,10 @@ function getEvent(data: any, conn: any) {
   if (data.eventType) {
     eventPublisher.publish(data.eventType, { cli: conn, data: data });
   }
+  
 }
 
-
+// FIXME: gateway now sends a fixed number of servers regardless of account (which is not a good thing!)
 
 export class Gateway {
   // private readonly pubsub: PubSub<any>;

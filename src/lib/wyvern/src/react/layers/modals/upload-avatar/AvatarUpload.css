@@ -28,3 +28,51 @@
   margin-top: calc(var(--padding-sm) * -1);
   margin-right: calc(var(--padding-md) * -1);
 }
+.container_avatarUpload_upload {
+  width: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding-bottom: var(--padding-md);
+  display: flex;
+  flex-direction: column;
+}
+.imageUploadButtonGroup{
+  padding-bottom: var(--padding-md);
+}
+.container_avatarUpload {
+  padding-inline: var(--padding-md);
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+.uploadContainer {
+  height: 100%;
+  display: grid;
+  gap: var(--padding-md);
+  grid-template-columns: 1fr 1fr;
+}
+.imageUploadOption,
+.uploadItemContainer {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  aspect-ratio: 1;
+  width: 100%;
+  position: relative;
+  background-color: var(--background-modifier-normal);
+}
+.imageUploadOption:before,
+.uploadItemContainer:before {
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  transition: 0.1s;
+  background-color: transparent;
+}
+.imageUploadOption:hover:before,
+.uploadItemContainer:hover:before {
+  background-color: var(--background-modifier-normal);
+}

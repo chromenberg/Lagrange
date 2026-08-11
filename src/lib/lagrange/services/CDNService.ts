@@ -5,20 +5,22 @@ import type { Request } from "../modules/rest/Router.js";
 import { HTTPReader } from "../modules/rest/HTTPReader.js";
 import { GenToken } from "../../atlas/modules/crypt/Crypt.js";
 import { Config } from "../Config.js";
-import type { API } from "../../core/types/Types.js";
+import type { API, Snowflake } from "../../core/types/Types.js";
 import type { StringRecord } from "../../core/types/AliasTypes.js";
-
+import { SnowflakeNode } from "../../atlas/modules/snowflake/Snowflake.js";
+import { Atlas } from "../../../_Init.js";
+import { writeFileSync } from "fs";
+export const CDN = new S3mini({
+  accessKeyId: Config.CDN.AccessKey,
+  secretAccessKey: Config.CDN.SecretKey,
+  endpoint: Config.CDN.Path,
+  region: "auto",
+});
 export class CDNService {
   private readonly route: Route;
-  private readonly s3: S3mini;
+  private readonly s3: S3mini = CDN;
   constructor(route: Route) {
     this.route = route;
-    this.s3 = new S3mini({
-      accessKeyId: Config.CDN.AccessKey,
-      secretAccessKey: Config.CDN.SecretKey,
-      endpoint: Config.CDN.Path,
-      region: "auto",
-    });
 
     this.route.put("/", (req, res) => {
       this.uploadFile(req, res);
@@ -43,11 +45,11 @@ export class CDNService {
     req: Request,
     res: ServerResponse<IncomingMessage>,
   ): Promise<Response> {
-    console.log("Uploading file");  
+    console.log("Uploading file");
     return new Promise((response) => {
       HTTPReader.getBody(req).then(async (body) => {
         const result = await this.s3.putObject(
-          "icons/142409349984174080/"+GenToken(16).ToBase64Atlas()+".jpg",
+          "icons/142409349984174080/" + GenToken(16).ToBase64Atlas() + ".jpg",
           body,
           req.headers["content-type"],
         );
@@ -92,4 +94,24 @@ export class CDNService {
   public getFile(key: string): Promise<string | null> {
     return this.s3.getObject(key);
   }
+}
+
+export async function upload(
+  data:   Buffer<ArrayBufferLike>,
+  contentType: API.MIMEType,
+  userID: Snowflake,
+): Promise<string> {
+    const hash = btoa(Atlas.requests.users.newUserID());
+  return new Promise((response) => {
+    console.log("Uploaing", data.toString());
+    writeFileSync("./shit.png", data)
+    CDN.putObject(
+      "avatars/" + userID + "/" + hash + "",
+      data,
+      contentType,
+    ).then(() => {
+      console.log("Uploaded");
+      response(hash);
+    });
+  });
 }

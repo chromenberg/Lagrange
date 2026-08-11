@@ -11,6 +11,7 @@ export const routes = {
   login: "/auth/login",
   me: "/users/@me",
   home: "/channels/@me",
+  upload_avatar: "/@me/profile/avatar",
   guild_icons: "/icons/${}/${}",
   attachments: "/attachments/${}/${}/${}",
   user_avatars: "/avatars/${}/${}"

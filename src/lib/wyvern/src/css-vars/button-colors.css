@@ -19,7 +19,7 @@
 
   --button-tertiary: color-mix(
     in oklab,
-    hsl(var(--neutral-35)/1) 100%,
+    hsl(var(--neutral-27)/0.2) 50%,
     var(--default-high) 50%
   );
 

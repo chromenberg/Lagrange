@@ -3,6 +3,7 @@ import GuildListCreator from "./react/non-mana/guild/GuildCreator";
 import ChannelBar from "./react/non-mana/channel-bar/ChannelBar";
 import SettingsModal from "./react/layers/modals/settings/Settings";
 import useUserInfo from "./scripts/stores/user-store/UserStore";
+import UserContext from "./scripts/hooks/UserContext";
 
 // import { useEffect } from "react";
 // const ScrollMenu = (await import("./react/mana/scroll-menu/ScrollMenu"))
@@ -26,11 +27,13 @@ function UserCard() {
   
   return (
     <>
-      <section className="userCard" onClick={()=>{setShow(true)}}>
-        
-      </section>
-      {/* FIX: temporary solution */}
-      {show && <SettingsModal key="settings" state={setShow} data={userInfo} />}
+      <UserContext.Provider value={userInfo}>
+        <section className="userCard" onClick={()=>{setShow(true)}}>
+          
+        </section>
+        {/* FIX: temporary solution */}
+        {show && <SettingsModal key="settings" state={setShow} data={userInfo} />}
+      </UserContext.Provider>
     </>
   )
 }

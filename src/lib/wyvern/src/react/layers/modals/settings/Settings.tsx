@@ -10,7 +10,8 @@ import DisplayNameItem from "./account/DisplayName";
 import UserIDItem from "./account/UserID";
 import UsernameItem from "./account/Username";
 import("../styles/Settings.css");
-import("../styles/SettingsControlButton.css")
+import("../styles/SettingsControlButton.css");
+
 export default function SettingsModal({
   state,
   data, // FIX: Temporary solution
@@ -64,7 +65,7 @@ export default function SettingsModal({
                               {/* Mark new section */}
                               <Divider gap="medium" /> 
                               {/* Mark new section */}
-                              <AvatarItem data={data} />
+                              <AvatarItem />
                             </Stack>
                           </div>
                         </Stack>
