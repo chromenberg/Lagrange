@@ -6,6 +6,12 @@
 @import "css-defaults/button.css";
 @import "css-vars/button-colors.css";
 
+ul, ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
 body,
 html,
 #root,

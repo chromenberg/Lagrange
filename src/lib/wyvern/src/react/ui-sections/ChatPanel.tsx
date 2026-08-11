@@ -51,7 +51,7 @@ const msgs = [
   makeMessage("howe are you"),
   makeMessage("fuck you"),
   makeMessage("sorry that was rude"),
-  makeMessage("did you hear about hte codebase"),
+  makeMessage("did you **hear** about hte codebase"),
   makeMessage("its compete and utter dogshit"),
   makeMessage("whoever made it is stupid"),
   makeMessage("wanna play factorio multiplayer?"),

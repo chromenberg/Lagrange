@@ -21,9 +21,11 @@ interface MessageData {
 
 export default function Message({ info }: { info: MessageData }) {
   return (
-    <div className="messageContents">
-      <MessageContext user={info.user} info={info.properties} />
-      <MessageContent id={info.id} content={info.content} />
-    </div>
+    <li className="cozySpace messageContentWrapper">
+      <div className="messageContents">
+        <MessageContext user={info.user} info={info.properties} />
+        <MessageContent id={info.id} content={info.content} />
+      </div>
+    </li>
   );
 }

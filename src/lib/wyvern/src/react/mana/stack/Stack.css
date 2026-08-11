@@ -50,15 +50,20 @@
 .stack[data-justify="stretch"] {
   justify-content: stretch;
 }
+[mana-type="scroll-menu"][data-align="center"],
 .stack[data-align="center"] {
   align-items: center;
 }
+[mana-type="scroll-menu"][data-align="space-even"],
 .stack[data-align="space-even"] {
   align-items: space-evenly;
 }
+[mana-type="scroll-menu"][data-align="end"],
+
 .stack[data-align="end"] {
   align-items: end;
 }
+[mana-type="scroll-menu"][data-align="start"],
 .stack[data-align="start"] {
   align-items: start;
 }

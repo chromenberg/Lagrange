@@ -3,3 +3,11 @@
   margin-left: 54px;
   padding-inline-start: 4px;
 }
+
+.cozySpace {
+  margin-bottom: var(--padding-sm);
+}
+
+.messageContentWrapper {
+  
+}

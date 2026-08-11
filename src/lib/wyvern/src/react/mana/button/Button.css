@@ -5,9 +5,9 @@
 }
 .metroButton,
 .manaButton {
-    /*border: solid 1px var(--border-subtle);*/
     transition: 0.1s;
-   
+    border: solid 1px var(--border-subtle);
+    box-sizing: content-box;
     border-radius: var(--button-rounding-default);
     align-items: baseline;
     justify-content: center;
@@ -15,7 +15,7 @@
     user-select: none;
     cursor: pointer;
     position: relative;
-    border: 0px solid transparent;
+    /*border: 0px solid transparent;*/
     > div {
       flex: 1;
     }

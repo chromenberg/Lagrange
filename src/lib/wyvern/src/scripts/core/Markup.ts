@@ -46,3 +46,30 @@ Markup should be stored as follows
   },
 ]
 */
+
+const markupRules = {
+  bold: {
+    priority: 0,
+    rule: /\*\*(.+?)\*\*(?!\*)/gm,
+    sub: "<b>$1</b>",
+  },
+  italic: {
+    priority: 1,
+    rule: /\*(.+?)\*(?!\*)/gm,
+    sub: "<i>$1</i>",
+  },
+};
+
+export class MarkupText {
+  private text: string;
+  constructor(text: string) {
+    this.text = text;
+  }
+
+  public match() {
+    Object.values(markupRules).forEach((rule) => {
+      this.text = this.text.replace(rule.rule, rule.sub);
+    });
+    return this.text
+  }
+}
