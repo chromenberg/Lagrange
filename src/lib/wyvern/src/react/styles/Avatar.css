@@ -1,0 +1,11 @@
+.avatarIcon,
+.avatarLarge {
+  border-radius: var(--radius-round);
+  contain: paint;
+}
+
+.avatarIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,4 +1,3 @@
-import { Suspense } from "react"
 import useUserInfo from "../../stores/user-store/UserStore"
 
 export default function ClientUsername() {

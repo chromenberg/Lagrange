@@ -1,10 +1,11 @@
-import { useEffect } from "react";
-import useUserInfo from "../../stores/user-store/UserStore";
+import { useContext, useEffect } from "react";
 import { populate } from "../../core/SetPlaceholders";
 import { attachments, routes } from "../../client/Routes";
+import UserContext from "../UserContext";
+import("../../../react/styles/Avatar.css")
 
 export default function ClientAvatar() {
-  const clientInfo = useUserInfo();
+  const clientInfo = useContext(UserContext)
   useEffect(() => {
     console.log(
       "User info:",
@@ -20,10 +21,10 @@ export default function ClientAvatar() {
     clientInfo.avatar === null || !clientInfo.avatar ? (
       <div>no</div>
     ) : (
-      <img
-        src={`${attachments + populate(routes.user_avatars, clientInfo.id as string, clientInfo.avatar)}`}
+      <img width={40} height={40}
+        src={`${attachments + populate(routes.user_avatars, clientInfo.id as string, clientInfo.avatar)}?size=64`}
       ></img>
     );
 
-  return <div>{conditional}</div>;
+  return <div className="avatarIcon">{conditional}</div>;
 }
