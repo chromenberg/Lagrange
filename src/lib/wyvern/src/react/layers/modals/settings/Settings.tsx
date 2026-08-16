@@ -14,10 +14,8 @@ import("../styles/SettingsControlButton.css");
 
 export default function SettingsModal({
   state,
-  data, // FIX: Temporary solution
 }: {
   state?: (arg: boolean) => void;
-  data: WeakObj;
 }) {
   return (
     <ModalView>
@@ -40,12 +38,15 @@ export default function SettingsModal({
               <div className="menuHeader alignCenter">
                 <Stack fillAll align="center">
                   <div className="autoRight settingsCategoryTitle">Account</div>
-                  <CloseButton callback={()=>{state?.(false)}} style="subtle" />
+                  <CloseButton
+                    callback={() => {
+                      state?.(false);
+                    }}
+                    style="subtle"
+                  />
                 </Stack>
               </div>
-              <div
-        
-              >
+              <div>
                 <div className="settingsContent">
                   <ScrollMenu direction="vertical">
                     <div className="panel_settings">
@@ -54,16 +55,20 @@ export default function SettingsModal({
                           <header>Account Info</header>
                           {/*<Divider padding="xsmall" color="subtle" thickness="vthin" direction="horizontal"/>*/}
                           <div>
-                            {/* 
-                              User info jargon, each item is a settings control group component
-                              (Label -> Control [Value, Input])
-                            */}
-                            <Stack direction="vertical" gap="medium" className="categoryContents_settings">
-                              <UsernameItem data={data} />
-                              <DisplayNameItem data={data} />
-                              <UserIDItem data={data} />
+                            {/*
+                                User info jargon, each item is a settings control group component
+                                (Label -> Control [Value, Input])
+                              */}
+                            <Stack
+                              direction="vertical"
+                              gap="medium"
+                              className="categoryContents_settings"
+                            >
+                              <UsernameItem />
+                              <DisplayNameItem />
+                              <UserIDItem />
                               {/* Mark new section */}
-                              <Divider gap="medium" /> 
+                              <Divider gap="medium" />
                               {/* Mark new section */}
                               <AvatarItem />
                             </Stack>

@@ -1,5 +1,5 @@
-
 import ClientAvatar from "../../../../../scripts/hooks/components/ClientAvatar";
+
 // import type { WeakObj } from "../../../../../scripts/types/WeakObj";
 // import TextButton from "../../../../mana/button/ManaTextButton";
 // import FileUploadButton from "../../../../mana/file-upload/FileUploadButton";
@@ -8,9 +8,7 @@ import SettingsControl from "../../../../mana/settings/SettingsControl";
 import Stack from "../../../../mana/stack/Stack";
 import AvatarModalInv from "../components/AvatarModalInv";
 
-
 export default function AvatarItem() {
-  
   return (
     <Stack align="stretch" justify="start" direction="vertical">
       <SettingsControl>
