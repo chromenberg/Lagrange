@@ -1,4 +1,4 @@
-import type { Markup } from "../../../scripts/types/Markup";
+// import type { Markup } from "../../../scripts/types/Markup";
 import MessageContent from "./MessageContent";
 import MessageContext from "./MessageContext";
 import("./styles/Message.css")
@@ -14,7 +14,7 @@ interface MessageData {
   properties: {
     timestamp: Date;
   };
-  content: Markup;
+  content: string;
   channel: string;
   id: string;
 }

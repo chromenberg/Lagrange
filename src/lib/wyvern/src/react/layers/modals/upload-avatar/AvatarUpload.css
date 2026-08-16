@@ -59,6 +59,8 @@
   aspect-ratio: 1;
   width: 100%;
   position: relative;
+}
+.imageUploadOption {
   background-color: var(--background-modifier-normal);
 }
 .imageUploadOption:before,

@@ -6,7 +6,7 @@ import { populate } from "../../scripts/core/SetPlaceholders";
 import { useCurrentRoute } from "../../scripts/stores/current-store/CurrentStore";
 import type { InputKeybind } from "../components/InputBox/InputBox.types";
 import Message from "../non-mana/message/Message";
-import { createMarkupItem } from "../../scripts/core/Markup";
+// import { createMarkupItem } from "../../scripts/core/Markup";
 import ScrollMenu from "../mana/scroll-menu/ScrollMenu";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (
@@ -37,7 +37,7 @@ const Raine = {
 function makeMessage(content: string) {
   return {
     channel: "384752398457",
-    content: [createMarkupItem(content, ["none"])],
+    content: content,
     properties: {
       timestamp: new Date()
     },
