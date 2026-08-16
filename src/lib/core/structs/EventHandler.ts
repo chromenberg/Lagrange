@@ -70,4 +70,8 @@ export class EventHandler {
     this.emitter.off(event, listener);
     this.callLeave();
   }
+
+  public emit(event: string, ...data: any[]) {
+    this.emit(event, ...data)
+  }
 }
