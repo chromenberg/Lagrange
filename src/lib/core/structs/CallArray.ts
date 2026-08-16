@@ -1,6 +1,10 @@
 import { Logger } from "../logging/Logger.js";
 import type { VoidCallback } from "../types/Types.js";
 
+
+/**
+ * Stores an array of functions that can be called all in one time
+ */
 export class CallArray<V extends VoidCallback = VoidCallback> {
   private _items: V[] = [];
   constructor() {}
@@ -9,7 +13,6 @@ export class CallArray<V extends VoidCallback = VoidCallback> {
   }
   public push(item: V): V {
     this._items.push(item);
-    // Logger.sendLog(1, ["CallArray"], "Call array length is now", this.length)
     return item;
   }
 
@@ -17,9 +20,13 @@ export class CallArray<V extends VoidCallback = VoidCallback> {
     return this._items.length;
   }
 
-  public async callAll(...data: any[]): Promise<void> {
+  public callAll(...data: any[]): void {
     this._items.forEach((fn) => {
       fn(...data);
     });
+  }
+
+  public clear(): void {
+    this._items = []
   }
 }
