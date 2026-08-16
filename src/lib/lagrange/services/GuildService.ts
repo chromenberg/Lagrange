@@ -7,7 +7,7 @@ import type { GuildCreateObj } from "../interfaces/Guilds.js";
 import { Atlas } from "../../../_Init.js";
 import type { GuildData } from "../../core/types/FeatureTypes.js";
 import type { Snowflake } from "../../core/types/Types.js";
-import { GatewayEmitter } from "../modules/gateway/Gateway.js";
+// import { GatewayEmitter } from "../modules/gateway/Gateway.js";
 import type { Server } from "ws";
 
 export class GuildService {

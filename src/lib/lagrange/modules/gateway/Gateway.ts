@@ -39,6 +39,15 @@ export class Gateway {
     console.log("started gateway")
   }
 
+  // -- Subscribe --
+
+  public guildSubscribe(guildID: Snowflake, listener: VoidCallback) {
+    this._emitter._gSub(guildID, listener)
+  }
+
+  public channelSubscribe(guildID: Snowflake, channelID: Snowflake, listener: VoidCallback) {
+    this._emitter._cSub(guildID, channelID, listener)
+  }
   // -- Emitter Methods --
   
   public guildEvent(guildID: Snowflake, data: WeakObj) {

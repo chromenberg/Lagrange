@@ -1,7 +1,7 @@
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { eventPublisher } from "../../services/EventService.js";
 import type { ClientConnection } from "../gateway/Connection.js";
-import { GatewayEmitter } from "../gateway/Gateway.js";
+// import { GatewayEmitter } from "../gateway/Gateway.js";
 import {
   GatewayEvent,
   GatewayEventOpCodes,
@@ -14,18 +14,18 @@ eventPublisher.subscribe("MESSAGE_CREATE", (data) => {
 
 export function subscribeToMessages(guildChannel: any, sock: ClientConnection) {
   console.log(guildChannel.guild_id?.toString(), guildChannel.channel_id?.toString())
-  GatewayEmitter.channelSubscribe(
-    "MESSAGE_CREATE",
-    guildChannel.guild_id?.toString() as string,
-    guildChannel.channel_id?.toString() as string,
-    (msg: any) => {
-      sock.send(
-        JSON.stringify({
-          opCode: GatewayEventOpCodes.DISPATCH,
-          eventName: GatewayEventTypes.MESSAGE_CREATE,
-          data: msg,
-        }),
-      );
-    },
-  );
+  // GatewayEmitter.channelSubscribe(
+  //   "MESSAGE_CREATE",
+  //   guildChannel.guild_id?.toString() as string,
+  //   guildChannel.channel_id?.toString() as string,
+  //   (msg: any) => {
+  //     sock.send(
+  //       JSON.stringify({
+  //         opCode: GatewayEventOpCodes.DISPATCH,
+  //         eventName: GatewayEventTypes.MESSAGE_CREATE,
+  //         data: msg,
+  //       }),
+  //     );
+  //   },
+  // );
 }
