@@ -3,7 +3,11 @@ import { AtlasEvents } from "../../../atlas/AtlasEvents.js";
 
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { EventHandler } from "../../../core/structs/EventHandler.js";
-import type { Snowflake, VoidCallback, WeakObj } from "../../../core/types/Types.js";
+import type {
+  Snowflake,
+  VoidCallback,
+  WeakObj,
+} from "../../../core/types/Types.js";
 
 const loc = ["LAGRANGE", "Gateway", "Events"];
 
@@ -70,6 +74,20 @@ export class EventSystem extends EventHandler {
   }
 
   public emitGuild(guildID: Snowflake, data: WeakObj) {
-    this.
+    this.emit(guildID, data);
+  }
+  public emitChannel(guildID: Snowflake, channelID: Snowflake, data: WeakObj) {
+    this.emit([guildID, channelID].join("-"), data);
+  }
+  public emitChannelEvent(
+    event: string,
+    guildID: Snowflake,
+    channelID: Snowflake,
+    data: WeakObj,
+  ) {
+    this.emit([event, guildID, channelID].join("-"), data);
+  }
+  public emitGuildEvent(event: string, guildID: Snowflake, data: WeakObj) {
+    this.emit([event, guildID].join("-"), data);
   }
 }
