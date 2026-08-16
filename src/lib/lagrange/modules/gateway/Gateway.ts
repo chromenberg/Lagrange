@@ -2,7 +2,7 @@ import { WebSocketServer } from "ws";
 import { eventPublisher } from "../../services/EventService.js";
 import { ClientConnections } from "./Connections.js";
 import "./GatewayPublisher.js";
-import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
+import { GatewayEventHello } from "../event-builders/Hello.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { ClientConnection } from "./Connection.js";
 import { GatewayPublisher } from "./GatewayPublisher.js";

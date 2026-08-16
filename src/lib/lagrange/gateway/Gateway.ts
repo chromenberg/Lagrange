@@ -7,7 +7,7 @@ import {
   type GatewayEventPayload,
 } from "../modules/events/GatewayEvents.js";
 import { GatewayEventReady } from "./events/send/Ready.js";
-import { GatewayEventHello } from "./events/send/Hello.js";
+import { GatewayEventHello } from "../modules/event-builders/Hello.js";
 import { LogLevel, Logger } from "../../core/logging/Logger.js";
 import { TypedReadWriteBuffer } from "../modules/Buffer.js";
 import { GatewayEventIdentify } from "./events/receive/Identify.js";
