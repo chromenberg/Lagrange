@@ -1,3 +1,4 @@
+import type EventEmitter from "events";
 import type { Snowflake, VoidCallback } from "../types/Types.js";
 import { Collection } from "./Collection.js";
 
@@ -14,9 +15,10 @@ type CountdownItem<T> = {
 export class CountdownMap<T> {
   private _data: Collection<symbol, CountdownItem<T>> = new Collection();
   private timeout: number;
-
-  constructor(timeout: number) {
+  private _emitter?: EventEmitter;
+  constructor(timeout: number, emitter?: EventEmitter) {
     this.timeout = timeout;
+    this._emitter = emitter;
   }
 
   public add(item: T, callback?: VoidCallback): [symbol, CountdownItem<T>] {
@@ -26,6 +28,7 @@ export class CountdownMap<T> {
       callback,
       timer: setTimeout(() => {
         this._data.get(key)?.callback?.(); // pre delete hook
+        this._emitter?.emit("GATEWAY_DISCONNECT", item)
         this.pop(key);
       }, this.timeout),
     });
