@@ -11,6 +11,7 @@ import type {
 
 const loc = ["LAGRANGE", "Gateway", "Events"];
 
+
 export class EventSystem extends EventHandler {
   constructor() {
     super();
@@ -90,4 +91,5 @@ export class EventSystem extends EventHandler {
   public emitGuildEvent(event: string, guildID: Snowflake, data: WeakObj) {
     this.emit([event, guildID].join("-"), data);
   }
+  
 }

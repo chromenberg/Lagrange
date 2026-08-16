@@ -7,7 +7,7 @@ import type { GuildCreateObj } from "../interfaces/Guilds.js";
 import { Atlas } from "../../../_Init.js";
 import type { GuildData } from "../../core/types/FeatureTypes.js";
 import { SQLDatabase } from "../../atlas/modules/sql/SQL.js";
-import { GatewayEmitter } from "../modules/gateway/Gateway.js";
+import { GatewayEmitter } from "../modules/gateway/Gateway2.js";
 
 export class InviteService {
   private readonly route: Route;

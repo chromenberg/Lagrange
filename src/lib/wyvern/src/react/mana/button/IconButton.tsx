@@ -23,7 +23,6 @@ export default function IconButton({
       callback={callback}
       manaType="icon-button"
       className={`manaIconButton${className ? " " + className : ""}`}
-
       data-button-style={style}
 
     >

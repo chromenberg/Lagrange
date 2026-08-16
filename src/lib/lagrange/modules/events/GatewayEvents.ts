@@ -1,3 +1,4 @@
+import type { GatewayEventIdentify } from "./Identify.js";
 
 export interface GatewayEventPayload {
   opCode?: number
@@ -5,6 +6,9 @@ export interface GatewayEventPayload {
   sequenceNumber?: number,
   eventType?: string
 }
+
+export type GatewayEventType = GatewayEventPayload | GatewayEventIdentify
+
 export class GatewayEvent {
   private payload: GatewayEventPayload;
   constructor(payload:GatewayEventPayload) {

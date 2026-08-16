@@ -66,6 +66,8 @@ export class GuildService extends AtlasService {
 
     // Add the owner of the server into guild members
     this.addGuildMember(data.id, data.owner_id);
+
+    
   }
 
   public toUnavailableGuild(id: bigint | Snowflake): UnavailableID {
