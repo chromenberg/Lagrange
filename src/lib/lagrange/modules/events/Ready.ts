@@ -3,7 +3,7 @@ import type {
   GuildChannel,
   ReadyUserObj,
 } from "../../../core/types/GatewayTypes.js";
-import { GatewayEventReady } from "../../gateway/events/send/Ready.js";
+import { GatewayEventReady } from "../event-builders/Ready.js";
 import { eventPublisher } from "../../services/EventService.js";
 import { initEvents } from "../event-helpers/ReadyHelper.js";
 import { GatewayEventTypes } from "./GatewayEvents.js";

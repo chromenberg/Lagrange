@@ -6,12 +6,15 @@ import { SQLDatabase } from "./modules/sql/SQL.js";
 import { exec } from "child_process";
 import type { Table } from "./tables/TableBuilder.js";
 import { nextTick } from "process";
+import { EventHandler } from "../core/structs/EventHandler.js";
+import type { VoidCallback } from "../core/types/Types.js";
 
 export class Atlas {
   private _client: AtlasClient;
   private _requests: RequestManager;
   private _sqlClient: SQLDatabase;
   private _mountQueue: Table[] = [];
+  private _emitter = new EventHandler();
   constructor() {
     Logger.sendLog(LogLevel.Info, ["ATLAS"], "Initializing databases");
     this._client = new AtlasClient();
@@ -21,16 +24,34 @@ export class Atlas {
     );
     this._requests = new RequestManager(this);
 
-    process.emit("atlaspreinit", this)
-    
+    process.emit("atlaspreinit", this);
+
     nextTick(() => {
-      // once again i dont really care if this is a full path
       this._client.onPoolReady(() => {
         this.init();
-    })
+      });
     });
   }
+  public emit(event: string, ...data: any[]) {
+    Logger.sendLog(LogLevel.Verbose, ["ATLAS"], `Emitting event ${event} with data:`, ...data);
+    this._emitter.emit(event, ...data);
+  }
 
+  public prepend(event: string, callback: VoidCallback): this {
+    this._emitter.prepend(event, callback);
+    return this;
+  }
+  
+  public on(event: string, callback: VoidCallback): this {
+    this._emitter.on(event, callback);
+    return this;
+  }
+
+  public off(event: string, callback: VoidCallback): this {
+    this._emitter.off(event, callback);
+    return this;
+  }
+  
   public get client(): AtlasClient {
     return this._client;
   }
@@ -45,14 +66,14 @@ export class Atlas {
   }
 
   public mount(table: Table): this {
-    this._mountQueue.push()
+    this._mountQueue.push();
     try {
       Logger.sendLog(
         LogLevel.Info,
         ["ATLAS", "init()"],
         `Mounting table "${table.name}"`,
       );
-      this.sqlClient.exec(table.toString())
+      this.sqlClient.exec(table.toString());
     } catch (e) {
       Logger.sendLog(
         LogLevel.Error,
@@ -70,95 +91,6 @@ export class Atlas {
     if (!pair) return;
     const resource = pair.resource;
     let failureCount: number = 0;
-
-    // // User table
-    // try {
-    //   Logger.sendLog(
-    //     LogLevel.Info,
-    //     ["ATLAS", "init()"],
-    //     "Setting up users table",
-    //   );
-    //   await this.sqlClient.run`
-    //     CREATE TABLE IF NOT EXISTS users (
-    //       user_id INTEGER PRIMARY KEY,
-    //       email TEXT NOT NULL,
-    //       password TEXT NOT NULL,
-    //       token TEXT NOT NULL,
-    //       username TEXT NOT NULL,
-    //       display_name TEXT
-    //     );`;
-    // } catch (e) {
-    //   Logger.sendLog(
-    //     LogLevel.Error,
-    //     ["ATLAS", "init()"],
-    //     "ATLAS failed to initialize the user table\n",
-    //     e,
-    //     "\n",
-    //   );
-    //   failureCount += 1;
-    // }
-
-    // guilds table
-    // try {
-    //   Logger.sendLog(
-    //     LogLevel.Info,
-    //     ["ATLAS", "init()"],
-    //     "Setting up guilds table",
-    //   );
-    //   await this.sqlClient.run`
-    //     CREATE TABLE IF NOT EXISTS guilds (
-    //         guild_id INTEGER PRIMARY KEY,
-    //         owner_id INTEGER NOT NULL,
-    //         guild_name TEXT NOT NULL
-    //     );`;
-    // } catch (e) {
-    //   Logger.sendLog(
-    //     LogLevel.Error,
-    //     ["ATLAS", "init()"],
-    //     "ATLAS failed to initialize the guild table\n",
-    //     e,
-    //     "\n",
-    //   );
-    //   failureCount += 1;
-    // }
-    // credentials
-    // try {
-    //   Logger.sendLog(LogLevel.Info, ["ATLAS", "init()"], "Setting up credentials table");
-    //   await this.sqlClient.run`
-    //         CREATE TABLE IF NOT EXISTS credentials (
-    //             user_id INTEGER PRIMARY KEY REFERENCES users(user_id),
-
-    //         );`
-    // } catch (e) {
-    //   Logger.sendLog(LogLevel.Error, ["ATLAS", "init()"], "ATLAS failed to initialize the credentials table\n", e, "\n");
-    //   failureCount += 1;
-    // }
-
-    // channels table
-    // try {
-    //   Logger.sendLog(
-    //     LogLevel.Info,
-    //     ["ATLAS", "init()"],
-    //     "Setting up channels table",
-    //   );
-    //   await this.sqlClient.run`
-    //     CREATE TABLE IF NOT EXISTS channels (
-    //         channel_id INTEGER PRIMARY KEY,
-    //         guild_id INTEGER NOT NULL,
-    //         channel_name TEXT NOT NULL,
-    //         channel_index INTEGER,
-    //         FOREIGN KEY (guild_id) REFERENCES guilds(guild_id) ON DELETE CASCADE
-    //     );`;
-    // } catch (e) {
-    //   Logger.sendLog(
-    //     LogLevel.Error,
-    //     ["ATLAS", "init()"],
-    //     "ATLAS failed to initialize the channel table\n",
-    //     e,
-    //     "\n",
-    //   );
-    //   failureCount += 1;
-    // }
 
     try {
       //? Is PK channel_id needed? message_id is always unique
@@ -190,59 +122,6 @@ export class Atlas {
       failureCount += 1;
     }
 
-    // try {
-    //   Logger.sendLog(
-    //     LogLevel.Info,
-    //     ["ATLAS", "init()"],
-    //     "Setting up roles table",
-    //   );
-    //   await this.sqlClient.run`
-    //           CREATE TABLE IF NOT EXISTS guild_roles (
-    //               role_id INTEGER PRIMARY KEY,
-    //               guild_id INTEGER,
-    //               role_name text,
-    //               role_color INTEGER,
-    //               role_index INTEGER,
-    //               permissions BINARY,
-    //               hoist BOOL,
-    //               mentionable BOOL,
-    //               FOREIGN KEY (guild_id) REFERENCES guilds(guild_id)
-    //           );
-    //     `;
-    // } catch (e) {
-    //   Logger.sendLog(
-    //     LogLevel.Error,
-    //     ["ATLAS", "init()"],
-    //     "ATLAS failed to initialize the roles table\n",
-    //     e,
-    //     "\n",
-    //   );
-    //   failureCount += 1;
-    // }
-
-    // try {
-    //   Logger.sendLog(
-    //     LogLevel.Info,
-    //     ["ATLAS", "init()"],
-    //     "Setting up guild members table",
-    //   );
-    //   await this.sqlClient.run`
-    //     CREATE TABLE IF NOT EXISTS guild_members (
-    //         user_id INTEGER REFERENCES users(user_id),
-    //         guild_id INTEGER REFERENCES guilds(guild_id),
-    //         PRIMARY KEY (user_id, guild_id)
-    //     );`;
-    // } catch (e) {
-    //   Logger.sendLog(
-    //     LogLevel.Error,
-    //     ["ATLAS", "init()"],
-    //     "ATLAS failed to initialize the guild members table\n",
-    //     e,
-    //     "\n",
-    //   );
-    //   failureCount += 1;
-    // }
-
     if (failureCount > 0) {
       Logger.sendLog(
         LogLevel.Critical,
@@ -267,5 +146,3 @@ process.on("exit", (e) => {
   // exec("cp ./db/prod/server.sqlite ./db/dev/server.sqlite").disconnect()
   process.exit(e);
 });
-
-

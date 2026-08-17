@@ -23,22 +23,27 @@ process.once("atlaspreinit", (a) => {
         {
           name: "nickname",
           type: "TEXT",
+          required: false,
         },
         {
           name: "bio",
-          type: "TEXT"
+          type: "TEXT",
+          required: false,
         },
         {
           name: "pronouns",
-          type: "TEXT"
+          type: "TEXT",
+          required: false,
         },
         {
           name: "banner_hash",
           type: "TEXT",
+          required: false,
         },
         {
           name: "avatar_hash",
           type: "TEXT",
+          required: false,
         },
       ],
       shared_pk: ["guild_id", "user_id"],

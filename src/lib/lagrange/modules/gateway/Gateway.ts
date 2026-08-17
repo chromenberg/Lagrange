@@ -1,90 +1,122 @@
+import EventEmitter from "events";
+import type { Snowflake, VoidCallback, WeakObj } from "../../../core/types/Types.js";
+import { nextTick } from "process";
+import { CallArray } from "../../../core/structs/CallArray.js";
+import { EventSystem } from "./EventHandler.js";
 import { WebSocketServer } from "ws";
-import { eventPublisher } from "../../services/EventService.js";
-import { ClientConnections } from "./Connections.js";
-import "./GatewayPublisher.js";
-import { GatewayEventHello } from "../../gateway/events/send/Hello.js";
-import { Logger, LogLevel } from "../../../core/logging/Logger.js";
-import { ClientConnection } from "./Connection.js";
-import { GatewayPublisher } from "./GatewayPublisher.js";
-import { PubSub } from "../../../core/pubsub/PubSub.js";
-import type { EventOrOpcode } from "../../../core/types/GatewayTypes.js";
-import { nextTick } from "node:process";
-import "../events/EventAggregate.js"
 import { Config } from "../../Config.js";
-// Timeline
-// Client      | Server | Description
-// ------------|--------|------------
-// Connect     |        | Client connects to gateway
-//             | Hello  | Server reply with heartbeat info and ack (show gateway is up)
-// Heartbeat   |        | Send first heartbeat event
-// Identify    |        | Identify with token and client intents
-//             | Ready  | (ident valid) send client info [guilds, friends, dms]
-//             | Reauth | (ident invalid) reject client, request reconnect
-// Subscribe   |        | Listen to events that occur in a channel?
-// *ALT*       |        | Server subscribes using guilds internally instead
+import { ClientConnection } from "./Connection.js";
+import type { WebSocket } from "ws";
+import { ClientConnections } from "./Connections.js";
+import { GatewayEventHello } from "../event-builders/Hello.js";
+import type { GatewayEventTypes } from "../events/GatewayEvents.js";
+import type { KeyOfEvents } from "../../../core/types/GatewayTypes.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
+import { Registry } from "../../registries/LagrangeRegistry.js";
+import { Atlas } from "../../../../_Init.js";
 
-function getEvent(data: any, conn: any) {
 
-  if (data.opCode) {
-    eventPublisher.publish("OPCODE_" + data.opCode, { cli: conn, data: data });
-  }
+class ModuleLoader {
+  constructor() {}
 
-  if (data.eventType) {
-    eventPublisher.publish(data.eventType, { cli: conn, data: data });
-  }
-  
+  public load() {}
+
+  public unload() {}
 }
 
-// FIXME: gateway now sends a fixed number of servers regardless of account (which is not a good thing!)
 
+
+
+export class GatewayEventHandler {
+  
+}
 export class Gateway {
-  // private readonly pubsub: PubSub<any>;
-  private readonly socket: WebSocketServer;
-  private readonly _events: PubSub<EventOrOpcode>;
-  constructor(/* pubsub?: PubSub<any> */) {
-    this._events = new PubSub();
-    // this.pubsub = pubsub ? pubsub : new PubSub();
-    this.socket = new WebSocketServer({
+  private _eventPublisher: EventSystem;
+  private _gatewayEvents: EventEmitter;
+  private _socket: WebSocketServer;
+
+  constructor(eventPublisher?: EventSystem, gatewayEvents?: EventEmitter) {
+    this._eventPublisher = eventPublisher ?? new EventSystem()
+    this._gatewayEvents = gatewayEvents ?? new EventEmitter()
+    this._socket = new WebSocketServer({
       port: Config.Gateway.Socket.Port,
       host: "127.0.0.1",
     });
 
-    // TODO: Make this more simplified, add a method that is responsible for handling initializing connections
-    this.socket.on("connection", (conn) => {
-      // Create a client connection that will listen to the events needed
-      const socketClient = new ClientConnection(conn);
+    this.initConnectionHandler()
+    console.log("started gateway")
+    nextTick(() => {
+      Logger.sendLog(LogLevel.Success, ["LAGRANGE", "Gateway"], "Initialized")
+      process.emit("gatewayInit")
+    })
+  }
 
-      socketClient.on("message", (msg) => {
-        const data = JSON.parse(msg);
-        getEvent(data, socketClient);
-      });
+  // -- Subscribe --
 
-      // Connection ID for the socket
-      const socketID = ClientConnections.add(socketClient, () => {
-        socketClient.close();
-      });
-      socketClient.setID(socketID[0]);
+  public guildSubscribe(guildID: Snowflake, listener: VoidCallback) {
+    this._eventPublisher._gSub(guildID, listener)
+  }
 
-      // Ensure the hello event is sent only when everything is done
-      // to prevent the heartbeat refreshing the connection when no ID was set
-      nextTick(() => {
-        socketClient.send(new GatewayEventHello().toJSON());
-      });
+  public channelSubscribe(guildID: Snowflake, channelID: Snowflake, listener: VoidCallback) {
+    this._eventPublisher._cSub(guildID, channelID, listener)
+  }
+  // -- Emitter Methods --
+  
+  public guildEvent(guildID: Snowflake, eventName: string, data: WeakObj) {
+    this._eventPublisher.emitGuild(guildID, eventName, data)
+  }
+
+  public channelEvent(guildID: Snowflake, channelID: Snowflake, eventName: string, data: WeakObj) {
+    this._eventPublisher.emitChannel(guildID, channelID, eventName, data)
+  }
+  // -- WebSocket Methods --
+
+  // Sends the hello event to the client as it has connected to the gateway
+  private _hello(client: ClientConnection) {
+    nextTick(() => {
+      client.send(new GatewayEventHello().toJSON());
     });
-    process.emit("lagrangeInit");
-    Logger.sendLog(LogLevel.Success, ["LAGRANGE", "Gateway"], "Successfully Initialized")
   }
 
-  /*
-  Gets the gateways event emitter, this is used for events like identifying
-  */
-  public get events(): PubSub<EventOrOpcode> {
-    return this._events;
+  // Initializes a new client connection, starts the heartbeat loop and sends the hello event
+  private createClientObj(sock: WebSocket) {
+    const client = new ClientConnection(sock)
+
+    // Add to heartbeat loop
+    const socketID = ClientConnections.add(client, () => {
+      client.close();
+    });
+
+    // Give client its heartbeat ID
+    client.setID(socketID[0]);
+
+    // Send the hello event to the client
+    this._hello(client)
   }
 
-  public publish(eventName: keyof EventOrOpcode, data: any, ...args: any[]) {
-    this._events.publish(eventName, null, ...args);
+
+  
+  /**
+   * Adds a gateway event handler
+   * @param name 
+   * @param listener 
+   */
+  public addEvent(name: KeyOfEvents, listener: VoidCallback) {
+    console.log("bbbbb")
+    
+    this._gatewayEvents.on(name, listener)
+  }
+
+  public emitEvent(name: KeyOfEvents, ...data: any[]) {
+    console.log("aaaaa")
+    this._gatewayEvents.emit(name, ...data)
+  }
+  
+  // Init
+  
+  public initConnectionHandler() {
+    this._socket.on("connection", sock => {
+      this.createClientObj(sock)
+    })
   }
 }
-
-export const GatewayEmitter = new GatewayPublisher();

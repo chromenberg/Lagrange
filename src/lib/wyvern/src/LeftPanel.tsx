@@ -32,7 +32,7 @@ function UserCard() {
           
         </section>
         {/* FIX: temporary solution */}
-        {show && <SettingsModal key="settings" state={setShow} data={userInfo} />}
+        {show && <SettingsModal key="settings" state={setShow} />}
       </UserContext.Provider>
     </>
   )

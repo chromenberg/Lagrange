@@ -15,7 +15,7 @@ import { MessageService } from "./services/MessageService.js";
 import { GuildService } from "./services/GuildService.js";
 import { AuthService } from "./services/AuthService.js";
 import { UserService } from "./services/UserService.js";
-import { GatewayPublisher } from "./modules/gateway/GatewayPublisher.js";
+// import { GatewayPublisher } from "./modules/gateway/GatewayPublisher.js";
 import { Gateway } from "./modules/gateway/Gateway.js";
 import { InviteService } from "./services/InviteService.js";
 import { CDNService } from "./services/CDNService.js";
@@ -24,11 +24,11 @@ export const __atlas = new Atlas();
 
 export const __pubsub = new PubSub();
 export const __api = new Router();
-export let __gatewayEmitter: GatewayPublisher;
+// export let __gatewayEmitter: GatewayPublisher;
 // TODO: This is a weird way of doing it
 process.on("atlasInit", () => {
   console.log("ggdfgd")
-  __gatewayEmitter = new GatewayPublisher();
+  // __gatewayEmitter = new GatewayPublisher();
   console.log()
 });
 export function initGateway() {

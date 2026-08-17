@@ -215,7 +215,7 @@ export class UserService extends AtlasService {
       ON guild_members.guild_id = guilds.guild_id
       JOIN channels
       ON guilds.guild_id = channels.guild_id
-      WHERE users.token = ${token};`;
+      WHERE users.token = ${token} AND guild_members.user_id = users.user_id;`;
   }
 
   public async getGuildChannelsForID(id: Snowflake) {

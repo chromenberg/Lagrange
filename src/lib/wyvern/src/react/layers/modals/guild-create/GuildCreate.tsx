@@ -29,7 +29,8 @@ export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void})
   const token = useToken();
   return (
     <ModalView>
-      <Modal height="200px" width="400px" ref={modalRef} style="modal">
+      <div className="modalContainerInner">
+      <Modal classes="modalType1" ref={modalRef} style="modal">
         <div className="guildCreateModal">
           <div
             style={{
@@ -79,7 +80,8 @@ export default function CreateGuildModal({state}:{state?: (arg: boolean)=>void})
             </ButtonGroup>
           </div>
         </div>
-      </Modal>
+        </Modal>
+      </div>
     </ModalView>
   );
 }

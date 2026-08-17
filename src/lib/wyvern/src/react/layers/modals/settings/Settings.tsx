@@ -1,4 +1,3 @@
-import type { WeakObj } from "../../../../scripts/types/WeakObj";
 import CloseButton from "../../../mana/button/subtypes/Close";
 import Divider from "../../../mana/divider/Divider";
 import ScrollMenu from "../../../mana/scroll-menu/ScrollMenu";
