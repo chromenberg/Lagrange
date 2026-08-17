@@ -11,7 +11,6 @@ import type {
 
 const loc = ["LAGRANGE", "Gateway", "Events"];
 
-
 export class EventSystem extends EventHandler {
   constructor() {
     super();
@@ -64,21 +63,26 @@ export class EventSystem extends EventHandler {
     channelID: Snowflake,
     listener: VoidCallback,
   ) {
-    this.channelSub("", guildID, channelID, listener);
+    this.on([guildID, channelID].join("-"), listener);
   }
   public _gSub(guildID: Snowflake, listener: VoidCallback) {
-    this.guildSub("", guildID, listener);
+    this.on(guildID, listener);
   }
 
   public _offGSub(guildID: Snowflake, listener: VoidCallback) {
     this.off(guildID, listener);
   }
 
-  public emitGuild(guildID: Snowflake, data: WeakObj) {
-    this.emit(guildID, data);
+  public emitGuild(guildID: Snowflake, eventName: string, data: WeakObj) {
+    this.emit(guildID, eventName, data);
   }
-  public emitChannel(guildID: Snowflake, channelID: Snowflake, data: WeakObj) {
-    this.emit([guildID, channelID].join("-"), data);
+  public emitChannel(
+    guildID: Snowflake,
+    channelID: Snowflake,
+    eventName: string,
+    data: WeakObj,
+  ) {
+    this.emit([guildID, channelID].join("-"), eventName, data);
   }
   public emitChannelEvent(
     event: string,
@@ -91,5 +95,4 @@ export class EventSystem extends EventHandler {
   public emitGuildEvent(event: string, guildID: Snowflake, data: WeakObj) {
     this.emit([event, guildID].join("-"), data);
   }
-  
 }
