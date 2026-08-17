@@ -65,6 +65,11 @@ export class ClientConnection {
 
   // Handlers
 
+
+  /**
+   * Initializes the client to recieve events from the gateway
+   * @param guilds 
+   */
   private initClientEvents(guilds: Guild[]) {
     const guildsMap = guilds.flatMap((guild) => [
       [guild.id, guild.channels.flatMap((channel) => [channel.id])],
@@ -86,8 +91,13 @@ export class ClientConnection {
     });
   }
 
+  /**
+   * Handles the identify message from the client
+   * @param msg 
+   */
   private handleIdentify(msg: GatewayEventIdentify) {
     this.#token = msg.data.token;
+    // Get the users data from the token sent in the request
     Atlas.requests.users.getUserData(msg.data.token).then((user) => {
       if (!user) {
         // TODO: send identify reject stuff
@@ -97,14 +107,20 @@ export class ClientConnection {
     });
   }
 
+  /**
+   * Handles sending the ready event to the client, adding the needed events to connection
+   * @param user 
+   */
   private handleReady(user: WeakObj) {
     this.initClientEvents(user["guilds"]);
     this.send(new GatewayEventReady().setData(user).toJSON());
   }
 
+  /**
+   * Handles sending the heartbeat back to the client and refreshes its autodisconnect
+   */
   private handleHeartbeat() {
     ClientConnections.refresh(this.id);
-
     // Respond
     this.send(
       JSON.stringify({

@@ -6,7 +6,6 @@ import {
   initGateway,
   __pubsub,
   __atlas,
-  __gatewayEmitter,
 } from "./lib/lagrange/LagrangeInit.js";
 import "./lib/atlas/tables/TableAggregate.js"
 
@@ -31,4 +30,3 @@ export const Atlas = __atlas;
 
 export const PubSub = __pubsub;
 export const Gateway = initGateway();
-export const GatewayEmitter = __gatewayEmitter;

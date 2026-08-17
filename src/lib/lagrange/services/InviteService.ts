@@ -7,7 +7,7 @@ import type { GuildCreateObj } from "../interfaces/Guilds.js";
 import { Atlas } from "../../../_Init.js";
 import type { GuildData } from "../../core/types/FeatureTypes.js";
 import { SQLDatabase } from "../../atlas/modules/sql/SQL.js";
-import { GatewayEmitter } from "../modules/gateway/Gateway2.js";
+// import { GatewayEmitter } from "../modules/gateway/Gateway2.js";
 
 export class InviteService {
   private readonly route: Route;
@@ -39,10 +39,10 @@ export class InviteService {
         .then(() => {
           if (!inv.guild_id?.toString()) return;
 
-          GatewayEmitter.getGuild(inv.guild_id?.toString())?.publish(
-            "GUILD_MEMBER_ADD",
-            atob(req.headers.authorization?.split(".")[0] ?? ""),
-          );
+          // GatewayEmitter.getGuild(inv.guild_id?.toString())?.publish(
+          //   "GUILD_MEMBER_ADD",
+          //   atob(req.headers.authorization?.split(".")[0] ?? ""),
+          // );
         });
 
       
