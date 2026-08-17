@@ -4,6 +4,7 @@ import type { Atlas } from "../../AtlasManager.js";
 import { AtlasDB } from "../../Configs/Config.js";
 import { SnowflakeNode, WorkerIDs } from "../snowflake/Snowflake.js";
 import { AtlasService } from "../client/AtlasChild.js";
+import { AtlasEvents } from "../../AtlasEvents.js";
 
 export class ChannelService extends AtlasService {
   protected snowflake: SnowflakeNode;
@@ -22,10 +23,14 @@ export class ChannelService extends AtlasService {
           startEpoch: AtlasDB.Snowflake.StartEpoch,
         });
   }
+  
   public async newChannel(channelData: ChannelData, guildID: Snowflake) {
     channelData.id = this.snowflake.GenerateID().toString();
     this.parent.sqlClient
       .run`INSERT INTO channels VALUES (${BigInt(channelData.id)}, ${BigInt(guildID)}, ${channelData.name}, ${channelData.channel_index});`;
+    
+    // this.parent.emit(AtlasEvents.channelCreate, guildID, channelData.id)
+    
     return channelData
   }
 
