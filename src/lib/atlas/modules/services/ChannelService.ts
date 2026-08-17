@@ -27,7 +27,7 @@ export class ChannelService extends AtlasService {
   public async newChannel(channelData: ChannelData, guildID: Snowflake) {
     channelData.id = this.snowflake.GenerateID().toString();
     this.parent.sqlClient
-      .run`INSERT INTO channels VALUES (${BigInt(channelData.id)}, ${BigInt(guildID)}, ${channelData.name}, ${channelData.channel_index});`;
+      .run`INSERT INTO channels VALUES (${BigInt(channelData.id)}, ${BigInt(guildID)}, ${channelData.name}, ${channelData.channel_index}, null, null, null);`;
     
     // this.parent.emit(AtlasEvents.channelCreate, guildID, channelData.id)
     
