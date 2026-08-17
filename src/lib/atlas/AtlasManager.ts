@@ -32,7 +32,16 @@ export class Atlas {
       });
     });
   }
+  public emit(event: string, ...data: any[]) {
+    Logger.sendLog(LogLevel.Verbose, ["ATLAS"], `Emitting event ${event} with data:`, ...data);
+    this._emitter.emit(event, ...data);
+  }
 
+  public prepend(event: string, callback: VoidCallback): this {
+    this._emitter.prepend(event, callback);
+    return this;
+  }
+  
   public on(event: string, callback: VoidCallback): this {
     this._emitter.on(event, callback);
     return this;
