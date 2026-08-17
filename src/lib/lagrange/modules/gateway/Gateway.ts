@@ -9,6 +9,11 @@ import { ClientConnection } from "./Connection.js";
 import type { WebSocket } from "ws";
 import { ClientConnections } from "./Connections.js";
 import { GatewayEventHello } from "../event-builders/Hello.js";
+import type { GatewayEventTypes } from "../events/GatewayEvents.js";
+import type { KeyOfEvents } from "../../../core/types/GatewayTypes.js";
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
+import { Registry } from "../../registries/LagrangeRegistry.js";
+import { Atlas } from "../../../../_Init.js";
 
 class ModuleLoader {
   constructor() {}
@@ -25,11 +30,13 @@ export class GatewayEventHandler {
   
 }
 export class Gateway {
-  private _emitter: EventSystem
+  private _eventPublisher: EventSystem;
+  private _gatewayEvents: EventEmitter;
   private _socket: WebSocketServer;
 
-  constructor() {
-    this._emitter = new EventSystem()
+  constructor(eventPublisher?: EventSystem, gatewayEvents?: EventEmitter) {
+    this._eventPublisher = eventPublisher ?? new EventSystem()
+    this._gatewayEvents = gatewayEvents ?? new EventEmitter()
     this._socket = new WebSocketServer({
       port: Config.Gateway.Socket.Port,
       host: "127.0.0.1",
@@ -42,18 +49,21 @@ export class Gateway {
   // -- Subscribe --
 
   public guildSubscribe(guildID: Snowflake, listener: VoidCallback) {
-    this._emitter._gSub(guildID, listener)
+    this._eventPublisher._gSub(guildID, listener)
   }
 
   public channelSubscribe(guildID: Snowflake, channelID: Snowflake, listener: VoidCallback) {
-    this._emitter._cSub(guildID, channelID, listener)
+    this._eventPublisher._cSub(guildID, channelID, listener)
   }
   // -- Emitter Methods --
   
-  public guildEvent(guildID: Snowflake, data: WeakObj) {
-    this._emitter.emitGuild(guildID, data)
+  public guildEvent(guildID: Snowflake, eventName: string, data: WeakObj) {
+    this._eventPublisher.emitGuild(guildID, eventName, data)
   }
 
+  public channelEvent(guildID: Snowflake, channelID: Snowflake, eventName: string, data: WeakObj) {
+    this._eventPublisher.emitChannel(guildID, channelID, eventName, data)
+  }
   // -- WebSocket Methods --
 
   // Sends the hello event to the client as it has connected to the gateway
@@ -78,6 +88,21 @@ export class Gateway {
     // Send the hello event to the client
     this._hello(client)
   }
+
+  /**
+   * Adds a gateway event handler
+   * @param name 
+   * @param listener 
+   */
+  public addEvent(name: KeyOfEvents, listener: VoidCallback) {
+    this._gatewayEvents.on(name, listener)
+  }
+
+  public emitEvent(name: KeyOfEvents, ...data: any[]) {
+    this._gatewayEvents.emit(name, ...data)
+  }
+  
+  // Init
   
   public initConnectionHandler() {
     this._socket.on("connection", sock => {
@@ -85,3 +110,21 @@ export class Gateway {
     })
   }
 }
+
+process.on("atlasInit", () => {
+  Logger.sendLog(
+    LogLevel.Info,
+    ["LAGRANGE", "Gateway", "EventManager"],
+    "ATLAS init signal found, populating Gateway Publisher",
+  );
+  Atlas.requests.guilds.getAllGuildChannels().then((res) => {
+    res?.forEach((pair) => {
+      // convert the guild id into a string as we cant serialize bigints
+      const idString = pair.guild_id?.toString();
+      const channelID = pair.channel_id?.toString();
+      if (!idString || !channelID) return; // check if string is undefined
+
+      Registry.fetch("inverseChannelMap")?.set(channelID, idString);
+    });
+  })
+})
