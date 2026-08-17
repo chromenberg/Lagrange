@@ -8,42 +8,13 @@ import type {
   VoidCallback,
   WeakObj,
 } from "../../../core/types/Types.js";
+import { Registry } from "../../registries/LagrangeRegistry.js";
 
-const loc = ["LAGRANGE", "Gateway", "Events"];
+const loc = ["LAGRANGE", "Gateway", "Registry"];
 
 export class EventSystem extends EventHandler {
   constructor() {
     super();
-    Atlas.on(AtlasEvents.guildCreate, (guildID, ownerID) => {
-      // recieves the newly created guild and its id alongside the owner of the guild
-      // as the owner will always be the first member and joins alongside the guild
-      Logger.sendLog(
-        LogLevel.Verbose,
-        loc,
-        "syncing guilds [reason: guildCreate]",
-      );
-    });
-    Atlas.on(AtlasEvents.guildRemove, (guildID, ownerID) => {
-      Logger.sendLog(
-        LogLevel.Verbose,
-        loc,
-        "syncing guilds [reason: guildRemove]",
-      );
-    });
-    Atlas.on(AtlasEvents.channelCreate, (guildID, channelID) => {
-      Logger.sendLog(
-        LogLevel.Verbose,
-        loc,
-        "syncing channels [reason: channelCreate]",
-      );
-    });
-    Atlas.on(AtlasEvents.channelRemove, (guildID, channelID) => {
-      Logger.sendLog(
-        LogLevel.Verbose,
-        loc,
-        "syncing channels [reason: channelRemove]",
-      );
-    });
   }
 
   public channelSub(
@@ -96,3 +67,58 @@ export class EventSystem extends EventHandler {
     this.emit([event, guildID].join("-"), data);
   }
 }
+
+process.on("atlasInit", () => {
+  Logger.sendLog(
+    LogLevel.Info,
+    ["LAGRANGE", "Gateway", "EventManager"],
+    "ATLAS init signal found, populating Gateway Publisher",
+  );
+  Atlas.requests.guilds.getAllGuildChannels().then((res) => {
+    res?.forEach((pair) => {
+      // convert the guild id into a string as we cant serialize bigints
+      const idString = pair.guild_id?.toString();
+      const channelID = pair.channel_id?.toString();
+      if (!idString || !channelID) return; // check if string is undefined
+
+      Registry.fetch("inverseChannelMap")?.set(channelID, idString);
+    });
+    Logger.sendLog(LogLevel.Verbose, loc, Registry.fetch("inverseChannelMap"))
+    Atlas.prepend(AtlasEvents.guildCreate, (ownerID,guildID) => {
+      // recieves the newly created guild and its id alongside the owner of the guild
+      // as the owner will always be the first member and joins alongside the guild
+      Logger.sendLog(
+        LogLevel.Verbose,
+        loc,
+        "syncing guilds [reason: guildCreate]",
+      );
+    });
+    Atlas.prepend(AtlasEvents.guildRemove, (ownerID, guildID) => {
+      Logger.sendLog(
+        LogLevel.Verbose,
+        loc,
+        "syncing guilds [reason: guildRemove]",
+      );
+      Registry.fetch("inverseChannelMap")?.forEach((value, key) => {
+        if (value === guildID) Registry.fetch("inverseChannelMap")?.delete(key);
+      });
+    });
+    Atlas.prepend(AtlasEvents.channelCreate, (ownerID, guildID, channelID) => {
+      Logger.sendLog(
+        LogLevel.Verbose,
+        loc,
+        "syncing channels [reason: channelCreate]",
+      );
+      Registry.fetch("inverseChannelMap")?.set(channelID, guildID);
+      Logger.sendLog(LogLevel.Verbose, loc, Registry.fetch("inverseChannelMap"))
+    });
+    Atlas.prepend(AtlasEvents.channelRemove, (ownerID, guildID, channelID) => {
+      Logger.sendLog(
+        LogLevel.Verbose,
+        loc,
+        "syncing channels [reason: channelRemove]",
+      );
+      Registry.fetch("inverseChannelMap")?.delete(channelID);
+    });
+  });
+});
