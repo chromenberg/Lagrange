@@ -72,6 +72,6 @@ export class EventHandler {
   }
 
   public emit(event: string, ...data: any[]) {
-    this.emit(event, ...data)
+    this.emitter.emit(event, ...data)
   }
 }

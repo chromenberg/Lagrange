@@ -15,6 +15,7 @@ import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import { Registry } from "../../registries/LagrangeRegistry.js";
 import { Atlas } from "../../../../_Init.js";
 
+
 class ModuleLoader {
   constructor() {}
 
@@ -44,6 +45,10 @@ export class Gateway {
 
     this.initConnectionHandler()
     console.log("started gateway")
+    nextTick(() => {
+      Logger.sendLog(LogLevel.Success, ["LAGRANGE", "Gateway"], "Initialized")
+      process.emit("gatewayInit")
+    })
   }
 
   // -- Subscribe --
@@ -95,10 +100,13 @@ export class Gateway {
    * @param listener 
    */
   public addEvent(name: KeyOfEvents, listener: VoidCallback) {
+    console.log("bbbbb")
+    
     this._gatewayEvents.on(name, listener)
   }
 
   public emitEvent(name: KeyOfEvents, ...data: any[]) {
+    console.log("aaaaa")
     this._gatewayEvents.emit(name, ...data)
   }
   

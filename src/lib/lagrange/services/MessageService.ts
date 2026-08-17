@@ -68,7 +68,7 @@ export class MessageService {
           const guildID: string =
             Registry.fetch("inverseChannelMap")?.get(channelID);
           console.log(`Sent in guild ${guildID} in channel ${channelID}`)
-          
+          console.log(user)
           Gateway.emitEvent("MESSAGE_CREATE", {
             guild: guildID,
             channel: channelID,

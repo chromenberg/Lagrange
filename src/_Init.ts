@@ -1,6 +1,6 @@
 import { Logger, LogLevel } from "./lib/core/logging/Logger.js";
 import { Config } from "./lib/lagrange/Config.js";
-import "./lib/lagrange/modules/events/GatewayEvents.js";
+import "./lib/lagrange/modules/events/EventAggregate.js";
 import {
   __api,
   initGateway,
@@ -8,6 +8,7 @@ import {
   __atlas,
 } from "./lib/lagrange/LagrangeInit.js";
 import "./lib/atlas/tables/TableAggregate.js"
+
 
 Logger.setLogLevel(LogLevel.Debug);
 
