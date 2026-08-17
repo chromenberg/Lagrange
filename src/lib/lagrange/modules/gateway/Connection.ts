@@ -1,7 +1,6 @@
 import type { WebSocket } from "ws";
 import { Collection } from "../../../core/structs/Collection.js";
-import type { VoidCallback, WeakObj } from "../../../core/types/Types.js";
-import { pubSub } from "./PubSubHandler.js";
+import type { Snowflake, WeakObj } from "../../../core/types/Types.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import {
   GatewayEventOpCodes,
@@ -13,18 +12,18 @@ import { GatewayEventReady } from "../event-builders/Ready.js";
 import { ClientConnections } from "./Connections.js";
 import type { Guild } from "../../../core/types/GuildTypes.js";
 import { NamedEvent } from "../events/NamedEvent.js";
+import { AtlasEvents } from "../../../atlas/AtlasEvents.js";
 
 export class ClientConnection {
   private _subs: Collection<symbol, Function> = new Collection();
   private _sock: WebSocket;
   private _sequence: number;
   private _id: symbol | undefined;
-  #token: string;
+  private _clientID: Snowflake | undefined
   // private _sub = new PubSub()
   constructor(socket: WebSocket) {
     this._sock = socket;
     this._sequence = 0;
-    this.#token = "";
     this.initMessageHandler();
   }
   public get subs(): Collection<symbol, Function> {
@@ -78,40 +77,72 @@ export class ClientConnection {
   }
 
   // Handlers
+  private _filterEvent(...data: any[]) {
+    if (!this._clientID) return;
+    if (this._clientID.length === 0) return;
+
+    // data[0] is always ownerID
+    if (data[0] !== this._clientID) return;
+
+    this._sendEvent(...data)
+  }
+  private _initEventUpdater() {
+    if (!this._clientID) return;
+    if (this._clientID.length === 0) return;
+    Logger.sendLog(
+      LogLevel.Info,
+      ["LAGRANGE", "Gateway", "ClientConnection"],
+      "Listening to event updater",
+    );
+    Atlas.on(AtlasEvents.guildCreate, (...data) => {
+      this._filterEvent(...data);
+    });
+    Atlas.on(AtlasEvents.guildRemove, (...data) => {
+      this._filterEvent(...data);
+    });
+    Atlas.on(AtlasEvents.channelCreate, (...data) => {
+      this._filterEvent(...data);
+    });
+    Atlas.on(AtlasEvents.channelRemove, (...data) => {
+      this._filterEvent(...data);
+    });
+  }
 
   private _sendEvent(...data: any[]) {
-    const eventName = data[0]
-    const eventData = data[1]
+    const eventName = data[0];
+    const eventData = data[1];
 
-    const event = new NamedEvent(eventName, eventData)
+    const event = new NamedEvent(eventName, eventData);
 
-    this.send(event.createJSON())
+    this.send(event.createJSON());
   }
-  
+
   /**
    * Initializes the client to recieve events from the gateway
-   * @param guilds 
+   * @param guilds
    */
   private initClientEvents(guilds: Guild[]) {
     const guildsMap = guilds.flatMap((guild) => [
       [guild.id, guild.channels.flatMap((channel) => [channel.id])],
     ]) as [string, string[]][];
 
+    this._initEventUpdater();
+
     guildsMap.forEach((guild) => {
       console.log("Subscribing to guild", guild[0]);
       // Subscribe to all events involving guilds
       Gateway.guildSubscribe(guild[0] as string, (...data) => {
-        console.log(...data)
-        this._sendEvent(...data)
+        console.log(...data);
+        this._sendEvent(...data);
       });
 
       guild[1].forEach((channel) => {
         console.log("Subscribing to channel", guild[0], channel);
         // subscribe to all events involving channels
         Gateway.channelSubscribe(guild[0], channel, (...data) => {
-          console.log(...data)
+          console.log(...data);
           console.log("channel event", guild[0], channel, ...data);
-          this._sendEvent(...data)
+          this._sendEvent(...data);
         });
       });
     });
@@ -119,23 +150,23 @@ export class ClientConnection {
 
   /**
    * Handles the identify message from the client
-   * @param msg 
+   * @param msg
    */
   private handleIdentify(msg: GatewayEventIdentify) {
-    this.#token = msg.data.token;
     // Get the users data from the token sent in the request
     Atlas.requests.users.getUserData(msg.data.token).then((user) => {
       if (!user) {
         // TODO: send identify reject stuff
         return;
       }
+      this._clientID = (user as WeakObj)["user_id"]
       this.handleReady(user);
     });
   }
 
   /**
    * Handles sending the ready event to the client, adding the needed events to connection
-   * @param user 
+   * @param user
    */
   private handleReady(user: WeakObj) {
     this.initClientEvents(user["guilds"]);
