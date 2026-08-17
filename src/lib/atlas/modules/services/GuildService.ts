@@ -31,7 +31,7 @@ export class GuildService extends AtlasService {
     userID: Snowflake,
   ): Promise<void> {
     this.parent.sqlClient
-      .run`INSERT INTO guild_members VALUES (${BigInt(userID)}, ${BigInt(guildID)});`;
+      .run`INSERT INTO guild_members VALUES (${BigInt(userID)}, ${BigInt(guildID)}, null, null, null, null, null);`;
   }
 
   public async getAllGuilds(): SQLPromiseArray {

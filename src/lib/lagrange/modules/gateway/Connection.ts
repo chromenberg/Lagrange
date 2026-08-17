@@ -36,6 +36,18 @@ export class ClientConnection {
     return this._sequence;
   }
 
+  public get id(): symbol {
+    if (!this._id) {
+      Logger.sendLog(LogLevel.Error, ["LAGRANGE", "Gateway"]);
+      throw new ReferenceError();
+    }
+    return this._id;
+  }
+
+  public setID(id: symbol): void {
+    this._id = id;
+  }
+
   /**
    * Increments the sequence count by 1
    * @returns New sequence number
@@ -52,16 +64,17 @@ export class ClientConnection {
     return this._sequence--;
   }
 
-  public get id(): symbol {
-    if (!this._id) {
-      Logger.sendLog(LogLevel.Error, ["LAGRANGE", "Gateway"]);
-      throw new ReferenceError();
-    }
-    return this._id;
+  public close(code?: number, data?: string | Buffer<ArrayBufferLike>) {
+    // Logger.sendLog(LogLevel.Error, ["Connections"], "Closed Connection")
+    this._sock.close(code, data);
   }
 
-  public setID(id: symbol): void {
-    this._id = id;
+  // Sends a message back to the client
+  public send(data: ArrayBufferLike | string): void {
+    this._sock.send(data);
+  }
+  public on(eventName: string, listener: (...args: any[]) => void): void {
+    this._sock.on(eventName, listener);
   }
 
   // Handlers
@@ -168,23 +181,4 @@ export class ClientConnection {
   }
 
   // -- So
-
-  public close(code?: number, data?: string | Buffer<ArrayBufferLike>) {
-    // Logger.sendLog(LogLevel.Error, ["Connections"], "Closed Connection")
-    this._sock.close(code, data);
-  }
-
-  // Sends a message back to the client
-  public send(data: ArrayBufferLike | string): void {
-    this._sock.send(data);
-  }
-  public on(eventName: string, listener: (...args: any[]) => void): void {
-    this._sock.on(eventName, listener);
-  }
-  public subscribe(eventName: string, listener: VoidCallback) {
-    // subscribe to events from the gateway
-    // listen to the event publisher?
-
-    pubSub.subscribe(eventName, listener);
-  }
 }
