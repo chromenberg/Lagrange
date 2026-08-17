@@ -94,6 +94,8 @@ export class Gateway {
     this._hello(client)
   }
 
+
+  
   /**
    * Adds a gateway event handler
    * @param name 
@@ -118,21 +120,3 @@ export class Gateway {
     })
   }
 }
-
-process.on("atlasInit", () => {
-  Logger.sendLog(
-    LogLevel.Info,
-    ["LAGRANGE", "Gateway", "EventManager"],
-    "ATLAS init signal found, populating Gateway Publisher",
-  );
-  Atlas.requests.guilds.getAllGuildChannels().then((res) => {
-    res?.forEach((pair) => {
-      // convert the guild id into a string as we cant serialize bigints
-      const idString = pair.guild_id?.toString();
-      const channelID = pair.channel_id?.toString();
-      if (!idString || !channelID) return; // check if string is undefined
-
-      Registry.fetch("inverseChannelMap")?.set(channelID, idString);
-    });
-  })
-})
