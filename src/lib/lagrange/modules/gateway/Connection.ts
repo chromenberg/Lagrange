@@ -12,6 +12,7 @@ import { Atlas, Gateway } from "../../../../_Init.js";
 import { GatewayEventReady } from "../event-builders/Ready.js";
 import { ClientConnections } from "./Connections.js";
 import type { Guild } from "../../../core/types/GuildTypes.js";
+import { NamedEvent } from "../events/NamedEvent.js";
 
 export class ClientConnection {
   private _subs: Collection<symbol, Function> = new Collection();
@@ -65,7 +66,15 @@ export class ClientConnection {
 
   // Handlers
 
+  private _sendEvent(...data: any[]) {
+    const eventName = data[0]
+    const eventData = data[1]
 
+    const event = new NamedEvent(eventName, eventData)
+
+    this.send(event.createJSON())
+  }
+  
   /**
    * Initializes the client to recieve events from the gateway
    * @param guilds 
@@ -77,15 +86,19 @@ export class ClientConnection {
 
     guildsMap.forEach((guild) => {
       console.log("Subscribing to guild", guild[0]);
+      // Subscribe to all events involving guilds
       Gateway.guildSubscribe(guild[0] as string, (...data) => {
-        console.log("guild event", guild[0], ...data);
+        console.log(...data)
+        this._sendEvent(...data)
       });
 
       guild[1].forEach((channel) => {
         console.log("Subscribing to channel", guild[0], channel);
-
+        // subscribe to all events involving channels
         Gateway.channelSubscribe(guild[0], channel, (...data) => {
+          console.log(...data)
           console.log("channel event", guild[0], channel, ...data);
+          this._sendEvent(...data)
         });
       });
     });
