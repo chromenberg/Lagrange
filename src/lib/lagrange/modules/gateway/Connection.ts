@@ -1,6 +1,10 @@
 import type { WebSocket } from "ws";
 import { Collection } from "../../../core/structs/Collection.js";
-import type { Snowflake, WeakObj } from "../../../core/types/Types.js";
+import type {
+  Snowflake,
+  VoidCallback,
+  WeakObj,
+} from "../../../core/types/Types.js";
 import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import {
   GatewayEventOpCodes,
@@ -19,7 +23,7 @@ export class ClientConnection {
   private _sock: WebSocket;
   private _sequence: number;
   private _id: symbol | undefined;
-  private _clientID: Snowflake | undefined
+  private _clientID: Snowflake | undefined;
   // private _sub = new PubSub()
   constructor(socket: WebSocket) {
     this._sock = socket;
@@ -76,15 +80,23 @@ export class ClientConnection {
     this._sock.on(eventName, listener);
   }
 
+  /**
+   * Runs the entered callback only if the client ID is present
+   * @param callback
+   * @param args
+   */
+  private _runIfClientIDPresent(callback: VoidCallback, ...args: any[]) {
+    callback.call(this, ...args);
+  }
+
   // Handlers
   private _filterEvent(...data: any[]) {
-    if (!this._clientID) return;
-    if (this._clientID.length === 0) return;
+    this._runIfClientIDPresent(() => {
+      // data[0] is always ownerID
+      if (data[0] !== this._clientID) return;
 
-    // data[0] is always ownerID
-    if (data[0] !== this._clientID) return;
-
-    this._sendEvent(...data)
+      this._sendEvent(...data);
+    });
   }
   private _initEventUpdater() {
     if (!this._clientID) return;
@@ -108,6 +120,15 @@ export class ClientConnection {
     });
   }
 
+  private _initClientListener() {
+    if (!this._clientID) return;
+    if (this._clientID.length === 0) return;
+    Gateway.userSubscribe(this._clientID, (eventName, data) => {
+      console.log(eventName, data);
+      this._sendEvent(eventName, data);
+    });
+  }
+
   private _sendEvent(...data: any[]) {
     const eventName = data[0];
     const eventData = data[1];
@@ -126,6 +147,7 @@ export class ClientConnection {
       [guild.id, guild.channels.flatMap((channel) => [channel.id])],
     ]) as [string, string[]][];
 
+    this._initClientListener()
     this._initEventUpdater();
 
     guildsMap.forEach((guild) => {
@@ -159,7 +181,7 @@ export class ClientConnection {
         // TODO: send identify reject stuff
         return;
       }
-      this._clientID = (user as WeakObj)["user_id"]
+      this._clientID = (user as WeakObj)["user_id"];
       this.handleReady(user);
     });
   }
