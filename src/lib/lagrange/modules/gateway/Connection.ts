@@ -91,12 +91,15 @@ export class ClientConnection {
 
   // Handlers
   private _filterEvent(...data: any[]) {
-    this._runIfClientIDPresent(() => {
-      // data[0] is always ownerID
-      if (data[0] !== this._clientID) return;
+    // this._runIfClientIDPresent(() => {
+    if (!this._clientID) return;
+    if (this._clientID.length === 0) return;
+    console.log("client id present");
+    // data[0] is always ownerID
+    if (data[0] !== this._clientID) return;
 
-      this._sendEvent(...data);
-    });
+    this._sendEvent(...data);
+    // });
   }
   private _initEventUpdater() {
     if (!this._clientID) return;
@@ -107,6 +110,7 @@ export class ClientConnection {
       "Listening to event updater",
     );
     Atlas.on(AtlasEvents.guildCreate, (...data) => {
+      console.log("guild create event");
       this._filterEvent(...data);
     });
     Atlas.on(AtlasEvents.guildRemove, (...data) => {
@@ -147,7 +151,7 @@ export class ClientConnection {
       [guild.id, guild.channels.flatMap((channel) => [channel.id])],
     ]) as [string, string[]][];
 
-    this._initClientListener()
+    this._initClientListener();
     this._initEventUpdater();
 
     guildsMap.forEach((guild) => {

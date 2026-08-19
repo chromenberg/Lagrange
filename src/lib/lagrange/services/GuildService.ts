@@ -57,8 +57,7 @@ export class GuildService {
           // Send the guild create event to the owner id
           // Event type Guild Create
           // with the data of the guild that was made
-          Gateway.userEvent(
-            body.owner_id,
+          Gateway.emitEvent(
             GatewayEventTypes.GUILD_CREATE,
             guild,
           );
