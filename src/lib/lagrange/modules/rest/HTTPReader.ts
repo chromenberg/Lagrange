@@ -6,7 +6,7 @@ export class HTTPReader {
     
   }
 
-  static parseBody(request: Request) {
+  static parseBody<T>(request: Request): Promise<T> {
     return new Promise((res) => {
       const body: Uint8Array[] = [];
       
