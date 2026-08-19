@@ -16,27 +16,18 @@ export class EventSystem extends EventHandler {
   constructor() {
     super();
   }
-
-  public channelSub(
-    event: string,
-    guildID: Snowflake,
-    channelID: Snowflake,
-    listener: VoidCallback,
-  ) {
-    this.on([event, guildID, channelID].join("-"), listener);
-  }
-  public guildSub(event: string, guildID: Snowflake, listener: VoidCallback) {
-    this.on([event, guildID].join("-"), listener);
+  public userSub() {
+    
   }
 
-  public _cSub(
+    public channelSub(
     guildID: Snowflake,
     channelID: Snowflake,
     listener: VoidCallback,
   ) {
     this.on([guildID, channelID].join("-"), listener);
   }
-  public _gSub(guildID: Snowflake, listener: VoidCallback) {
+  public guildSub(guildID: Snowflake, listener: VoidCallback) {
     this.on(guildID, listener);
   }
 
