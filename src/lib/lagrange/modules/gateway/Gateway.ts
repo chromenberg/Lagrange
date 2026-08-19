@@ -60,6 +60,11 @@ export class Gateway {
   public channelSubscribe(guildID: Snowflake, channelID: Snowflake, listener: VoidCallback) {
     this._eventPublisher.channelSub(guildID, channelID, listener)
   }
+
+  public userSubscribe(userId: Snowflake, listener: VoidCallback) {
+    this._eventPublisher.userSub(userId, listener)
+  }
+  
   // -- Emitter Methods --
   
   public guildEvent(guildID: Snowflake, eventName: string, data: WeakObj) {
@@ -68,6 +73,10 @@ export class Gateway {
 
   public channelEvent(guildID: Snowflake, channelID: Snowflake, eventName: string, data: WeakObj) {
     this._eventPublisher.emitChannel(guildID, channelID, eventName, data)
+  }
+
+  public userEvent(userId: Snowflake, eventName: string, data: WeakObj) {
+    this._eventPublisher.emitUser(userId, eventName, data)
   }
   // -- WebSocket Methods --
 

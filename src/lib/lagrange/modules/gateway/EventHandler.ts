@@ -16,25 +16,31 @@ export class EventSystem extends EventHandler {
   constructor() {
     super();
   }
-  public userSub() {
-    
+
+  public userSub(userId: Snowflake, listener: VoidCallback) {
+    this.on(userId, listener);
   }
 
-    public channelSub(
+
+  public channelSub(
     guildID: Snowflake,
     channelID: Snowflake,
     listener: VoidCallback,
   ) {
     this.on([guildID, channelID].join("-"), listener);
   }
+
   public guildSub(guildID: Snowflake, listener: VoidCallback) {
     this.on(guildID, listener);
   }
 
-  public _offGSub(guildID: Snowflake, listener: VoidCallback) {
+  public offGuildSub(guildID: Snowflake, listener: VoidCallback) {
     this.off(guildID, listener);
   }
 
+  public emitUser(userId: Snowflake, eventName: string, data: WeakObj) {
+    this.emit(userId, eventName, data);
+  }
   public emitGuild(guildID: Snowflake, eventName: string, data: WeakObj) {
     this.emit(guildID, eventName, data);
   }
@@ -45,17 +51,6 @@ export class EventSystem extends EventHandler {
     data: WeakObj,
   ) {
     this.emit([guildID, channelID].join("-"), eventName, data);
-  }
-  public emitChannelEvent(
-    event: string,
-    guildID: Snowflake,
-    channelID: Snowflake,
-    data: WeakObj,
-  ) {
-    this.emit([event, guildID, channelID].join("-"), data);
-  }
-  public emitGuildEvent(event: string, guildID: Snowflake, data: WeakObj) {
-    this.emit([event, guildID].join("-"), data);
   }
 }
 
@@ -74,8 +69,8 @@ process.on("atlasInit", () => {
 
       Registry.fetch("inverseChannelMap")?.set(channelID, idString);
     });
-    Logger.sendLog(LogLevel.Verbose, loc, Registry.fetch("inverseChannelMap"))
-    Atlas.prepend(AtlasEvents.guildCreate, (ownerID,guildID) => {
+    Logger.sendLog(LogLevel.Verbose, loc, Registry.fetch("inverseChannelMap"));
+    Atlas.prepend(AtlasEvents.guildCreate, (ownerID, guildID) => {
       // recieves the newly created guild and its id alongside the owner of the guild
       // as the owner will always be the first member and joins alongside the guild
       Logger.sendLog(
@@ -101,7 +96,11 @@ process.on("atlasInit", () => {
         "syncing channels [reason: channelCreate]",
       );
       Registry.fetch("inverseChannelMap")?.set(channelID, guildID);
-      Logger.sendLog(LogLevel.Verbose, loc, Registry.fetch("inverseChannelMap"))
+      Logger.sendLog(
+        LogLevel.Verbose,
+        loc,
+        Registry.fetch("inverseChannelMap"),
+      );
     });
     Atlas.prepend(AtlasEvents.channelRemove, (ownerID, guildID, channelID) => {
       Logger.sendLog(
