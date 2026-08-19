@@ -76,6 +76,7 @@ export class Gateway {
   }
 
   public userEvent(userId: Snowflake, eventName: string, data: WeakObj) {
+    console.log(userId, eventName, data)
     this._eventPublisher.emitUser(userId, eventName, data)
   }
   // -- WebSocket Methods --

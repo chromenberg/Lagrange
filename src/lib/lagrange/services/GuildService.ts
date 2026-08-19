@@ -59,7 +59,7 @@ export class GuildService {
           // with the data of the guild that was made
           Gateway.emitEvent(
             GatewayEventTypes.GUILD_CREATE,
-            guild,
+            guild.JSON(),
           );
         });
       }

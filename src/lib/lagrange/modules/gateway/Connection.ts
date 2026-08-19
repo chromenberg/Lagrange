@@ -91,42 +91,41 @@ export class ClientConnection {
 
   // Handlers
   private _filterEvent(...data: any[]) {
-    // this._runIfClientIDPresent(() => {
-    if (!this._clientID) return;
-    if (this._clientID.length === 0) return;
-    console.log("client id present");
-    // data[0] is always ownerID
-    if (data[0] !== this._clientID) return;
+    // FIXME: This might not work
+    this._runIfClientIDPresent(() => {
+      console.log("client id present")
+      // data[0] is always ownerID
+      if (data[0] !== this._clientID) return;
 
-    this._sendEvent(...data);
-    // });
+      this._sendEvent(...data);
+    });
   }
   private _initEventUpdater() {
-    if (!this._clientID) return;
-    if (this._clientID.length === 0) return;
+
     Logger.sendLog(
       LogLevel.Info,
       ["LAGRANGE", "Gateway", "ClientConnection"],
       "Listening to event updater",
     );
-    Atlas.on(AtlasEvents.guildCreate, (...data) => {
-      console.log("guild create event");
-      this._filterEvent(...data);
-    });
-    Atlas.on(AtlasEvents.guildRemove, (...data) => {
-      this._filterEvent(...data);
-    });
-    Atlas.on(AtlasEvents.channelCreate, (...data) => {
-      this._filterEvent(...data);
-    });
-    Atlas.on(AtlasEvents.channelRemove, (...data) => {
-      this._filterEvent(...data);
-    });
+    // Atlas.on(AtlasEvents.guildCreate, (...data) => {
+    //   console.log("guild create event");
+    //   this._filterEvent(...data);
+    // });
+    // Atlas.on(AtlasEvents.guildRemove, (...data) => {
+    //   this._filterEvent(...data);
+    // });
+    // Atlas.on(AtlasEvents.channelCreate, (...data) => {
+    //   this._filterEvent(...data);
+    // });
+    // Atlas.on(AtlasEvents.channelRemove, (...data) => {
+    //   this._filterEvent(...data);
+    // });
   }
 
   private _initClientListener() {
     if (!this._clientID) return;
     if (this._clientID.length === 0) return;
+    
     Gateway.userSubscribe(this._clientID, (eventName, data) => {
       console.log(eventName, data);
       this._sendEvent(eventName, data);
@@ -151,7 +150,7 @@ export class ClientConnection {
       [guild.id, guild.channels.flatMap((channel) => [channel.id])],
     ]) as [string, string[]][];
 
-    this._initClientListener();
+    this._initClientListener()
     this._initEventUpdater();
 
     guildsMap.forEach((guild) => {
@@ -185,7 +184,7 @@ export class ClientConnection {
         // TODO: send identify reject stuff
         return;
       }
-      this._clientID = (user as WeakObj)["user_id"];
+      this._clientID = (user as WeakObj)["user"]["id"];
       this.handleReady(user);
     });
   }
