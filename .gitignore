@@ -32,3 +32,6 @@ runtime/obj/
 runtime/bin/
 */image-proxy*
 build/
+src/atlas/Configs/Config.ts
+dev/diagnostics/config.json
+diagnostics/config.json

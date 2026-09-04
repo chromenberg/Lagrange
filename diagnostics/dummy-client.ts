@@ -21,6 +21,15 @@ socket.on("open", () => {
     })
     socket.send(message.toString())
   }
+  
+  {
+    const message = new DMessage()
+    message.setCode(DCode.INVOKE)
+    message.setData({
+      command: "bundle-count"
+    })
+    socket.send(message.toString())
+  }
 });
 
 socket.on("message", (msg) => {

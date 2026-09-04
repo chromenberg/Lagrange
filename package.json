@@ -19,6 +19,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20260524.1",
     "bitfield": "^5.0.1",
     "cassandra-driver": "^4.8.0",
+    "discord.js": "^14.27.0",
     "glob": "^13.0.6",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
