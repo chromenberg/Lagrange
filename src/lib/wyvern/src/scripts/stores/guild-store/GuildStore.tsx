@@ -14,13 +14,18 @@ function useGuildStore() {
     });
   }, []);
 
+  useEffect(() => {
+    // Every time guildStore is updated, we need to reassign a listener to the EventSystem
+    // This merges the new guild info into the current guild info that is stored
+    EventSystem.once("GUILD_CREATE", (data) => {
+      setGuildStore(guildStore.concat(data))
+    });
+  }, [guildStore])
+  
   EventSystem.on("GUILD_MEMBER_ADD", (data) => {
     console.log(data);
   });
   EventSystem.on("GUILD_MEMBER_REMOVE", (data) => {
-    console.log(data);
-  });
-  EventSystem.on("GUILD_CREATE", (data) => {
     console.log(data);
   });
   EventSystem.on("GUILD_DELETE", (data) => {
