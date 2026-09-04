@@ -1,13 +1,13 @@
-import { Logger, LogLevel } from "./lib/core/logging/Logger.js";
-import { Config } from "./lib/lagrange/Config.js";
-import "./lib/lagrange/modules/events/EventAggregate.js";
+import { Logger, LogLevel } from "./core/logging/Logger.js";
+import { Config } from "./lagrange/Config.js";
+import "./lagrange/modules/events/EventAggregate.js";
 import {
   __api,
   initGateway,
   __pubsub,
   __atlas,
-} from "./lib/lagrange/LagrangeInit.js";
-import "./lib/atlas/tables/TableAggregate.js"
+} from "./lagrange/LagrangeInit.js";
+import "./atlas/tables/TableAggregate.js"
 
 
 Logger.setLogLevel(LogLevel.Debug);

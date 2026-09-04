@@ -1,5 +1,5 @@
 import { eventLoopUtilization } from "perf_hooks";
-import { Logger, LogLevel } from "../lib/core/logging/Logger.js";
+import { Logger, LogLevel } from "../core/logging/Logger.js";
 
 (() => {
   console.log("autoexec running");

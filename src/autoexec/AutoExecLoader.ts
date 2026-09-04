@@ -1,6 +1,6 @@
 // TODO: Fully implement this
 
-import type { VoidCallback } from "../lib/core/types/Types.js";
+import type { VoidCallback } from "../core/types/Types.js";
 import "./imports.js"
 type ContextualCallback<CBType> = {
   func: CBType;

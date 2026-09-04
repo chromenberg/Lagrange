@@ -31,3 +31,4 @@ src/TEMPS3CONFIG.ts
 runtime/obj/
 runtime/bin/
 */image-proxy*
+build/
