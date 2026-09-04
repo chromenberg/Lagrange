@@ -61,8 +61,8 @@ export class Gateway {
     this._eventPublisher.channelSub(guildID, channelID, listener)
   }
 
-  public userSubscribe(userId: Snowflake, listener: VoidCallback) {
-    this._eventPublisher.userSub(userId, listener)
+  public userSubscribe(userID: Snowflake, listener: VoidCallback) {
+    this._eventPublisher.userSub(userID, listener)
   }
   
   // -- Emitter Methods --

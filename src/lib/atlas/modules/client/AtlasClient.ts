@@ -59,12 +59,12 @@ export namespace Pooling {
       })
 
       // populate the pool with AtlasConnection, and then for every resource add the oncestarted hook
-      this.initResources(new AtlasConnection()).forEach((item, key) => {
-        (item.callback as AtlasConnection).onceStarted(() => { // run this code once when a resource starts
-          Logger.sendLog(LogLevel.Verbose, ["AtlasClient", "ConnectionPool"], key, "initialized and connected to database");
-          this.states.changeState(key, item.state);
-        });
-      });
+      // this.initResources(new AtlasConnection()).forEach((item, key) => {
+      //   (item.callback as AtlasConnection).onceStarted(() => { // run this code once when a resource starts
+      //     Logger.sendLog(LogLevel.Verbose, ["AtlasClient", "ConnectionPool"], key, "initialized and connected to database");
+      //     this.states.changeState(key, item.state);
+      //   });
+      // });
 
     }
 

@@ -34,10 +34,6 @@ export class EventSystem extends EventHandler {
     this.on(guildID, listener);
   }
 
-  public offGuildSub(guildID: Snowflake, listener: VoidCallback) {
-    this.off(guildID, listener);
-  }
-
   public emitUser(userId: Snowflake, eventName: string, data: WeakObj) {
     this.emit(userId, eventName, data);
   }

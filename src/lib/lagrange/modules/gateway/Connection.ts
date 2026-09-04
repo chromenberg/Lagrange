@@ -19,7 +19,6 @@ import { NamedEvent } from "../events/NamedEvent.js";
 import { AtlasEvents } from "../../../atlas/AtlasEvents.js";
 
 export class ClientConnection {
-  private _subs: Collection<symbol, Function> = new Collection();
   private _sock: WebSocket;
   private _sequence: number;
   private _id: symbol | undefined;
@@ -29,9 +28,6 @@ export class ClientConnection {
     this._sock = socket;
     this._sequence = 0;
     this.initMessageHandler();
-  }
-  public get subs(): Collection<symbol, Function> {
-    return this._subs;
   }
 
   // -- Methods for client sequences
@@ -211,7 +207,6 @@ export class ClientConnection {
       }),
     );
   }
-
   // End Handlers
 
   private handleSentMessage(msg: GatewayEventPayload) {
