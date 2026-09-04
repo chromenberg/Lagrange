@@ -28,6 +28,5 @@ export const API = __api;
 API.listen(Config.REST.Address, Config.REST.Port);
 
 export const Atlas = __atlas;
-
 export const PubSub = __pubsub;
 export const Gateway = initGateway();
