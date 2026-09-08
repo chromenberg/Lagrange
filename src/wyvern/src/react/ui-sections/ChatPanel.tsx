@@ -93,15 +93,20 @@ export default function ChatPanel() {
     <main className="chatPanel">
       <div className="flexHoriz fillAll">
         <div className="fillAll flexVert">
-          <div data-fill>
-            <ScrollMenu direction="vertical" align="start">
-              <ul className="container_channelContent">
-                <li>sdgdfg</li>
-              {msgs.map(msg => <Message info={msg} />)}
-              </ul>
-              <h1> MAKE THIS SCROLLABLE!!!! </h1>
+          <div data-fill className="chatScrollContainer">
+            <div data-fill className="chatScrollInner">
+    
+                <ScrollMenu direction="vertical" align="start">
+                  <ul className="container_channelContent">
+                    <li>sdgdfg</li>
+                  {msgs.map(msg => <Message info={msg} />)}
+                  </ul>
+                  <h1> MAKE THIS SCROLLABLE!!!! </h1>
+    
+                </ScrollMenu>
 
-            </ScrollMenu>
+              
+            </div>
           </div>
           <form>
             <div className="chatInputContainer">

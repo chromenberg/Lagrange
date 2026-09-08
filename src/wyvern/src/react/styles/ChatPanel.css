@@ -16,3 +16,11 @@
 .chatInputContainer {
     margin-bottom: var(--padding-m);
 }
+
+.chatScrollContainer {
+    position: relative;
+}
+.chatScrollInner {
+    position: absolute;
+    
+}

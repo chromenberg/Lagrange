@@ -23,6 +23,7 @@ interface StackProps extends Props {
   fillWidth: boolean;
   fillHeight: boolean;
   fillAll: boolean;
+  [rest: string]: unknown
 }
 
 export default function Stack({
@@ -36,6 +37,7 @@ export default function Stack({
   align,
   wrap,
   gap,
+  ...rest
 }: Partial<StackProps>) {
   return (
     <div
@@ -47,7 +49,8 @@ export default function Stack({
       data-wrap={wrap}
       data-direction={direction ?? "horizontal"}
       data-stack-gap={gap}
-      className={"stack " + (className??"")}
+      className={"stack " + (className ?? "")}
+      {...rest}
     >
       {children}
     </div>
