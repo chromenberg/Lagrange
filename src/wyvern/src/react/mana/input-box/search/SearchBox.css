@@ -1,0 +1,16 @@
+.searchBox:first-child svg {
+    color: var(--interactive-text-default)
+}
+
+.searchBox:first-child {
+    
+}
+
+.searchBox {
+    padding-inline: var(--padding-xs) var(--padding-sm);
+    cursor: text
+}
+
+.searchBox > .textContainer {
+    color: var(--interact-normal)
+}
