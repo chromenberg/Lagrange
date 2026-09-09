@@ -2,9 +2,25 @@
     
 }
 
-.manaInputBox {
+.manaInputBoxContainer {
+    background: var(--background-base-dark);
     
+    
+    
+    width: fit-content;
+    border-radius: var(--radius-xs);
 }
+
+.manaInputBox {
+    border-radius: inherit;
+    
+    padding-block: var(--padding-tiny);
+    padding-inline: var(--padding-sm);
+    
+    border: 1px solid var(--interact-normal);
+    color: var(--channels-default);
+}
+
 
 [mana-type="input-box"] {
     
