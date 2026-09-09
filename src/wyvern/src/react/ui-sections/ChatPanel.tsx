@@ -32,33 +32,33 @@ const Raine = {
   avatar: "MTYwOTY1MjM1NDIxNzQ5MjQ4",
   display_name: "raine",
   username: "raine",
-  id: "126400386083856384"
-}
+  id: "126400386083856384",
+};
 function makeMessage(content: string) {
   return {
     channel: "384752398457",
     content: content,
     properties: {
-      timestamp: new Date()
+      timestamp: new Date(),
     },
     id: "dfgdfgsdfgsfghdfgh",
-    user: Raine
-  }
+    user: Raine,
+  };
 }
 
 const msgs = [
-  makeMessage("hi"),
-  makeMessage("howe are you"),
-  makeMessage("fuck you"),
-  makeMessage("sorry that was rude"),
-  makeMessage("did you **hear** about hte codebase"),
-  makeMessage("its compete and utter dogshit"),
-  makeMessage("whoever made it is stupid"),
-  makeMessage("wanna play factorio multiplayer?"),
-  makeMessage("hi"),
-  makeMessage("hi"),
-  makeMessage("hi"),
-]
+  // makeMessage("hi"),
+  // makeMessage("howe are you"),
+  // makeMessage("fuck you"),
+  // makeMessage("sorry that was rude"),
+  // makeMessage("did you **hear** about hte codebase"),
+  // makeMessage("its compete and utter dogshit"),
+  // makeMessage("whoever made it is stupid"),
+  // makeMessage("wanna play factorio multiplayer?"),
+  // makeMessage("hi"),
+  // makeMessage("hi"),
+  // makeMessage("hi"),
+];
 
 export default function ChatPanel() {
   // const wyvernState = useContext(UserContext)
@@ -95,17 +95,13 @@ export default function ChatPanel() {
         <div className="fillAll flexVert">
           <div data-fill className="chatScrollContainer">
             <div data-fill className="chatScrollInner">
-    
-                <ScrollMenu direction="vertical" align="start">
-                  <ul className="container_channelContent">
-                    <li>sdgdfg</li>
-                  {msgs.map(msg => <Message info={msg} />)}
-                  </ul>
-                  <h1> MAKE THIS SCROLLABLE!!!! </h1>
-    
-                </ScrollMenu>
-
-              
+              <ScrollMenu direction="vertical" align="start">
+                <ul className="container_channelContent">
+                  {msgs.map((msg) => (
+                    <Message info={msg} />
+                  ))}
+                </ul>
+              </ScrollMenu>
             </div>
           </div>
           <form>
