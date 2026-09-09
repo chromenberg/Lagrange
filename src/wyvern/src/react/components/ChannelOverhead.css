@@ -8,5 +8,5 @@
 }
 
 .panelHeaderInner {
-    padding: var(--padding-m);
+    padding-inline: var(--padding-m);
 }
