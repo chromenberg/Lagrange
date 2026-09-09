@@ -12,28 +12,30 @@ interface Slot {
 
 // Defines the slots an accessory can be mounted to in the input box
 // this could be further modified with the slot defining the side
-interface Slots {
+export interface Slots {
   left: Slot[];
   right: Slot[];
 }
 
 export default function SlottedInputBox({
   accessories,
+  className,
+  children,
 }: {
   accessories: Slots;
+  className?: string;
+  children?: React.ReactNode;
 }) {
   return (
-    <BaseInputBox>
+    <BaseInputBox className={className}>
       {/* Left Accessories */}
       {accessories.left.length > 0 && (
-        <Stack slot-left fillAll>
-          {accessories.left.map((item) => item.children)}
-        </Stack>
+        <Stack slot-left align="center">{accessories.left.map((item) => item.children)}</Stack>
       )}
-      <div className="textContainer">hello</div>
+      <div className="textContainer">{children}</div>
       {/* Right Accessories */}
       {accessories.right.length > 0 && (
-        <Stack slot-right fillAll>
+        <Stack slot-right>
           {accessories.right.map((item) => item.children)}
         </Stack>
       )}

@@ -1,12 +1,16 @@
 import type { Props } from "../../../Core";
 import Stack from "../stack/Stack";
-import("./InputBox.css")
-export default function BaseInputBox({children}: Partial<Props>) {
+import("./InputBox.css");
+export default function BaseInputBox({ children, className }: Partial<Props>) {
   // An input-box type can be chosen by entering a parameter in this component
 
   return (
-    <div mana-type="input-box" className="manaInputBox">
-      <Stack fillAll align="center">
+    <div mana-type="input-box" className="manaInputBoxContainer">
+      <Stack
+        align="center"
+        gap="xsmall"
+        className={"manaInputBox" + (className ? " " + className : "")}
+      >
         {children}
       </Stack>
     </div>
