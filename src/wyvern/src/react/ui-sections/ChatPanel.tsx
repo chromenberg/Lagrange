@@ -8,6 +8,7 @@ import type { InputKeybind } from "../components/InputBox/InputBox.types";
 import Message from "../non-mana/message/Message";
 // import { createMarkupItem } from "../../scripts/core/Markup";
 import ScrollMenu from "../mana/scroll-menu/ScrollMenu";
+import SearchBox from "../mana/input-box/search/SearchBox";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (
   await import("../components/InputBox/InputBoxAccessories")
@@ -114,6 +115,8 @@ export default function ChatPanel() {
               ></InputBox>
             </div>
           </form>
+        </div>
+        <div className="sidePanel">
         </div>
       </div>
     </main>

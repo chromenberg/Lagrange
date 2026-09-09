@@ -1,10 +1,21 @@
+:root {
+    --side-panel-size: 250px;
+}
+
 .sidePanelSizing {
-    width: 400px;
+    width: calc(var(--side-panel-size) + var(--padding-m));
 }
 .sidePanelHeader {
     background: var(--theme-lower);
     height: 100%;
     margin-right: calc(var(--padding-m) * -1);
+    display: flex;
+    align-items: center;
+    padding-inline: var(--padding-lg);
+}
+.sidePanel {
+    width: var(--side-panel-size);
+    flex: 1 0 auto;
 }
 .chatHeader {
     margin-right: auto;

@@ -1,16 +1,19 @@
-.searchBox:first-child svg {
+.searchBox> .manaInputBox:first-child svg {
     color: var(--interactive-text-default)
 }
 
-.searchBox:first-child {
+.searchBox > .manaInputBox {
+    padding-inline: var(--padding-xs) var(--padding-sm);
+    height: 24px;
+    border-radius: var(--radius-xs);
     
 }
 
 .searchBox {
-    padding-inline: var(--padding-xs) var(--padding-sm);
-    cursor: text
+    cursor: text;
+    width: 100%;
 }
 
-.searchBox > .textContainer {
+.searchBox > .manaInputBox > .textContainer {
     color: var(--interact-normal)
 }

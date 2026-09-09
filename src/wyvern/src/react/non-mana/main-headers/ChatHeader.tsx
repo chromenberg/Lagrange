@@ -1,3 +1,4 @@
+import SearchBox from "../../mana/input-box/search/SearchBox";
 import Stack from "../../mana/stack/Stack";
 import ChannelName from "../channel/ChannelName";
 import FlexDiv from "../flex-items/FlexDiv";
@@ -11,7 +12,9 @@ export default function ChatHeader() {
             
           <b>#<ChannelName /></b>
           </div>
-          <aside className="sidePanelSizing sidePanelHeader">fds</aside>
+          <aside className="sidePanelSizing sidePanelHeader">
+            <SearchBox />
+          </aside>
   
         </Stack>
       </div>
