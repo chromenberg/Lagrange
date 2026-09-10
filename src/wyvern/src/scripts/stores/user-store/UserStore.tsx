@@ -4,6 +4,7 @@ import type { ClientUser } from "../../types/UserTypes";
 import type { ReadyEvent } from "../../types/ReadyType";
 import { useEffect } from "react";
 
+// this is actually the clients info instead of the user, this is an incorrect name as the CLIENT refers to the current user
 function useUserInfo() {
   const [userData, setUserInfo] = useState<Partial<ClientUser>>({});
   useEffect(() => {
