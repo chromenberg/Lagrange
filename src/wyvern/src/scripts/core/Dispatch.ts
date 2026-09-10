@@ -9,7 +9,7 @@ export class Dispatcher<E = any> {
     eventName: K,
     listener: (...args: any[]) => void,
   ): void {
-    console.log("new listener created")
+    console.log("new listener created");
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this._emitter.addEventListener(eventName as string, (e: CustomEvent) => {
@@ -42,5 +42,17 @@ export class Dispatcher<E = any> {
         "Cannot remove a listener when the event name is not a string",
       );
     this._emitter.removeEventListener(eventName as string, callback);
+  }
+
+  public onArr(
+    eventNames: (keyof E)[],
+    callback: ((...args: any[]) => void)[],
+  ) {
+    if (eventNames.length !== callback.length)
+      throw new RangeError(
+        `Cannot run onArr when eventNames and callbacks have different lengths, recieved [${eventNames.length}, ${callback.length}]`,
+      );
+
+    eventNames.forEach((event, i) => this.on(event, callback[i]));
   }
 }
