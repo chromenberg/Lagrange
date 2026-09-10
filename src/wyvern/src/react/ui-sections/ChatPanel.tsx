@@ -2,6 +2,7 @@
 // import { createMarkupItem } from "../../scripts/core/Markup";
 import ScrollMenu from "../mana/scroll-menu/ScrollMenu";
 import MessageBox from "../mana/input-box/message/MessageBox";
+import AvatarPile from "../mana/pile/avatar/AvatarPile";
 
 // const UserContext = (await import("../../scripts/client/UserContext")).default;
 import("../styles/ChatPanel.css");
@@ -33,6 +34,7 @@ export default function ChatPanel() {
           </form>
         </div>
         <div className="sidePanel">
+          <AvatarPile height="medium" users={["126400386083856384"]} />
         </div>
       </div>
     </main>
