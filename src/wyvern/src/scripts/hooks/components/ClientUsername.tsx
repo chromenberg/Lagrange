@@ -1,4 +1,4 @@
-import useUserInfo from "../../stores/user-store/UserStore"
+import useUserInfo from "../../stores/client-store/ClientStore"
 
 export default function ClientUsername() {
   const info = useUserInfo()

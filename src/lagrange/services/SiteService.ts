@@ -26,6 +26,8 @@ export class SiteService {
   }
   
   public handleRequest(req: Request, res: API.Response): void {
+    console.log("fuck")
+    
     if (!req.url) return;
     const file = req.url?.replace(this.route.path, "")
 
@@ -59,6 +61,7 @@ export class SiteService {
   }
     
   public getFile(req: Request, res: API.Response, path: string) {
+    console.log("fuck")
     if (path.startsWith("/")) { path = path.replace("/", "") }
     //? Users might be able to read any file by inserting ../
     return readFile(this._path + path, (err, data) => {

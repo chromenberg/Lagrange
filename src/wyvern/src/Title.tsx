@@ -1,6 +1,6 @@
 // import type { Props } from "./Core";
 
-import useUserInfo from "./scripts/stores/user-store/UserStore"
+import useUserInfo from "./scripts/stores/client-store/ClientStore"
 
 export default function TitleBar() {
   const userData = useUserInfo()
