@@ -1,0 +1,9 @@
+.messageBox {
+    width: 100%;
+    height: 40px;
+    border-radius: var(--radius-sm);
+}
+
+.messageBoxHeight {
+    
+}

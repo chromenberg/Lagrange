@@ -9,6 +9,7 @@ import Message from "../non-mana/message/Message";
 // import { createMarkupItem } from "../../scripts/core/Markup";
 import ScrollMenu from "../mana/scroll-menu/ScrollMenu";
 import SearchBox from "../mana/input-box/search/SearchBox";
+import MessageBox from "../mana/input-box/message/MessageBox";
 const InputBox = (await import("../components/InputBox/InputBox")).default;
 const InputBoxAccessories = (
   await import("../components/InputBox/InputBoxAccessories")
@@ -107,12 +108,13 @@ export default function ChatPanel() {
           </div>
           <form>
             <div className="chatInputContainer">
-              <InputBox
+              {/*<InputBox
                 placeholder={"Message "}
                 charmLeft={leftCharms}
                 charmRight={rightCharms}
                 keybinds={[sendMessage]}
-              ></InputBox>
+              ></InputBox>*/}
+              <MessageBox />
             </div>
           </form>
         </div>
