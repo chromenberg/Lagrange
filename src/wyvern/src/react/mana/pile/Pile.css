@@ -1,8 +1,7 @@
 .pileItemWrapper {
     /*contain: paint;*/
-    border-radius: var(--radius-round);
+    /*border-radius: var(--radius-round);*/
     img {
-        
         aspect-ratio: 1/1;
     }
 }
@@ -10,10 +9,10 @@
     margin-left: -10px;
 }
 .pileItemWrapper:not(:last-child) {
-    clip-path: circle(at 15px) circle(at 10px);
+ 
 }
-
-[mana-type="pile"] {
-    > div {
-    }
+.pileAvatarContainer foreignObject {
+    width: inherit;
+    height: inherit;
+    border-radius: var(--radius-round);
 }
