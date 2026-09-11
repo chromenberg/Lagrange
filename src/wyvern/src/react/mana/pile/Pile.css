@@ -1,0 +1,19 @@
+.pileItemWrapper {
+    /*contain: paint;*/
+    border-radius: var(--radius-round);
+    img {
+        
+        aspect-ratio: 1/1;
+    }
+}
+.pileItemWrapper:not(:first-child) {
+    margin-left: -10px;
+}
+.pileItemWrapper:not(:last-child) {
+    clip-path: circle(at 15px) circle(at 10px);
+}
+
+[mana-type="pile"] {
+    > div {
+    }
+}
