@@ -8,8 +8,6 @@ import {
   __atlas,
 } from "./lagrange/LagrangeInit.js";
 import "./atlas/tables/TableAggregate.js"
-import { commands, DCommand } from "../diagnostics/diag-socket.js";
-
 
 Logger.setLogLevel(LogLevel.Debug);
 
@@ -31,9 +29,3 @@ API.listen(Config.REST.Address, Config.REST.Port);
 export const Atlas = __atlas;
 export const PubSub = __pubsub;
 export const Gateway = initGateway();
-{
-  const callback = () => {
-    return Atlas.sqlClient.all`SELECT username, user_id, display_name FROM users`;
-  };
-  commands.addCommand(new DCommand("users-minimal", callback, "Accounts Info"));
-}

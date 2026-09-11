@@ -2,7 +2,4 @@ import "./IPC.js"
 import "./_Init.js";
 import "./autoexec/imports.js"
 import "./core/types/UserFlags.js"
-import "../diagnostics/diag-socket.js"
-import "../diagnostics/commands.js";
-import "../diagnostics/dummy-client.js"
 // IF YOU ARE CAUGHT IMPORTING MAJOR THINGS FROM THE PROJECT INTO HERE YOU WILL BE KILLED

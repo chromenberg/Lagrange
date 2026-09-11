@@ -34,7 +34,7 @@ export default function ChatPanel() {
           </form>
         </div>
         <div className="sidePanel">
-          <AvatarPile height="medium" users={["126400386083856384"]} />
+          <AvatarPile overlap="small" clipOverlap="medium" height="large" users={["126400386083856384","126400386083856384","126400386083856384","126400386083856384","126400386083856384"]} />
         </div>
       </div>
     </main>
