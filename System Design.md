@@ -29,20 +29,29 @@ Image: https://cdn.chromenberg.com/dbdiagram.io_d.png
 The image above shows the Entity Relationship Diagram for the current database schema. The database runs in SQLite and is managed through NodeJS.
 
 The table named "users" will contain every single registered account on the system, they are required to have a username which allows other users to identify them and make a request to friend them.
-Each user also has a unique identifier called a Snowflake, this is a roughly time sortable unique id that contains the time the account was created, what worker it was created on; the user service has its own snowflake generator, so it has its own worker id. And also a sequence.
-A user has a display name `display_name` which is a name that does not have to be unique, many other users can have the same display name. A display name is what shows when a user sends a message, joins a server, is in the server members list, etc. It is their global name. If a user does not have a display name set, the client will revert to using the accounts username as a fallback display name as `display_name` cannot be truly invalid.
+Each user also has a unique identifier called a Snowflake, this is a roughly time sortable unique id that contains the time the account was created, 
+what worker it was created on; the user service has its own snowflake generator, so it has its own worker id. And also a sequence ID.
 
-Users also have a `bio` field, this is their about me in their profile, where a user can add information about themselves to show others. This ties into the other field called `pronouns` this was implemented purely to reach further parity with other platforms, but allows users to set their preferred pronouns to be referred by, by other people.
+A user has a display name `display_name` which is a name that does not have to be unique, many other users can have the same display name. 
+A display name is what shows when a user sends a message, joins a server, is in the server members list, etc. It is their global name. 
+If a user does not have a display name set, the client will revert to using the accounts username as a fallback display name as `display_name` cannot be truly invalid.
+
+Users also have a `bio` field, this is their about me in their profile, where a user can add information about themselves to show others. 
+This ties into the other field called `pronouns` this was implemented purely to reach further parity with other platforms, 
+but allows users to set their preferred pronouns to be referred by, by other people.
 
 The users table also stores the registered email and password with their account, this is required and is added during account registration.
-Another field is the token field, this is the users active session token and is required for all API requests to ensure that the user is making a request to a place they can access, for example they cannot access messages of a server they are not in. It is also **required** for the token to be used to get messages from the server.
+Another field is the token field, this is the users active session token and is required for all API requests to ensure that the user is making a request to a place they can access, 
+for example they cannot access messages of a server they are not in. It is also **required** for the token to be used to get messages from the server.
 
 
 
-The guilds table (aka: servers) contains a unique Snowflake ID for a guild, with a different worker ID which will ensure that the identifiers do not collide. A guild contains information about its name and is referenced by other tables like `channels` `guild_members` and `roles`
+The guilds table (aka: servers) contains a unique Snowflake ID for a guild, with a different worker ID which will ensure that the identifiers do not collide.
+A guild contains information about its name and is referenced by other tables like `channels` `guild_members` and `roles`
 The field `owner_id` references the user id of whoever made the guild which is used for checking user permissions (can they delete the server, can they be banned, etc) 
 
 The field `guild_name` contains the name that all users will see when interacting with the server, this cannot be null.
-The field `icon_hash` is a string that contains the hash of the uploaded image that, for a user, will show in place of the named icon on the server list. This link is accessed via a custom image proxy to allow for resizing of the image, these images are stored in cloudflare.
+The field `icon_hash` is a string that contains the hash of the uploaded image that, for a user, will show in place of the named icon on the server list.
+This link is accessed via a custom image proxy to allow for resizing of the image, these images are stored in cloudflare.
 
 
