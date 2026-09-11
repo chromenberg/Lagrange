@@ -5,21 +5,44 @@ import type {
   SizingName,
 } from "../../../../scripts/types/SizingTypes";
 import AvatarSizing from "../../../../sizings/AvatarSizings";
+import StandardSizings from "../../../../sizings/StandardSizings";
 import Pile from "../Pile";
 import PileItem from "../PileItem";
 
 import("./AvatarPile.css");
 import("../Pile.css");
-import("../PileOverlaps.css")
+import("../PileOverlaps.css");
+function parseHeight(height: SizingName): number {
+  return AvatarSizing.Pile[height];
+}
+
+function parseOffset(offset: SizingName): number {
+  return StandardSizings.Pile.Offset[offset];
+}
+
+function parseRadius(offset: SizingName): number {
+  return StandardSizings.Pile.Radius[offset]
+}
+
+function calcMaskOffset(size: SizingName): number {
+  return;
+}
 type Overlap = keyof typeof AvatarSizing.Pile.OverlapFactors;
 
 type ClipProps = {
   size: number;
   willMask: boolean;
   overlap: Overlap;
+  offset: SizingName;
 } & Props;
 
-function PileClipWrapper({ children, size, willMask, overlap }: ClipProps) {
+function PileClipWrapper({
+  children,
+  size,
+  willMask,
+  overlap,
+  offset,
+}: ClipProps) {
   console.log(willMask);
   return (
     <svg
@@ -37,9 +60,11 @@ function PileClipWrapper({ children, size, willMask, overlap }: ClipProps) {
         <circle cx={size / 2} cy={size / 2} r={size / 2} fill="white" />
 
         <circle
-          cx={-(size / AvatarSizing.Pile.OverlapFactors[overlap]-2)}
+          cx={
+            size / AvatarSizing.Pile.OverlapFactors[overlap] -(parseOffset(offset))
+          }
           cy={size / 2}
-          r={(size / 2)+2}
+          r={(size + parseRadius(offset)) /2}
           fill="black"
         />
       </mask>
@@ -61,16 +86,17 @@ type AvatarPileItemProps = {
   user: string;
   size: number;
   index: number;
-  overlap: Overlap
+  overlap: Overlap;
+  offset: SizingName;
 };
-  
-function AvatarPileItem({ user, size, index, overlap }: AvatarPileItemProps) {
+
+function AvatarPileItem({ user, size, index, overlap, offset }: AvatarPileItemProps) {
   const avatar = useUserAvatar(user);
   const willMask = index !== 0;
   return (
     <PileItem>
       <div className="pileAvatarContainer">
-        <PileClipWrapper willMask={willMask} size={size} overlap={overlap}>
+        <PileClipWrapper willMask={willMask} size={size} overlap={overlap} offset={offset}>
           <img src={avatar} width={size} height={size} className="pileAvatar" />
         </PileClipWrapper>
       </div>
@@ -88,12 +114,15 @@ type AvatarPileProps = {
   clipOverlap: Overlap;
 };
 
-function parseHeight(height: SizingName) {
-  return AvatarSizing.Pile[height];
-}
-
-export default function AvatarPile({ users, height, clipOverlap, overlap }: AvatarPileProps) {
-  console.warn('[AvatarPile] Prop drilling present! parameter "overlap" is passed into 2 levels of components')
+export default function AvatarPile({
+  users,
+  height,
+  clipOverlap,
+  overlap,
+}: AvatarPileProps) {
+  console.warn(
+    '[AvatarPile] Prop drilling present! parameter "overlap" is passed into 2 levels of components',
+  );
   return (
     <Pile data-pile-overlap={overlap}>
       {users.map((id, i) => {
@@ -104,6 +133,7 @@ export default function AvatarPile({ users, height, clipOverlap, overlap }: Avat
             size={parseHeight(height)}
             index={i}
             overlap={clipOverlap}
+            offset={overlap}
           />
         );
       })}
