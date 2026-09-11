@@ -3,6 +3,7 @@ import type { SizingName } from "../../../scripts/types/SizingTypes";
 import Stack from "../stack/Stack";
 import("./PileItem");
 import("./Pile.css");
+import("./PileOverlaps.css");
 
 type PileProps = {
   outerClass?: string;

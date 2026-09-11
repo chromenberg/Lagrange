@@ -1,0 +1,25 @@
+[mana-type="pile"][data-pile-overlap="xlarge"] {
+    > div:not(:first-child) {
+        margin-left: calc(var(--padding-xs) * -2);
+    }
+}
+[mana-type="pile"][data-pile-overlap="large"] {
+    .pileItemWrapper:not(:first-child) {
+        margin-left: calc(var(--padding-sm) * -1.6) !important;
+    }
+}
+[mana-type="pile"][data-pile-overlap="medium"] {
+    > div:not(:first-child) {
+        margin-left: calc(var(--padding-md) * -1);
+    }
+}
+[mana-type="pile"][data-pile-overlap="small"] {
+    > div:not(:first-child) {
+        margin-left: calc(var(--padding-lg) * -0.8);
+    }
+}
+[mana-type="pile"][data-pile-overlap="xsmall"] {
+    > div:not(:first-child) {
+        margin-left: calc(var(--padding-xl) * -0.8);
+    }
+}
