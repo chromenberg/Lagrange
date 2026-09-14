@@ -63,6 +63,15 @@ export class UserService extends AtlasService {
       .get`SELECT * FROM users WHERE user_id = ${BigInt(id)};`;
   }
 
+  public validateToken(token: string): Promise<string | undefined> {
+    return new Promise(async (res) => {
+      res(
+        (await this.sql.get`SELECT user_id FROM users WHERE token = ${token}`)
+          ?.token as string | undefined,
+      );
+    });
+  }
+
   public getUserByUsername(username: string): SQLPromise {
     return this.parent.sqlClient
       .get`SELECT * FROM users WHERE username = ${username};`;
