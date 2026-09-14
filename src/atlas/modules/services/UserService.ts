@@ -80,6 +80,12 @@ export class UserService extends AtlasService {
     return this.parent.sqlClient
       .get`SELECT user_id FROM users WHERE username = ${username};`;
   }
+
+  public async getUserIDByToken(token: string): Promise<string | undefined> {
+    return (
+      await this.sql.get`SELECT user_id FROM users WHERE token = ${token};`
+    )?.user_id as string | undefined;
+  }
   public async checkUsernameAvailability(username: string): Promise<boolean> {
     return new Promise((res, err) => {
       this.getUserIDByUsername(username).then((user) => {
@@ -214,7 +220,8 @@ export class UserService extends AtlasService {
   }
 
   public updateUserAvatar(userID: Snowflake, hash: string) {
-    this.sql.run`UPDATE users SET avatar_hash = ${hash} WHERE user_id = ${userID};`
+    this.sql
+      .run`UPDATE users SET avatar_hash = ${hash} WHERE user_id = ${userID};`;
   }
 
   public getAllGuildInfoForUser(token: string) {
