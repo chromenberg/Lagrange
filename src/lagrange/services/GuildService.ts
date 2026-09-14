@@ -10,6 +10,11 @@ import type { Snowflake } from "../../core/types/Types.js";
 // import { GatewayEmitter } from "../modules/gateway/Gateway.js";
 import type { Server } from "ws";
 import { GatewayEventTypes } from "../modules/events/GatewayEvents.js";
+import {
+  APIErrorCodes,
+  GatewayErrorCodes,
+  GatewayErrors,
+} from "../../core/errors/ServerErrors.js";
 
 export class GuildService {
   private readonly route: Route;
@@ -34,6 +39,12 @@ export class GuildService {
     this.route.get("/:id/channels", (req, res) => {
       this.getGuildChannels(req, res);
     });
+    this.route.get("/:guild/join", (req, res) => {
+      this.joinGuild(req, res)
+    })
+    this.route.get("/:guild/leave", (req, res) => {
+      this.leaveGuild(req, res)
+    })
   }
 
   // should have a guild name as of right now
@@ -57,10 +68,7 @@ export class GuildService {
           // Send the guild create event to the owner id
           // Event type Guild Create
           // with the data of the guild that was made
-          Gateway.emitEvent(
-            GatewayEventTypes.GUILD_CREATE,
-            guild.JSON(),
-          );
+          Gateway.emitEvent(GatewayEventTypes.GUILD_CREATE, guild.JSON());
         });
       }
       res.write("dfgdfg");
@@ -92,5 +100,113 @@ export class GuildService {
       res.write(JSON.stringify(channelMap));
       res.end();
     });
+  }
+
+  // Should be invites accept, this should just need a guild id and the token
+  public async joinGuild(req: Request, res: ServerResponse<IncomingMessage>) {
+    function notAuthed() {
+      res.setHeader("Content-Type", "application/json");
+      res.write(JSON.stringify(GatewayErrors[GatewayErrorCodes.NOT_AUTHED]));
+      res.end();
+    }
+
+    if (!req.headers.authorization) {
+      notAuthed();
+      return;
+    }
+
+    const guildID: Snowflake | undefined = req.params["guild"];
+
+    // return if no guild id was passed
+    if (!guildID) {
+      return;
+    }
+
+    if (!Atlas.requests.guilds.validateGuildID(guildID)) {
+      return;
+    }
+
+    const token = await Atlas.requests.users.validateToken(
+      req.headers.authorization,
+    );
+    console.log(token)
+    if (!token) {
+      notAuthed();
+      return;
+    }
+
+    const userID = await Atlas.requests.users.getUserIDByToken(token);
+
+    if (!userID) {
+      throw new Error(
+        `The user for token ${token} passed through the token presence check, the token validation meaning a user is present. however a user id was not returned from this token`,
+      );
+    }
+
+    Atlas.requests.guilds.addGuildMember(guildID, userID).then(async () => {
+      const guildInfo = await Atlas.requests.guilds.getGuildInfo(guildID);
+      const userInfo = await Atlas.requests.users.getUserDataByID(userID);
+      
+      if (guildInfo.id && userInfo.id) {
+        Gateway.emitEvent(GatewayEventTypes.GUILD_MEMBER_ADD, {
+          guild: guildInfo,
+          user: userInfo,
+        });
+      }
+    });
+
+    res.statusCode = 200;
+    res.end();
+  }
+
+  public async leaveGuild(req: Request, res: ServerResponse<IncomingMessage>) {
+    function notAuthed() {
+      res.setHeader("Content-Type", "application/json");
+      res.write(JSON.stringify(GatewayErrors[GatewayErrorCodes.NOT_AUTHED]));
+      res.end();
+    }
+
+    if (!req.headers.authorization) {
+      notAuthed();
+      return;
+    }
+
+    const guildID: Snowflake | undefined = req.params["guild"];
+
+    // return if no guild id was passed
+    if (!guildID) {
+      return;
+    }
+
+    if (!Atlas.requests.guilds.validateGuildID(guildID)) {
+      return;
+    }
+
+    const token = await Atlas.requests.users.validateToken(
+      req.headers.authorization,
+    );
+    console.log(token)
+    if (!token) {
+      notAuthed();
+      return;
+    }
+
+    const userID = await Atlas.requests.users.getUserIDByToken(token);
+
+    if (!userID) {
+      throw new Error(
+        `The user for token ${token} passed through the token presence check, the token validation meaning a user is present. however a user id was not returned from this token`,
+      );
+    }
+
+    Atlas.requests.guilds.removeGuildMember(guildID, userID).then(() => {
+      Gateway.emitEvent(GatewayEventTypes.GUILD_MEMBER_REMOVE, {
+        guild: guildID,
+        user: { id: userID },
+      });
+    });
+
+    res.statusCode = 200;
+    res.end();
   }
 }
