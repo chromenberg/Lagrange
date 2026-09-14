@@ -39,6 +39,13 @@ export class GuildService extends AtlasService {
       .run`INSERT INTO guild_members VALUES (${BigInt(userID)}, ${BigInt(guildID)}, null, null, null, null, null);`;
   }
 
+  public async removeGuildMember(
+    guildID: Snowflake,
+    userID: Snowflake
+  ): Promise<void> {
+    this.sql.run`DELETE FROM guild_members WHERE guild_id = ${BigInt(guildID)} AND user_id = ${BigInt(userID)};`
+  }
+
   public async getAllGuilds(): SQLPromiseArray {
     return this.parent.sqlClient.all`SELECT * FROM guilds;`;
   }
