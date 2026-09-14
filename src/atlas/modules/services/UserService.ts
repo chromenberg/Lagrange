@@ -63,6 +63,21 @@ export class UserService extends AtlasService {
       .get`SELECT * FROM users WHERE user_id = ${BigInt(id)};`;
   }
 
+  public  async getUserDataByID(id: string) {
+    // We convert the id from string -> bigint so the database can read it
+    // this is also because by nature all IDs are generated as a bigint
+    // within the goroutine that is used
+    const data = (await this.parent.sqlClient
+      .get`SELECT * FROM users WHERE user_id = ${BigInt(id)};`);
+    
+    return {
+      avatar: data?.avatar_hash?.toString(),
+      display_name: data?.display_name?.toString(),
+      id: data?.user_id?.toString(),
+      username: data?.username?.toString()
+    }
+  }
+
   public validateToken(token: string): Promise<string | undefined> {
     return new Promise(async (res) => {
       res(
@@ -84,7 +99,7 @@ export class UserService extends AtlasService {
   public async getUserIDByToken(token: string): Promise<string | undefined> {
     return (
       await this.sql.get`SELECT user_id FROM users WHERE token = ${token};`
-    )?.user_id as string | undefined;
+    )?.user_id?.toString()
   }
   public async checkUsernameAvailability(username: string): Promise<boolean> {
     return new Promise((res, err) => {
