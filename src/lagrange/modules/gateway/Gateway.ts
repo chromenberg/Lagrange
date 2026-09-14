@@ -116,12 +116,12 @@ export class Gateway {
    * @param name
    * @param listener
    */
-  public addEvent(name: KeyOfEvents, listener: VoidCallback) {
+    public addEvent(name: KeyOfEvents, listener: VoidCallback) {
     this._gatewayEvents.on(name, listener);
   }
 
   public emitEvent(name: KeyOfEvents, ...data: any[]) {
-    this._gatewayEvents.emit(name, ...data);
+    this._gatewayEvents.emit(name, ...[...data, name]);
   }
 
   // Init
