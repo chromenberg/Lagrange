@@ -27,6 +27,10 @@ export class GuildService extends AtlasService {
         });
   }
 
+  public async validateGuildID(id: Snowflake): Promise<boolean> {
+    return (await this.sql.get`SELECT guild_id FROM guilds WHERE guild_id = ${BigInt(id)}`)?.guild_id ? true : false;
+  }
+  
   public async addGuildMember(
     guildID: Snowflake,
     userID: Snowflake,
