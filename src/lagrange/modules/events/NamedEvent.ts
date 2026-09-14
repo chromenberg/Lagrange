@@ -1,3 +1,4 @@
+import { Logger, LogLevel } from "../../../core/logging/Logger.js";
 import {
   EventMode,
   type KeyOfEvents,
@@ -26,6 +27,9 @@ export class NamedEvent {
 
   private _json(fn: VoidCallback): string {
     try {
+      if (Object.values(this._data).some(val => typeof val === "bigint")) {
+        Logger.sendLog(LogLevel.Error, ["Gateway", "NamedEvent"], "A bigint was present when trying to serialize event data")
+      }
       return JSON.stringify(fn.call(this));
     } catch (e) {
       // If the data fails to be converted to a string
