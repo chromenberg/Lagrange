@@ -66,7 +66,7 @@ export class UserService extends AtlasService {
   public validateToken(token: string): Promise<string | undefined> {
     return new Promise(async (res) => {
       res(
-        (await this.sql.get`SELECT user_id FROM users WHERE token = ${token}`)
+        (await this.sql.get`SELECT token FROM users WHERE token = ${token}`)
           ?.token as string | undefined,
       );
     });
